@@ -1,1 +1,0 @@
-python -m PyQt5.uic.pyuic -x untitled.ui -o testconvert.py

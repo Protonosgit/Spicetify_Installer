@@ -145,7 +145,7 @@ class SpicyGreen(QMainWindow):
         self.loading(True)
 
     def checkSpicetify(self):
-        #check resources folder
+        #check resources folder for existence
         folder_path = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'spicetify')
         if os.path.exists(folder_path) and os.path.isdir(folder_path):
             self.data_label.setText("Data OK")
