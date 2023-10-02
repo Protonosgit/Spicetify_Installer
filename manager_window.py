@@ -1,10 +1,12 @@
-import sys
+
 import os
 import subprocess
-from PyQt6.QtWidgets import QApplication, QDialog, QMainWindow, QErrorMessage
+from PyQt6.QtWidgets import  QMainWindow, QErrorMessage
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
-from components.shellbridge import InstallSpicetify, UpdateSpicetify, UninstallSpicetify, getLatestRelease
+from components.shellbridge import InstallSpicetify, UpdateSpicetify, UninstallSpicetify, getLatestRelease,checkApplied
+
+from components.afterinstall_popup import Popup
     
 
 
@@ -48,6 +50,9 @@ class Manager(QMainWindow):
         self.iprocess.start()
     def launchSpotify(self):
         os.startfile(os.path.join( os.path.expanduser('~'), 'AppData','Roaming/Spotify/Spotify.exe'))
+    def activateSpicetify(self):
+        subprocess.check_output('spicetify apply')
+        self.checkSpicetify()
     def startRemoval(self):
         self.setCursor(Qt.CursorShape.WaitCursor)
         self.bt_uninstall.setEnabled(False)
@@ -85,6 +90,8 @@ class Manager(QMainWindow):
 
     def setup_finished(self):
         self.checkSpicetify()
+        dialog = Popup(self)
+        dialog.exec()
     def update_finished(self):
         self.checkSpicetify()
     def uninstall_finished(self):
@@ -95,18 +102,33 @@ class Manager(QMainWindow):
             self.setCursor(Qt.CursorShape.ArrowCursor)
             folder_path = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify')
             if os.path.exists(folder_path) and os.path.isdir(folder_path):
-                self.l_status.setText("Spicetify is installed")
-                self.l_status.setStyleSheet("color: green")
-                versionoutput = subprocess.check_output('spicetify --version',shell=True)
-                self.l_versioninfo.setText('Version: '+versionoutput.decode("utf-8"))
-                self.bt_uninstall.setEnabled(True)
-                self.bt_update.setEnabled(True)
-                self.bt_install.setEnabled(True)
-                if self.installmode:
-                    self.installmode = False
-                    self.bt_install.setText("Launch Spotify")
-                    self.bt_install.clicked.disconnect(self.startInstaller)
-                    self.bt_install.clicked.connect(self.launchSpotify)
+                if not checkApplied():
+                    self.l_status.setText("Spicetify is not activated yet")
+                    self.l_status.setStyleSheet("color: orange")
+                    self.l_versioninfo.setText('Please press activate to apply any modifications')
+                    self.bt_uninstall.setEnabled(True)
+                    self.bt_update.setEnabled(True)
+                    self.bt_install.setEnabled(True)
+                    if self.installmode:
+                        self.installmode = False
+                        self.bt_install.setText("Activate")
+                        self.bt_install.clicked.disconnect(self.startInstaller)
+                    else:
+                        self.bt_install.clicked.disconnect(self.launchSpotify)
+                    self.bt_install.clicked.connect(self.activateSpicetify)
+                else:
+                    self.l_status.setText("Spotify is spiced up!")
+                    self.l_status.setStyleSheet("color: green")
+                    versionoutput = subprocess.check_output('spicetify --version',shell=True)
+                    self.l_versioninfo.setText('Version: '+versionoutput.decode("utf-8"))
+                    self.bt_uninstall.setEnabled(True)
+                    self.bt_update.setEnabled(True)
+                    self.bt_install.setEnabled(True)
+                    if self.installmode:
+                        self.installmode = False
+                        self.bt_install.setText("Launch Spotify")
+                        self.bt_install.clicked.disconnect(self.startInstaller)
+                        self.bt_install.clicked.connect(self.launchSpotify)
             else:
                 self.l_status.setText("Spicetify is not installed")
                 self.l_status.setStyleSheet("color: red")

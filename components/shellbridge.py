@@ -60,6 +60,13 @@ def getLatestRelease():
     else:
         return None
     
+def checkInstalled():
+    folder_path = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify')
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        return True
+    else:
+        return False
+
 def checkApplied():
     folder_path = os.path.join( os.path.expanduser('~'), 'AppData','Roaming/Spotify/Apps/xpui')
     if os.path.exists(folder_path) and os.path.isdir(folder_path):

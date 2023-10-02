@@ -27,7 +27,7 @@
    <string notr="true"/>
   </property>
   <property name="locale">
-   <locale language="Kannada" country="India"/>
+   <locale language="English" country="UnitedStates"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
