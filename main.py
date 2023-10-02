@@ -17,12 +17,11 @@ class SpicetifyPatcher:
         self.timer = QTimer()
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self.show_menu)
-        self.timer.start(2000)
+        self.timer.start(5000)
 
     def show_menu(self):
         self.splash_window.hide()
         self.manager_window.show()
-
 
     def run(self):
         sys.exit(self.app.exec())
