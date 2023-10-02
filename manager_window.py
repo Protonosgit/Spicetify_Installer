@@ -7,9 +7,11 @@ from PyQt6.uic import loadUi
 from components.shellbridge import InstallSpicetify, UpdateSpicetify, UninstallSpicetify, getLatestRelease
     
 
+
 class Manager(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.installmode = True
         loadUi('./res/manager.ui', self)
 
         self.bt_install.clicked.connect(self.startInstaller)
@@ -44,6 +46,8 @@ class Manager(QMainWindow):
         self.iprocess.finished_signal.connect(self.setup_finished)
         self.iprocess.progress_signal.connect(self.progressmaster)
         self.iprocess.start()
+    def launchSpotify(self):
+        os.startfile(os.path.join( os.path.expanduser('~'), 'AppData','Roaming/Spotify/Spotify.exe'))
     def startRemoval(self):
         self.setCursor(Qt.CursorShape.WaitCursor)
         self.bt_uninstall.setEnabled(False)
@@ -94,10 +98,15 @@ class Manager(QMainWindow):
                 self.l_status.setText("Spicetify is installed")
                 self.l_status.setStyleSheet("color: green")
                 versionoutput = subprocess.check_output('spicetify --version',shell=True)
-                self.l_versioninfo.setText(versionoutput.decode("utf-8"))
+                self.l_versioninfo.setText('Version: '+versionoutput.decode("utf-8"))
                 self.bt_uninstall.setEnabled(True)
                 self.bt_update.setEnabled(True)
-                self.bt_install.setEnabled(False)
+                self.bt_install.setEnabled(True)
+                if self.installmode:
+                    self.installmode = False
+                    self.bt_install.setText("Launch Spotify")
+                    self.bt_install.clicked.disconnect(self.startInstaller)
+                    self.bt_install.clicked.connect(self.launchSpotify)
             else:
                 self.l_status.setText("Spicetify is not installed")
                 self.l_status.setStyleSheet("color: red")
@@ -105,6 +114,12 @@ class Manager(QMainWindow):
                 self.bt_uninstall.setEnabled(False)
                 self.bt_update.setEnabled(False)
                 self.bt_install.setEnabled(True)
-        except:
+                if not self.installmode:
+                    self.installmode = True
+                    self.bt_install.setText("Install")
+                    self.bt_install.clicked.disconnect(self.launchSpotify)
+                    self.bt_install.clicked.connect(self.startInstaller)
+        except Exception as e:
             print("E: Error while checking Spicetify!")
+            print(e)
             self.l_status.setText("Spicetify is not installed")

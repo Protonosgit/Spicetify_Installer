@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QDialog
+from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import Qt, QTimer
 from splash_window import Splash
 from menu_window import Menu

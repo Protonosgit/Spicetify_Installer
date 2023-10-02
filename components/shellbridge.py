@@ -1,4 +1,5 @@
 import sys
+import os
 import subprocess
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 import requests
@@ -8,17 +9,25 @@ class InstallSpicetify(QThread):
     finished_signal = pyqtSignal()
     def run(self):
         try:
-            self.progress_signal.emit("Downloading Spicetify...")
-            subprocess.run('iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex' ,check=True)
-            self.progress_signal.emit("Creating backup...")
-            subprocess.run('spicetify clear',check=True)
-            subprocess.run('spicetify backup',check=True)
-            self.progress_signal.emit("Activating Spicetify...")
-            #subprocess.run('powershell.exe -Command "spicetify apply"',check=True)
-            self.progress_signal.emit("Installing Marketplace...")
-            subprocess.run('Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1" | Invoke-Expression' ,check=True)
-        except:
+            if sys.platform == 'win32':
+                self.progress_signal.emit("Downloading Spicetify...")
+                subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"',check=True)
+                self.progress_signal.emit("Creating backup...")
+                subprocess.run('spicetify clear',check=True)
+                subprocess.run('spicetify backup apply enable-devtools',check=True)
+                self.progress_signal.emit("Installing Marketplace...")
+                subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"',check=True)
+            else:
+                self.progress_signal.emit("Downloading Spicetify...")
+                subprocess.run('curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.sh | sh',check=True)
+                self.progress_signal.emit("Creating backup...")
+                subprocess.run('spicetify clear',check=True)
+                subprocess.run('spicetify backup apply enable-devtools',check=True)
+                self.progress_signal.emit("Installing Marketplace...")
+                subprocess.run('curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.sh | sh',check=True)
+        except Exception as e:
             print("Error detected!")
+            print(e)
             self.progress_signal.emit("fail")
         self.finished_signal.emit()
 class UpdateSpicetify(QThread):
@@ -50,3 +59,10 @@ def getLatestRelease():
         return tag_name
     else:
         return None
+    
+def checkApplied():
+    folder_path = os.path.join( os.path.expanduser('~'), 'AppData','Roaming/Spotify/Apps/xpui')
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        return True
+    else:
+        return False

@@ -182,7 +182,7 @@ border-bottom: none;
  }
 QPushButton:hover:!pressed
 {
-  border: 1px solid #7749F8;
+  border: 1px solid white;
 }
 QPushButton:pressed
 {
