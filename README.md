@@ -2,6 +2,16 @@
 
 A project for installing and managing Spicetify from a Gui written in python
 
+Contributers wellcome!
+
+![MIT License](https://badgen.net/badge/project/SpicyGreen)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/Protonosgit/Spicetify_Manager?filter=*alpha)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/Protonosgit/Spicetify_Manager)
+![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Protonosgit/Spicetify_Manager)
+![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/Protonosgit/Spicetify_Manager)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Protonosgit/Spicetify_Manager)
+![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Protonosgit/Spicetify_Manager)
+
 ![Logo](/.ghres/preview.png)
 
 ## Roadmap
@@ -12,7 +22,7 @@ A project for installing and managing Spicetify from a Gui written in python
 
 - Add custom patches / themes in application
 
-- ... Clean up stuff
+- Fix file not found on some win devices ?
 
 - Test on Linux / Mac
 
