@@ -12,19 +12,16 @@ Contributers wellcome!
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Protonosgit/Spicetify_Manager)
 ![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Protonosgit/Spicetify_Manager)
 
+Current Gui:
 ![Logo](/.ghres/preview.png)
 
-## Roadmap
+## Features
 
-- Include old manager menu in patcher
-
-- Run after spotify startup (check for updates)
-
-- Add custom patches / themes in application
-
-- Fix file not found on some win devices ?
-
-- Test on Linux / Mac
+- [x] Simple installation / update
+- [x] Clean and easy removal
+- [x] Cross platform (40% done)
+- [ ] Automatically update spicetify and apply patches after spotify update
+- [ ] Theme/extension installer
 
 ## Installation and Running
 
@@ -62,7 +59,20 @@ Simply click on uninstall in the managers window and wait until spotify has rest
 
 Clicking on the update button will check for version numbers first before initiating the download sequence
 
+## Roadmap
+
+1. Include old manager menu in patcher
+
+2. Run after spotify startup (check for updates)
+
+3. Auto update spicetify
+
+4. Test on Linux / Mac
+
+5. Add plugins/themes browser in application
+
 ## Acknowledgements
 
 - [Spicetify](https://spicetify.app/)
 - [Marketplace](https://github.com/spicetify/spicetify-marketplace)
+- [Badges by Shields.io](https://shields.io/)
