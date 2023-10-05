@@ -1,16 +1,18 @@
+# Project spicy green => Spicetify patcher
+# By Protonos ,
 
 import os
 import subprocess
 from PyQt6.QtWidgets import  QMainWindow, QErrorMessage
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
-from components.shellbridge import InstallSpicetify, UpdateSpicetify, UninstallSpicetify, getLatestRelease,checkApplied
+from components.shellbridge import InstallSpicetify, UpdateSpicetify, UninstallSpicetify, getLatestRelease,checkApplied,checkSpotifyRunning
 
 from components.afterinstall_popup import Popup
     
 
-
 class Manager(QMainWindow):
+    #Setup click listeners and load ui and do initial setup
     def __init__(self):
         super().__init__()
         self.installmode = True
@@ -23,9 +25,13 @@ class Manager(QMainWindow):
 
         self.checkSpicetify()
 
+    #currently debug only
     def show_custom_dialog(self):
-        pass
+        if (checkSpotifyRunning()):
+            dialog = Popup(self)
+            dialog.exec()
 
+    #Update user about progress while installing spicetify
     def progressmaster(self, action):
         if (action == "fail"):
             self.l_status.setStyleSheet("color: red")
@@ -39,6 +45,7 @@ class Manager(QMainWindow):
             self.l_status.setText(action)
             self.l_versioninfo.setText("This process may take a few minutes! Please be patient while Spotify restarts(this can happen a fe times!)")
 
+    # Launch installer task
     def startInstaller(self):
         self.setCursor(Qt.CursorShape.WaitCursor)
         self.bt_install.setEnabled(False)
@@ -50,9 +57,11 @@ class Manager(QMainWindow):
         self.iprocess.start()
     def launchSpotify(self):
         os.startfile(os.path.join( os.path.expanduser('~'), 'AppData','Roaming/Spotify/Spotify.exe'))
+    # Applies spicetify
     def activateSpicetify(self):
         subprocess.check_output('spicetify apply')
         self.checkSpicetify()
+    # Launch uninstaller task
     def startRemoval(self):
         self.setCursor(Qt.CursorShape.WaitCursor)
         self.bt_uninstall.setEnabled(False)
@@ -63,6 +72,7 @@ class Manager(QMainWindow):
         self.iprocess = UninstallSpicetify()
         self.iprocess.finished_signal.connect(self.uninstall_finished)
         self.iprocess.start()
+    # Launch updater task
     def startUpdate(self):
         try:
             self.setCursor(Qt.CursorShape.WaitCursor)
@@ -88,15 +98,19 @@ class Manager(QMainWindow):
         except:
             print("E: Error while checking version during update!")
 
+    #Called when spicetify is installed of case of failure?
     def setup_finished(self):
         self.checkSpicetify()
         dialog = Popup(self)
         dialog.exec()
+    #Called when spicetify is updated
     def update_finished(self):
         self.checkSpicetify()
+    #Called when spicetify is uninstalled
     def uninstall_finished(self):
         self.checkSpicetify()
 
+    # Check if spicetify is installed and applied (mainly ui work)
     def checkSpicetify(self):
         try:
             self.setCursor(Qt.CursorShape.ArrowCursor)
