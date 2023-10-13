@@ -158,6 +158,16 @@ QPushButton {
 	color: white;
 	padding: 10px;
 }
+QComboBox {
+	padding: 10px;
+    border-radius: 5px; /* Adjust as needed */
+}
+
+QComboBox::down-arrow {
+    border-radius: 0px; /* Set to 0 to remove any border-radius */
+}
+
+
 
 QTabWidget::pane{
 border-top: none;
@@ -239,7 +249,7 @@ QPushButton:pressed
       <x>0</x>
       <y>110</y>
       <width>801</width>
-      <height>380</height>
+      <height>391</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -275,7 +285,7 @@ QPushButton:pressed
       <property name="geometry">
        <rect>
         <x>250</x>
-        <y>180</y>
+        <y>200</y>
         <width>281</width>
         <height>51</height>
        </rect>
@@ -304,7 +314,7 @@ QPushButton:pressed
         <x>250</x>
         <y>250</y>
         <width>281</width>
-        <height>80</height>
+        <height>71</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="advanced">
@@ -442,40 +452,110 @@ QPushButton:pressed
      <attribute name="title">
       <string>Advanced</string>
      </attribute>
-     <widget class="QPushButton" name="bt0">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
+     <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>10</y>
-        <width>141</width>
-        <height>41</height>
+        <y>20</y>
+        <width>781</width>
+        <height>241</height>
        </rect>
       </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: transparent;
-border: solid;
-border-width: 3px;
-border-color: crimson;
-color: crimson;
-font-weight: bold;
-
-QPushButton:!enabled{
-	background-color: rgba(220, 20, 60, 150);
-}</string>
-      </property>
-      <property name="text">
-       <string>Show old menu</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>ic_plus.png</normaloff>ic_plus.png</iconset>
-      </property>
-      <property name="checkable">
-       <bool>false</bool>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QComboBox" name="comboBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>2</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <item>
+            <property name="text">
+             <string>Create Backup</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Clear Backup</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Apply Patches</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Update Spicetify</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Upgrade Spicetify</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Enable Devtools</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Install Marketplace</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Restore Spotify from backup</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Run command</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
@@ -561,6 +641,29 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </widget>
     </widget>
    </widget>
+   <widget class="QLabel" name="background_image">
+    <property name="geometry">
+     <rect>
+      <x>-30</x>
+      <y>-50</y>
+      <width>831</width>
+      <height>551</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>covers.jpeg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <zorder>background_image</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label</zorder>
+   <zorder>tabWidget</zorder>
   </widget>
  </widget>
  <resources/>

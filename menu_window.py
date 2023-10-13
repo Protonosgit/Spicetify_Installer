@@ -64,7 +64,10 @@ class Menu(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        loadUi('./res/untitled.ui', self)
+
+        #Switch when building
+        loadUi("res/untitled.ui", self)
+        loadUi(os.path.join(sys._MEIPASS, 'res', 'untitled.ui'), self)
 
         self.bt_install.clicked.connect(self.InstallSpices)
         self.bt_backup.clicked.connect(self.BackupSpices)

@@ -2,6 +2,7 @@
 # By Protonos ,
 
 import os
+import sys
 import subprocess
 from PyQt6.QtWidgets import  QMainWindow, QErrorMessage
 from PyQt6.QtCore import Qt
@@ -16,17 +17,19 @@ class Manager(QMainWindow):
     def __init__(self):
         super().__init__()
         self.installmode = True
-        loadUi('./res/manager.ui', self)
+
+        #Switch when building
+        loadUi("res/manager.ui", self)
+        #loadUi(os.path.join(sys._MEIPASS, 'res', 'manager.ui'), self)
 
         self.bt_install.clicked.connect(self.startInstaller)
         self.bt_update.clicked.connect(self.startUpdate)
         self.bt_uninstall.clicked.connect(self.startRemoval)
-        self.bt0.clicked.connect(self.show_custom_dialog)
 
         self.checkSpicetify()
 
-    #currently debug only
-    def show_custom_dialog(self):
+    # currently debug only
+    def debug(self):
         if (checkSpotifyRunning()):
             dialog = Popup(self)
             dialog.exec()

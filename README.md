@@ -36,6 +36,17 @@ Download project from Github and install dependencies
   python main.py
 ```
 
+## Building binary
+
+```bash
+  # First build and config setup
+  pyinstaller main.py
+
+  # Build using config
+  pyinstaller main.spec
+
+```
+
 ### Important!
 
 Only the main.py file will start the application!  
