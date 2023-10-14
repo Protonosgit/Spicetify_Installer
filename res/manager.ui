@@ -148,11 +148,26 @@
     <string notr="true">QLabel {
 	color: white;
 }
+QCheckBox {
+	color: white;
+	font-size: 16px;
+}
+QCheckBox::indicator {
+	width: 15px;
+	height: 15px;
+	border-radius: 6px;
+    border: 2px solid white;
+}
+QCheckBox::indicator:checked {
+	border-radius: 6px;
+	background-color: crimson;
+}
 
 QWidget#centralwidget {
 	background-color: black;
 }
 QPushButton {
+	font-size: 16px;
 	background-color: crimson;
 	border-radius: 5px;
 	color: white;
@@ -160,14 +175,11 @@ QPushButton {
 }
 QComboBox {
 	padding: 10px;
-    border-radius: 5px; /* Adjust as needed */
+    border-radius: 6px;
 }
-
-QComboBox::down-arrow {
-    border-radius: 0px; /* Set to 0 to remove any border-radius */
+QComboBox::drop-down:button{
+	border-radius: 6px 0px 0px 6px;
 }
-
-
 
 QTabWidget::pane{
 border-top: none;
@@ -199,7 +211,7 @@ QPushButton:pressed
 	opacity: 0,3:
 }</string>
    </property>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="titleimage">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -218,7 +230,7 @@ QPushButton:pressed
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="titletext">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -243,7 +255,7 @@ QPushButton:pressed
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QTabWidget" name="tabmaster">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -259,13 +271,15 @@ QPushButton:pressed
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">QTabWidget {
+	background-color: rgba(255, 255, 255, 0);
+}</string>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_1">
      <property name="styleSheet">
@@ -292,7 +306,7 @@ QPushButton:pressed
       </property>
       <property name="font">
        <font>
-        <pointsize>18</pointsize>
+        <pointsize>-1</pointsize>
        </font>
       </property>
       <property name="cursor">
@@ -322,7 +336,7 @@ QPushButton:pressed
         <widget class="QPushButton" name="bt_update">
          <property name="font">
           <font>
-           <pointsize>14</pointsize>
+           <pointsize>-1</pointsize>
           </font>
          </property>
          <property name="cursor">
@@ -349,7 +363,7 @@ QPushButton:pressed
          </property>
          <property name="font">
           <font>
-           <pointsize>14</pointsize>
+           <pointsize>-1</pointsize>
           </font>
          </property>
          <property name="cursor">
@@ -452,110 +466,128 @@ QPushButton:pressed
      <attribute name="title">
       <string>Advanced</string>
      </attribute>
-     <widget class="QWidget" name="verticalLayoutWidget">
+     <widget class="QWidget" name="horizontalLayoutWidget_2">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
+        <y>290</y>
         <width>781</width>
-        <height>241</height>
+        <height>51</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>TextLabel</string>
+        <widget class="QComboBox" name="combo_cmd">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>2</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QComboBox{
+	font-size: 14px;
+}</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>Create Backup</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Clear Backup</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Apply Patches</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Update Spicetify</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Upgrade Spicetify</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Enable Devtools</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Restore Spotify from backup</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Get version</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QComboBox" name="comboBox">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>2</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <item>
-            <property name="text">
-             <string>Create Backup</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Clear Backup</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Apply Patches</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Update Spicetify</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Upgrade Spicetify</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Enable Devtools</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Install Marketplace</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Restore Spotify from backup</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Run command</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QPushButton" name="bt_cmd">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Run command</string>
+         </property>
+        </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QLabel" name="section">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>260</y>
+        <width>251</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Run spicetify cli command</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>221</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Try to block Spotify updates</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>50</width>
+        <height>50</height>
+       </size>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
@@ -566,7 +598,7 @@ QPushButton:pressed
      <attribute name="title">
       <string>About</string>
      </attribute>
-     <widget class="QTextBrowser" name="textBrowser">
+     <widget class="QTextBrowser" name="aboutmd">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -591,14 +623,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Spicetify is not associated with the devloper of this application and the developer is not responsible for maintaining any products related to the spicetify community!&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Spicetify is an independent community project which provides a patcher and extensions/themes to modify Spotify's source code.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;We do &lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:700; color:#ffffff;&quot;&gt;not &lt;/span&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;promote any kind of software piracy and or copyright violation!&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Protonic-Patcher X Blackneutron&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;The spicetify project can be found&lt;/span&gt;&lt;span style=&quot; font-size:12pt; color:#090909;&quot;&gt; &lt;/span&gt;&lt;a href=&quot;https://spicetify.app/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Created by Protonos , Blackneutron&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Information about the spicetify project can be found&lt;/span&gt;&lt;span style=&quot; font-size:12pt; color:#090909;&quot;&gt; &lt;/span&gt;&lt;a href=&quot;https://spicetify.app/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;here!&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="openExternalLinks">
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="spicetifylogo">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -620,7 +652,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="versioninfo">
       <property name="geometry">
        <rect>
         <x>580</x>
@@ -661,9 +693,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </property>
    </widget>
    <zorder>background_image</zorder>
-   <zorder>label_2</zorder>
-   <zorder>label</zorder>
-   <zorder>tabWidget</zorder>
+   <zorder>titleimage</zorder>
+   <zorder>titletext</zorder>
+   <zorder>tabmaster</zorder>
   </widget>
  </widget>
  <resources/>

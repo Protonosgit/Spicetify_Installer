@@ -53,6 +53,30 @@ class UninstallSpicetify(QThread):
             subprocess.run('rm -rf ~/.spicetify')
             subprocess.run('rm -rf ~/.config/spicetify')
         self.finished_signal.emit()
+    
+# Custom command task
+class CustomCommand(QThread):
+    def __init__(self, index):
+        super().__init__()
+        self.cmnumber = index
+
+    finished_signal = pyqtSignal()
+    def run(self):
+        commandList = [
+        'spicetify backup',
+        'spicetify clear',
+        'spicetify apply',
+        'spicetify update',
+        'spicetify upgrade',
+        'spicetify enable-devtools',
+        'spicetify restore',
+        'spicetify --version',
+        ]
+        try:
+            subprocess.run(commandList[self.cmnumber])
+        except:
+            print("Error while running custom command!")
+
 
 #Checks github for latest spicetify version
 def getLatestRelease():

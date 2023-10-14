@@ -7,7 +7,7 @@ import subprocess
 from PyQt6.QtWidgets import  QMainWindow, QErrorMessage
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
-from components.shellbridge import InstallSpicetify, UpdateSpicetify, UninstallSpicetify, getLatestRelease,checkApplied,checkSpotifyRunning
+from components.shellbridge import InstallSpicetify, UpdateSpicetify, UninstallSpicetify, CustomCommand, getLatestRelease,checkApplied,checkSpotifyRunning
 
 from components.afterinstall_popup import Popup
     
@@ -25,6 +25,7 @@ class Manager(QMainWindow):
         self.bt_install.clicked.connect(self.startInstaller)
         self.bt_update.clicked.connect(self.startUpdate)
         self.bt_uninstall.clicked.connect(self.startRemoval)
+        self.bt_cmd.clicked.connect(self.Custom)
 
         self.checkSpicetify()
 
@@ -100,6 +101,12 @@ class Manager(QMainWindow):
                 self.iprocess.start()
         except:
             print("E: Error while checking version during update!")
+
+    # Run custom commands
+    def Custom(self):
+        self.iprocess = CustomCommand(self.combo_cmd.currentIndex())
+        self.iprocess.finished_signal.connect(self.uninstall_finished)
+        self.iprocess.start()
 
     #Called when spicetify is installed of case of failure?
     def setup_finished(self):
