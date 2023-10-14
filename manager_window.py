@@ -4,7 +4,7 @@
 import os
 import sys
 import subprocess
-from PyQt6.QtWidgets import  QMainWindow, QErrorMessage
+from PyQt6.QtWidgets import  QMainWindow, QErrorMessage, QMessageBox
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
 from components.shellbridge import InstallSpicetify, UpdateSpicetify, UninstallSpicetify, CustomCommand, getLatestRelease,checkApplied,checkSpotifyRunning
@@ -26,15 +26,17 @@ class Manager(QMainWindow):
         self.bt_update.clicked.connect(self.startUpdate)
         self.bt_uninstall.clicked.connect(self.startRemoval)
         self.bt_cmd.clicked.connect(self.Custom)
+        self.check_noupdate.stateChanged.connect(self.debug)
 
         self.checkSpicetify()
 
     # currently debug only
     def debug(self):
-        if (checkSpotifyRunning()):
-            dialog = Popup(self)
-            dialog.exec()
-
+        #display dialog with info text
+        message_box = QMessageBox()
+        message_box.setText("This function is not ready yet! Were sorry")
+        message_box.setWindowTitle("Information")
+        message_box.exec()
     #Update user about progress while installing spicetify
     def progressmaster(self, action):
         if (action == "fail"):
