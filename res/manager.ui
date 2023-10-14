@@ -279,7 +279,7 @@ QPushButton:pressed
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_1">
      <property name="styleSheet">
@@ -426,7 +426,7 @@ QPushButton:pressed
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Spicetify is not installed</string>
+        <string>Checking installation...</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -450,7 +450,7 @@ QPushButton:pressed
         <string notr="true">color:white;</string>
        </property>
        <property name="text">
-        <string>&lt;version&gt;</string>
+        <string>0.0.0</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -604,7 +604,7 @@ QPushButton:pressed
         <x>20</x>
         <y>20</y>
         <width>741</width>
-        <height>201</height>
+        <height>221</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -623,6 +623,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Spicetify is not associated with the devloper of this application and the developer is not responsible for maintaining any products related to the spicetify community!&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Spicetify is an independent community project which provides a patcher and extensions/themes to modify Spotify's source code.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;We do &lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:700; color:#ffffff;&quot;&gt;not &lt;/span&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;promote any kind of software piracy and or copyright violation!&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Please report any bugs or errors in the Github repo!&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Created by Protonos , Blackneutron&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#ffffff;&quot;&gt;Information about the spicetify project can be found&lt;/span&gt;&lt;span style=&quot; font-size:12pt; color:#090909;&quot;&gt; &lt;/span&gt;&lt;a href=&quot;https://spicetify.app/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;here!&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
@@ -634,9 +635,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>230</y>
-        <width>291</width>
-        <height>101</height>
+        <y>250</y>
+        <width>261</width>
+        <height>81</height>
        </rect>
       </property>
       <property name="styleSheet">

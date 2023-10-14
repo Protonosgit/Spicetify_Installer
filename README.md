@@ -20,8 +20,8 @@ Current Gui:
 - [x] Simple installation / update
 - [x] Clean and easy removal
 - [x] Cross platform (40% done)
+- [x] Custom cli commands
 - [ ] Automatically update spicetify and apply patches after spotify update
-- [ ] Theme/extension installer
 
 ## Installation and Running
 
@@ -30,6 +30,7 @@ Download project from Github and install dependencies
 ```bash
   git clone https://github.com/Protonosgit/Spicetify_Manager.git
 
+  # Warning you might need additional dependecies
   python -m pip install pyqt6
   python -m pip install pyqt6-tools
 
@@ -72,15 +73,11 @@ Clicking on the update button will check for version numbers first before initia
 
 ## Roadmap
 
-1. Include old manager menu in patcher
+1. Run after spotify startup (check for updates)
 
-2. Run after spotify startup (check for updates)
+2. Auto update spicetify
 
-3. Auto update spicetify
-
-4. Test on Linux / Mac
-
-5. Add plugins/themes browser in application
+3. Test on Linux / Mac
 
 ## Acknowledgements
 
