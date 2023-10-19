@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>firething.gif</normaloff>firething.gif</iconset>
+    <normaloff>icon.png</normaloff>icon.png</iconset>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>

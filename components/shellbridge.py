@@ -111,3 +111,15 @@ def checkSpotifyRunning():
         if 'Spotify.exe' in process.info['name']:
             return True
     return False
+              
+def blockSpotifyUpdate(allow):
+    if allow:
+        mode = '/remove'
+    else:
+        mode = '/deny'
+    try:
+        subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:D', shell=True, check=True)
+        subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:R', shell=True, check=True)
+        print('Permission change successful.')
+    except subprocess.CalledProcessError as e:
+        print(f'Error: {e.returncode}. Permission change failed.')

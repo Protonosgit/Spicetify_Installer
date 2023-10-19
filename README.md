@@ -1,5 +1,5 @@
+<img src="./res/logo.png" alt="drawing" width="80"/> <br>
 # Spicetify Manager
-
 A project for installing and managing Spicetify from a Gui written in python
 
 Contributers wellcome!

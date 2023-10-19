@@ -44,7 +44,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>icon.png</normaloff>icon.png</iconset>
+    <normaloff>logo.png</normaloff>logo.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -216,7 +216,7 @@ QPushButton:pressed
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>61</width>
+      <width>71</width>
       <height>71</height>
      </rect>
     </property>
@@ -224,7 +224,7 @@ QPushButton:pressed
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>icon.png</pixmap>
+     <pixmap>logo.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
