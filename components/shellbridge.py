@@ -111,15 +111,38 @@ def checkSpotifyRunning():
         if 'Spotify.exe' in process.info['name']:
             return True
     return False
-              
+#Try blocking spotify updates by removing permissions (Windows only) 
 def blockSpotifyUpdate(allow):
     if allow:
         mode = '/remove'
     else:
         mode = '/deny'
     try:
+        subprocess.run('cmd /c rmdir /s %localappdata%\\Spotify\\Update', shell=True, check=True)
+        subprocess.run('cmd /c mkdir %localappdata%\\Spotify\\Update', shell=True, check=True)
+
         subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:D', shell=True, check=True)
         subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:R', shell=True, check=True)
         print('Permission change successful.')
     except subprocess.CalledProcessError as e:
         print(f'Error: {e.returncode}. Permission change failed.')
+
+# Checks if spotify updates are blocked
+def checkSpotifyBlockedUpdate():
+
+    directory_path = r'C:\path\to\directory'
+    permission_to_check = 'D'  # Replace with the permission you want to check ('D' for Delete or 'R' for Read)
+
+    command = f'icacls "{directory_path}"'
+
+    try:
+        result = subprocess.check_output(command, shell=True, text=True)
+    
+        # Check if the permission you want to verify is in the output
+        if f'"{permission_to_check}":(R)' in result:
+            print(f'Permission {permission_to_check} is active on {directory_path}')
+        else:
+            print(f'Permission {permission_to_check} is not active on {directory_path}')
+    except subprocess.CalledProcessError as e:
+        print(f'Error: {e.returncode}. Failed to check permissions.')
+

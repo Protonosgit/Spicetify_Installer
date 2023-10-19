@@ -12,14 +12,13 @@ Contributers wellcome!
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Protonosgit/Spicetify_Manager)
 ![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Protonosgit/Spicetify_Manager)
 
-Current Gui:
 ![Logo](/.ghres/preview.png)
 
 ## Features
 
 - [x] Simple installation / update
 - [x] Clean and easy removal
-- [x] Cross platform (40% done)
+- [ ] Cross platform (60% done)
 - [x] Custom cli commands
 - [ ] Automatically update spicetify and apply patches after spotify update
 
@@ -37,25 +36,24 @@ Download project from Github and install dependencies
   python main.py
 ```
 
+### Important!
+**Only** the **main.py** file will start the application!  
+The other files are dynamically used as components and windows.
+
 ## Building binary
 
 ```bash
-  # First build and config setup
-  pyinstaller main.py
-
-  # Build using config
+  # Build using pyinstaller and predefined config
   pyinstaller main.spec
+
+  # Alternatively overwrite with your own config
+  pyinstaller main.py
 
 ```
 
-### Important!
-
-Only the main.py file will start the application!  
-The other files are dynamically used as components.
-
 ## Usage Guide
 
-[1] After running the main.py file wait for 5 - 8 sec till the menu shows up
+[1] After running the main.py file wait a few seconds for the menu to show up
 
 [2] Click on install and wait for the process to finish
 
@@ -75,12 +73,11 @@ Clicking on the update button will check for version numbers first before initia
 
 1. Run after spotify startup (check for updates)
 
-2. Auto update spicetify
+2. Auto apply spicetify after updates (or block them completely)
 
-3. Test on Linux / Mac
 
 ## Acknowledgements
-
 - [Spicetify](https://spicetify.app/)
 - [Marketplace](https://github.com/spicetify/spicetify-marketplace)
 - [Badges by Shields.io](https://shields.io/)
+- Inspired by Spicetify Easyinstall

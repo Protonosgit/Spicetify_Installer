@@ -279,7 +279,7 @@ QPushButton:pressed
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_1">
      <property name="styleSheet">
@@ -314,8 +314,10 @@ QPushButton:pressed
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton:!enabled{
-	
 	background-color: rgba(220, 20, 60, 150);
+}
+QPushButton{
+	font-size:25px;
 }</string>
       </property>
       <property name="text">
@@ -557,7 +559,7 @@ QPushButton:pressed
        <rect>
         <x>40</x>
         <y>260</y>
-        <width>251</width>
+        <width>401</width>
         <height>20</height>
        </rect>
       </property>
@@ -567,7 +569,7 @@ QPushButton:pressed
        </font>
       </property>
       <property name="text">
-       <string>Run spicetify cli command</string>
+       <string>Run spicetify cli command (be careful!)</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="check_noupdate">
