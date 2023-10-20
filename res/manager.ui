@@ -279,7 +279,7 @@ QPushButton:pressed
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_1">
      <property name="styleSheet">
@@ -577,12 +577,12 @@ QPushButton{
        <rect>
         <x>20</x>
         <y>30</y>
-        <width>221</width>
+        <width>761</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>Try to block Spotify updates</string>
+       <string>Try to block Spotify updates (Windows only)</string>
       </property>
       <property name="iconSize">
        <size>
