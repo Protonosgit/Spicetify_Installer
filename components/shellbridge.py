@@ -123,6 +123,7 @@ def blockSpotifyUpdate(allow):
     try:
         shutil.rmtree(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
         os.makedirs(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
+        
         #subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:D', shell=True, check=True)
         #subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:R', shell=True, check=True)
         print('Permission change successful.')
