@@ -3,6 +3,7 @@ import sys
 import os
 import subprocess
 import psutil
+import shutil
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 import requests
 
@@ -117,12 +118,13 @@ def blockSpotifyUpdate(allow):
         mode = '/remove'
     else:
         mode = '/deny'
+    #subprocess.run('cmd /c rmdir /s %localappdata%\\Spotify\\Update', shell=True)
+    #subprocess.run('cmd /c mkdir %localappdata%\\Spotify\\Update', shell=True)
     try:
-        subprocess.run('cmd /c rmdir /s %localappdata%\\Spotify\\Update', shell=True, check=True)
-        subprocess.run('cmd /c mkdir %localappdata%\\Spotify\\Update', shell=True, check=True)
-
-        subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:D', shell=True, check=True)
-        subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:R', shell=True, check=True)
+        shutil.rmtree(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
+        os.makedirs(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
+        #subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:D', shell=True, check=True)
+        #subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:R', shell=True, check=True)
         print('Permission change successful.')
     except subprocess.CalledProcessError as e:
         print(f'Error: {e.returncode}. Permission change failed.')
@@ -131,14 +133,13 @@ def blockSpotifyUpdate(allow):
 def checkSpotifyBlockedUpdate():
 
     directory_path = r'C:\path\to\directory'
-    permission_to_check = 'D'  # Replace with the permission you want to check ('D' for Delete or 'R' for Read)
+    permission_to_check = 'D'
 
     command = f'icacls "{directory_path}"'
 
     try:
         result = subprocess.check_output(command, shell=True, text=True)
     
-        # Check if the permission you want to verify is in the output
         if f'"{permission_to_check}":(R)' in result:
             print(f'Permission {permission_to_check} is active on {directory_path}')
         else:
