@@ -94,7 +94,7 @@
      </property>
      <property name="styleSheet">
       <string notr="true">color: white;
-background: rgba(0,0,0,0.4);</string>
+background: rgba(0,0,0,0.5);</string>
      </property>
      <property name="text">
       <string notr="true">Spicetify Installer</string>

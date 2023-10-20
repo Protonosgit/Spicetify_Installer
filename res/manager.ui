@@ -40,7 +40,7 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string notr="true">Spicetify Patcher</string>
+   <string notr="true">Spicetify Manager</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -249,7 +249,7 @@ QPushButton:pressed
      <string notr="true">color: white;</string>
     </property>
     <property name="text">
-     <string>Spicetify Patcher</string>
+     <string>Spicetify Manager</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -639,7 +639,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <x>20</x>
         <y>250</y>
         <width>261</width>
-        <height>81</height>
+        <height>91</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -668,7 +668,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <string notr="true">color:white;</string>
       </property>
       <property name="text">
-       <string>Project spicy green 2023 v0.2</string>
+       <string>Project spicy green 2023 v0.3</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
