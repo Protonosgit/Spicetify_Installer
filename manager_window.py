@@ -94,6 +94,7 @@ class Manager(QMainWindow):
                 self.setCursor(Qt.CursorShape.ArrowCursor)
                 self.bt_update.setEnabled(True)
                 self.bt_uninstall.setEnabled(True)
+                self.bt_install.setEnabled(True)
             else:
                 self.l_status.setStyleSheet("color: Orange")
                 self.l_status.setText("Updating...")

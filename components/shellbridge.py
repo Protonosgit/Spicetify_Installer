@@ -112,25 +112,27 @@ def checkSpotifyRunning():
         if 'Spotify.exe' in process.info['name']:
             return True
     return False
-#Try blocking spotify updates by removing permissions (Windows only) 
+#Try blocking spotify updates by changing permissions (Windows only) 
 def blockSpotifyUpdate(allow):
     if allow:
         mode = '/remove'
     else:
         mode = '/deny'
-    #subprocess.run('cmd /c rmdir /s %localappdata%\\Spotify\\Update', shell=True)
-    #subprocess.run('cmd /c mkdir %localappdata%\\Spotify\\Update', shell=True)
     try:
-        shutil.rmtree(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
+        #Check for existance before deleting update path and making it
+        if os.path.exists(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update")):
+            shutil.rmtree(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
         os.makedirs(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
-        
+
         #subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:D', shell=True, check=True)
         #subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:R', shell=True, check=True)
-        print('Permission change successful.')
+        
+        #Reset permissions for update folder
+        #subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update /reset', shell=True)
     except subprocess.CalledProcessError as e:
-        print(f'Error: {e.returncode}. Permission change failed.')
+        print(f'Error: {e.returncode}. patcher failed.')
 
-# Checks if spotify updates are blocked
+# Checks if spotify updates are blocked (unfinished)
 def checkSpotifyBlockedUpdate():
 
     directory_path = r'C:\path\to\directory'
