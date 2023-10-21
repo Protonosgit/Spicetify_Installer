@@ -27,7 +27,7 @@ Contributers wellcome!
 Download project from Github and install dependencies
 
 ```bash
-  git clone https://github.com/Protonosgit/Spicetify_Manager.git
+  git clone https://github.com/Protonosgit/Spicetify_Installer.git
 
   # Warning you might need additional dependecies
   python -m pip install pyqt6

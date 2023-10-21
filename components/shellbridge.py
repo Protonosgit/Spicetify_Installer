@@ -113,6 +113,7 @@ def checkSpotifyRunning():
             return True
     return False
 #Try blocking spotify updates by changing permissions (Windows only) 
+#Warning this function is unstable!
 def blockSpotifyUpdate(active):
     if active:
         try:
