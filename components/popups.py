@@ -1,10 +1,8 @@
-import os
-import sys
 from PyQt6.QtWidgets import  QErrorMessage, QMessageBox
 
-def errorDialog(title, text):
+def errorDialog(text):
     error_dialog = QErrorMessage()
-    error_dialog.setWindowTitle(title)
+    error_dialog.setWindowTitle('Warning an error occured')
     error_dialog.showMessage(text)
     error_dialog.exec()
 

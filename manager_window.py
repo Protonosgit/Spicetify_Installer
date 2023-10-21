@@ -4,7 +4,7 @@
 import os
 import sys
 import subprocess
-from PyQt6.QtWidgets import  QMainWindow, QErrorMessage, QMessageBox
+from PyQt6.QtWidgets import  QMainWindow
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
 from components.popups import errorDialog, infoDialog
@@ -18,13 +18,21 @@ class Manager(QMainWindow):
     def __init__(self):
         super().__init__()
         self.installmode = True
+        self.isSpotifyInstalled = False
+        self.isSpicetifyInstalled = False
+        self.isActive = False
+
+        self.LOCALSPOTIFYVER = ''
+        self.LATESTSPOTIFYVER = ''
+        self.LOCALSPICETIFYVER = ''
+        self.LATESTSPICETIFYVER = ''
 
         #Switch when building
         loadUi("res/manager.ui", self)
         #loadUi(os.path.join(sys._MEIPASS, 'res', 'manager.ui'), self)
 
         self.InitWindow()
-        
+
         self.bt_install.clicked.connect(self.startInstaller)
         self.bt_update.clicked.connect(self.startUpdate)
         self.bt_uninstall.clicked.connect(self.startRemoval)
@@ -34,20 +42,19 @@ class Manager(QMainWindow):
 
     # Execute once window is loaded before listeners are enabled
     def InitWindow(self):
+        self.SystemSoftStatusCheck()
         self.checkSpicetify()
+
     #Update user about progress while installing spicetify
     def progressmaster(self, action):
         if (action == "fail"):
             self.l_status.setStyleSheet("color: red")
             self.l_status.setText("Installation has failed")
-            error_dialog = QErrorMessage()
-            error_dialog.setWindowTitle('Warning an error occured')
-            error_dialog.showMessage('The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.')
-            error_dialog.exec()
+            errorDialog("The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
         else:
             self.l_status.setStyleSheet("color: Orange")
             self.l_status.setText(action)
-            self.l_versioninfo.setText("This process may take a few minutes! Please be patient while Spotify restarts(this can happen a fe times!)")
+            self.l_versioninfo.setText("This process may take a few minutes!")
 
     # Launch installer task
     def startInstaller(self):
@@ -113,10 +120,10 @@ class Manager(QMainWindow):
         if not (blockSpotifyUpdate(self.check_noupdate.isChecked())):
             infoDialog("Success", " The process has finished !")
         else:
-            errorDialog("Error", "The process has failed ! You might need to remove the Update folder from Spotify manually.")
+            errorDialog("The process has failed ! You might need to remove the Update folder from Spotify manually.")
 
 
-    #Called when spicetify is installed of case of failure?
+    #Called when spicetify is installed or not?
     def setup_finished(self):
         self.checkSpicetify()
         dialog = Popup(self)
@@ -177,3 +184,40 @@ class Manager(QMainWindow):
             print("E: Error while checking Spicetify!")
             print(e)
             self.l_status.setText("Spicetify is not installed")
+
+   # Spicetify status check (NEW attempt)
+    def SystemSoftStatusCheck(self):
+        spotipath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Spotify.exe')
+        if os.path.exists(spotipath):
+            self.isSpotifyInstalled = True
+        else:
+            self.isSpotifyInstalled = False
+
+        spicypath1 = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify')
+        spicypath2 = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify')
+        if os.path.exists(spicypath1) and os.path.isdir(spicypath2):
+            self.isSpicetifyInstalled = True
+            self.LOCALSPICETIFYVER = subprocess.check_output('spicetify --version',shell=True).decode("utf-8").strip()
+        else:
+            self.isSpicetifyInstalled = False
+        
+        self.LATESTSPICETIFYVER = getLatestRelease().replace("v","").strip()
+        #Check if spicetify is applied corectly
+
+        
+    
+    def installerUiUpdate(self):
+        if(self.isSpotifyInstalled):
+            pass
+        else:
+            pass
+
+        if(self.isSpicetifyInstalled):
+            pass
+        else:
+            pass
+
+        if(self.isActive):
+            pass
+        else:
+            pass
