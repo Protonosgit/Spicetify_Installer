@@ -398,7 +398,8 @@ QPushButton{
       </property>
       <property name="styleSheet">
        <string notr="true">#infoFrame {
-	background-color: rgb(42, 45, 50);
+	
+	background-color: rgba(66, 66, 66, 220);
 	border-radius: 10px;
 }</string>
       </property>

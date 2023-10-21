@@ -113,24 +113,29 @@ def checkSpotifyRunning():
             return True
     return False
 #Try blocking spotify updates by changing permissions (Windows only) 
-def blockSpotifyUpdate(allow):
-    if allow:
-        mode = '/remove'
-    else:
-        mode = '/deny'
-    try:
-        #Check for existance before deleting update path and making it
-        if os.path.exists(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update")):
-            shutil.rmtree(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
-        os.makedirs(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
+def blockSpotifyUpdate(active):
+    if active:
+        try:
+            #Check for existance before deleting update path and making it
+            if os.path.exists(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update")):
+                shutil.rmtree(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
+            os.makedirs(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
 
-        #subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:D', shell=True, check=True)
-        #subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update {mode} %username%:R', shell=True, check=True)
-        
-        #Reset permissions for update folder
-        #subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update /reset', shell=True)
-    except subprocess.CalledProcessError as e:
-        print(f'Error: {e.returncode}. patcher failed.')
+            subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update /deny %username%:D', shell=True, check=True)
+            subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update /deny %username%:R', shell=True, check=True)
+            return
+        except subprocess.CalledProcessError as e:
+            print(f'Error: {e.returncode}. patcher failed.')
+            return e.returncode
+    else:
+        try:
+            subprocess.run(f'cmd /c icacls %localappdata%\\Spotify\\Update /reset', shell=True)
+            if os.path.exists(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update")):
+                shutil.rmtree(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update"))
+            return
+        except subprocess.CalledProcessError as e:
+            print(f'Error: {e.returncode}. patcher failed.')
+            return e.returncode
 
 # Checks if spotify updates are blocked (unfinished)
 def checkSpotifyBlockedUpdate():

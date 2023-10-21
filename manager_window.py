@@ -7,6 +7,7 @@ import subprocess
 from PyQt6.QtWidgets import  QMainWindow, QErrorMessage, QMessageBox
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
+from components.popups import errorDialog, infoDialog
 from components.shellbridge import InstallSpicetify, UpdateSpicetify, UninstallSpicetify, CustomCommand, getLatestRelease,checkApplied,blockSpotifyUpdate
 
 from components.afterinstall_popup import Popup
@@ -22,20 +23,18 @@ class Manager(QMainWindow):
         loadUi("res/manager.ui", self)
         #loadUi(os.path.join(sys._MEIPASS, 'res', 'manager.ui'), self)
 
+        self.InitWindow()
+        
         self.bt_install.clicked.connect(self.startInstaller)
         self.bt_update.clicked.connect(self.startUpdate)
         self.bt_uninstall.clicked.connect(self.startRemoval)
         self.bt_cmd.clicked.connect(self.Custom)
         self.check_noupdate.stateChanged.connect(self.DisableUpdate)
 
-        self.checkSpicetify()
 
-    # currently debug only
-    def debug(self):
-        message_box = QMessageBox()
-        message_box.setText("This function is not ready yet! Were sorry")
-        message_box.setWindowTitle("Information")
-        message_box.exec()
+    # Execute once window is loaded before listeners are enabled
+    def InitWindow(self):
+        self.checkSpicetify()
     #Update user about progress while installing spicetify
     def progressmaster(self, action):
         if (action == "fail"):
@@ -111,7 +110,11 @@ class Manager(QMainWindow):
         self.iprocess.start()
     # Disables Spotify self update function using permissions
     def DisableUpdate(self):
-        blockSpotifyUpdate(self.check_noupdate.isChecked())
+        if not (blockSpotifyUpdate(self.check_noupdate.isChecked())):
+            infoDialog("Success", " The process has finished !")
+        else:
+            errorDialog("Error", "The process has failed ! You might need to remove the Update folder from Spotify manually.")
+
 
     #Called when spicetify is installed of case of failure?
     def setup_finished(self):
