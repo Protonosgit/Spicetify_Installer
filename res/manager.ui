@@ -279,7 +279,7 @@ QPushButton:pressed
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_1">
      <property name="styleSheet">
@@ -500,6 +500,11 @@ QPushButton{
          </property>
          <item>
           <property name="text">
+           <string>Get version</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>Create Backup</string>
           </property>
          </item>
@@ -531,11 +536,6 @@ QPushButton{
          <item>
           <property name="text">
            <string>Restore Spotify from backup</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Get version</string>
           </property>
          </item>
         </widget>

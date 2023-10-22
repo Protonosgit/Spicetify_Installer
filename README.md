@@ -17,8 +17,8 @@ Contributers wellcome!
 ## Features
 
 - [x] Simple installation / update
+- [X] Installation status/version checker
 - [x] Clean and easy removal
-- [ ] Cross platform (60% done)
 - [x] Custom cli commands
 - [ ] Automatically update spicetify and apply patches after spotify update
 
@@ -29,7 +29,7 @@ Download project from Github and install dependencies
 ```bash
   git clone https://github.com/Protonosgit/Spicetify_Installer.git
 
-  # Warning you might need additional dependecies
+  # Warning you might need additional dependecies which are not shown here
   python -m pip install pyqt6
   python -m pip install pyqt6-tools
 

@@ -1,4 +1,4 @@
-# This stuff belongs to the spicetify-cli repo
+
 import sys
 import os
 import subprocess
@@ -64,6 +64,7 @@ class CustomCommand(QThread):
     finished_signal = pyqtSignal()
     def run(self):
         commandList = [
+        'spicetify --version',
         'spicetify backup',
         'spicetify clear',
         'spicetify apply',
@@ -71,7 +72,6 @@ class CustomCommand(QThread):
         'spicetify upgrade',
         'spicetify enable-devtools',
         'spicetify restore',
-        'spicetify --version',
         ]
         try:
             subprocess.run(commandList[self.cmnumber])

@@ -7,7 +7,7 @@ import subprocess
 from PyQt6.QtWidgets import  QMainWindow
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
-from components.popups import errorDialog, infoDialog
+from components.popups import errorDialog, infoDialog, windowsNotification
 from components.shellbridge import InstallSpicetify, UpdateSpicetify, UninstallSpicetify, CustomCommand, getLatestRelease,checkApplied,blockSpotifyUpdate
 
 from components.afterinstall_popup import Popup
@@ -20,6 +20,8 @@ class Manager(QMainWindow):
         self.installmode = True
         self.isSpotifyInstalled = False
         self.isSpicetifyInstalled = False
+        self.isApplied = False
+        self.isBackedUp = False
         self.isActive = False
 
         self.LOCALSPOTIFYVER = ''
@@ -190,9 +192,11 @@ class Manager(QMainWindow):
         spotipath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Spotify.exe')
         if os.path.exists(spotipath):
             self.isSpotifyInstalled = True
+            windowsNotification("Spicetify Manager", "Spicetify is installed!")
         else:
             self.isSpotifyInstalled = False
 
+        # maybe also check executable in local appdata
         spicypath1 = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify')
         spicypath2 = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify')
         if os.path.exists(spicypath1) and os.path.isdir(spicypath2):
@@ -202,7 +206,18 @@ class Manager(QMainWindow):
             self.isSpicetifyInstalled = False
         
         self.LATESTSPICETIFYVER = getLatestRelease().replace("v","").strip()
-        #Check if spicetify is applied corectly
+
+        workpath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Apps', 'xpui')
+        if os.path.exists(workpath):
+            self.isApplied = True
+        else:
+            self.isApplied = False
+
+        linkpath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Apps', 'login.spa')
+        if os.path.exists(linkpath):
+            self.isActive = False
+        else:
+            self.isActive = True
 
         
     
