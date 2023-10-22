@@ -17,8 +17,8 @@ class InstallSpicetify(QThread):
                 self.progress_signal.emit("Downloading Spicetify...")
                 subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"',check=True)
                 self.progress_signal.emit("Creating backup...")
-                subprocess.run('spicetify clear',check=True)
-                subprocess.run('spicetify backup apply enable-devtools',check=True)
+                subprocess.run('spicetify clear -n -q',check=True)
+                subprocess.run('spicetify backup apply -n -q enable-devtools -n -q',check=True)
                 self.progress_signal.emit("Installing Marketplace...")
                 subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"',check=True)
             else:
@@ -34,23 +34,22 @@ class InstallSpicetify(QThread):
             print(e)
             self.progress_signal.emit("fail")
         self.finished_signal.emit()
-# Updater task
+# Update spicetify task
 class UpdateSpicetify(QThread):
     finished_signal = pyqtSignal()
     def run(self):
         print("Update started")
-        subprocess.run('spicetify upgrade')
-        subprocess.run('spicetify update')
+        subprocess.run('spicetify upgrade -n -q')
         self.finished_signal.emit()
 
-# Apply task
+# Apply mods task
 class ApplySpicetify(QThread):
     finished_signal = pyqtSignal()
     def run(self):
         print("Apply started")
-        subprocess.check_output('spicetify apply')
+        subprocess.check_output('spicetify apply -n -q')
         self.finished_signal.emit()
-# Uninstaller task
+# Unisnatll spicetify task
 class UninstallSpicetify(QThread):
     finished_signal = pyqtSignal()
     def run(self):

@@ -38,7 +38,6 @@ class Manager(QMainWindow):
         self.InitWindow()
 
         self.bt_master.clicked.connect(self.masterButton)
-        self.bt_update.clicked.connect(self.startUpdate)
         self.bt_uninstall.clicked.connect(self.startRemoval)
         self.bt_cmd.clicked.connect(self.Custom)
         self.check_noupdate.stateChanged.connect(self.DisableUpdate)
@@ -74,6 +73,7 @@ class Manager(QMainWindow):
             self.bt_update.setEnabled(False)
             self.bt_uninstall.setEnabled(False)
             self.l_status.setText("Installling Spicetify...")
+            self.l_versioninfo.setText('⏳Please wait⏳')
             self.iprocess = InstallSpicetify()
             self.iprocess.finished_signal.connect(self.setup_finished)
             self.iprocess.progress_signal.connect(self.progressmaster)
@@ -84,6 +84,7 @@ class Manager(QMainWindow):
             self.bt_update.setEnabled(False)
             self.bt_uninstall.setEnabled(False)
             self.l_status.setText("Running apply")
+            self.l_versioninfo.setText('⏳Please wait⏳')
             self.iprocess = ApplySpicetify()
             self.iprocess.finished_signal.connect(self.apply_finished)
             self.iprocess.start()
@@ -93,6 +94,16 @@ class Manager(QMainWindow):
             os.remove(killpath1)
             os.remove(killpath2)
             self.SystemSoftStatusCheck()
+        elif self.managermode == 5:
+            self.setCursor(Qt.CursorShape.WaitCursor)
+            self.bt_master.setEnabled(False)
+            self.bt_update.setEnabled(False)
+            self.bt_uninstall.setEnabled(False)
+            self.l_status.setText("Updating patcher")
+            self.l_versioninfo.setText('⏳Please wait⏳')
+            self.iprocess = UpdateSpicetify()
+            self.iprocess.finished_signal.connect(self.update_finished)
+            self.iprocess.start()
         else:
             print("Error selection overshoot!")
         
@@ -109,33 +120,6 @@ class Manager(QMainWindow):
         self.iprocess.finished_signal.connect(self.uninstall_finished)
         self.iprocess.start()
 
-
-    # Launch updater task
-    def startUpdate(self):
-        try:
-            self.setCursor(Qt.CursorShape.WaitCursor)
-            self.bt_update.setEnabled(False)
-            self.bt_uninstall.setEnabled(False)
-            self.bt_master.setEnabled(False)
-            self.l_status.setStyleSheet("color: Orange")
-            self.l_status.setText("Checking for updates...")
-            localversion = subprocess.check_output('spicetify --version',shell=True).decode("utf-8").strip()
-            latestrelease = getLatestRelease().replace("v","").strip()
-            if(latestrelease == localversion):
-                self.l_status.setStyleSheet("color: Green")
-                self.l_status.setText("You are up to date!")
-                self.setCursor(Qt.CursorShape.ArrowCursor)
-                self.bt_update.setEnabled(True)
-                self.bt_uninstall.setEnabled(True)
-                self.bt_master.setEnabled(True)
-            else:
-                self.l_status.setStyleSheet("color: Orange")
-                self.l_status.setText("Updating...")
-                self.iprocess = UpdateSpicetify()
-                self.iprocess.finished_signal.connect(self.update_finished)
-                self.iprocess.start()
-        except:
-            print("E: Error while checking version during update!")
 
     # Run custom commands
     def Custom(self):
@@ -157,21 +141,25 @@ class Manager(QMainWindow):
         self.SystemSoftStatusCheck()
         dialog = Popup(self)
         dialog.exec()
-        windowsNotification("Spicetify Manager", "Spicetify has been installed!")
+        windowsNotification("Spicetify Manager", "Spicetify has successfully been installed!")
+        
     #Called when spicetify is applied
     def apply_finished(self):
         self.SystemSoftStatusCheck()
         windowsNotification("Spicetify Manager", "Spicetify has been applied!")
+
     #Called when spicetify is updated
     def update_finished(self):
         self.SystemSoftStatusCheck()
         windowsNotification("Spicetify Manager", "Spicetify has been updated!")
+
     #Called when spicetify is uninstalled
     def uninstall_finished(self):
         self.SystemSoftStatusCheck()
         windowsNotification("Spicetify Manager", "Spicetify has been uninstalled!")
 
-   # Spicetify status check V2
+
+   # Spicetify status check
     def SystemSoftStatusCheck(self):
         spotipath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Spotify.exe')
         if os.path.exists(spotipath):
@@ -179,7 +167,6 @@ class Manager(QMainWindow):
         else:
             self.isSpotifyInstalled = False
 
-        # maybe (also) check executable in local appdata
         spicypath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify', 'spicetify.exe')
         if os.path.exists(spicypath):
             self.isSpicetifyInstalled = True
@@ -208,24 +195,35 @@ class Manager(QMainWindow):
         self.bt_update.setEnabled(True)
         self.bt_uninstall.setEnabled(True)
         self.bt_master.setEnabled(True)
+
         if(self.isSpotifyInstalled):
+
             if(self.isSpicetifyInstalled):
+
                 if(self.isApplied):
+
                     if(self.isActive):
-                        #Implement update checker here
-                        self.l_status.setText("Spotify is spiced up!")
-                        self.l_status.setStyleSheet("color: lime")
-                        self.bt_master.setText("Launch Spotify")
-                        self.l_versioninfo.setText('Version: '+self.LOCALSPICETIFYVER)
-                        self.managermode = 0
+
+                        if(self.LOCALSPICETIFYVER == self.LATESTSPICETIFYVER):
+                            self.l_status.setText("🔥 Spotify is spiced up 🔥")
+                            self.l_status.setStyleSheet("color: lime")
+                            self.bt_master.setText("Launch Spotify")
+                            self.l_versioninfo.setText('Version: '+self.LOCALSPICETIFYVER)
+                            self.managermode = 0
+                        else:
+                            self.l_status.setText("♻️ Update available ♻️")
+                            self.l_status.setStyleSheet("color: yellow")
+                            self.l_versioninfo.setText('Update now to the latest version: '+self.LATESTSPICETIFYVER)
+                            self.bt_master.setText("Update")
+                            self.managermode = 5
                     else:
-                        self.l_status.setText("Spicetify is inactive")
+                        self.l_status.setText("⚠️ Spicetify is inactive ⚠️")
                         self.l_status.setStyleSheet("color: yellow")
                         self.l_versioninfo.setText('Press activate to activate Spicetify')
                         self.bt_master.setText("Activate")
                         self.managermode = 4
                 else:
-                    self.l_status.setText("Spicetify is not applied yet")
+                    self.l_status.setText("🩹 Modifications not applied 🩹")
                     self.l_status.setStyleSheet("color: orange")
                     self.l_versioninfo.setText('Press apply to enable modifications')
                     self.bt_master.setText("Apply")

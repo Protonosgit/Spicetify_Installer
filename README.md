@@ -22,7 +22,7 @@ Contributers wellcome!
 - [x] Custom cli commands
 - [ ] Automatically update spicetify and apply patches after spotify update
 
- Currently Windows only!
+ Currently **Windows only**!
  If would like to improve support for other Platforms feel free to do so!
  ## Installation and Running
 
