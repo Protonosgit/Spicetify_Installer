@@ -279,7 +279,7 @@ QPushButton:pressed
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_1">
      <property name="styleSheet">
@@ -292,7 +292,7 @@ QPushButton:pressed
      <attribute name="title">
       <string>Simple</string>
      </attribute>
-     <widget class="QPushButton" name="bt_install">
+     <widget class="QPushButton" name="bt_master">
       <property name="enabled">
        <bool>true</bool>
       </property>

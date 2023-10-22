@@ -42,6 +42,14 @@ class UpdateSpicetify(QThread):
         subprocess.run('spicetify upgrade')
         subprocess.run('spicetify update')
         self.finished_signal.emit()
+
+# Apply task
+class ApplySpicetify(QThread):
+    finished_signal = pyqtSignal()
+    def run(self):
+        print("Apply started")
+        subprocess.check_output('spicetify apply')
+        self.finished_signal.emit()
 # Uninstaller task
 class UninstallSpicetify(QThread):
     finished_signal = pyqtSignal()
