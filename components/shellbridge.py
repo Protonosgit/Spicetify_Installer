@@ -1,4 +1,3 @@
-
 import sys
 import os
 import subprocess
@@ -16,24 +15,24 @@ class InstallSpicetify(QThread):
             if sys.platform == 'win32':
                 self.progress_signal.emit("Downloading Spicetify...")
                 subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"',check=True)
-                self.progress_signal.emit("Creating backup...")
+                self.progress_signal.emit("Cleaning up...")
                 subprocess.run('spicetify clear -n -q',check=True)
-                subprocess.run('spicetify backup apply -n -q enable-devtools -n -q',check=True)
+                self.progress_signal.emit("Creating backup...")
+                subprocess.run('spicetify backup -n -q',check=True)
+                self.progress_signal.emit("Enabling devtools...")
+                subprocess.run('spicetify enable-devtools -n -q',check=True)
+                self.progress_signal.emit("Applying modification...")
+                subprocess.run('spicetify apply -n -q',check=True)
                 self.progress_signal.emit("Installing Marketplace...")
                 subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"',check=True)
-            else:
-                self.progress_signal.emit("Downloading Spicetify...")
-                subprocess.run('curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.sh | sh',check=True)
-                self.progress_signal.emit("Creating backup...")
-                subprocess.run('spicetify clear',check=True)
-                subprocess.run('spicetify backup apply enable-devtools',check=True)
-                self.progress_signal.emit("Installing Marketplace...")
-                subprocess.run('curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.sh | sh',check=True)
         except Exception as e:
             print("Error detected!")
             print(e)
             self.progress_signal.emit("fail")
+        finally:
+            self.progress_signal.emit("done")
         self.finished_signal.emit()
+
 # Update spicetify task
 class UpdateSpicetify(QThread):
     finished_signal = pyqtSignal()
@@ -49,6 +48,7 @@ class ApplySpicetify(QThread):
         print("Apply started")
         subprocess.check_output('spicetify apply -n -q')
         self.finished_signal.emit()
+
 # Unisnatll spicetify task
 class UninstallSpicetify(QThread):
     finished_signal = pyqtSignal()
@@ -85,18 +85,6 @@ class CustomCommand(QThread):
         except:
             print("Error while running custom command!")
 
-
-#Checks github for latest spicetify version
-def getLatestRelease():
-    url = f"https://api.github.com/repos/spicetify/spicetify-cli/releases/latest"
-    response = requests.get(url)
-
-    if response.status_code == 200:
-        latest_release = response.json()
-        tag_name = latest_release["tag_name"]
-        return tag_name
-    else:
-        return None
     
 #Checks if spicetify is installed by checking appdata folder
 def checkInstalled():
@@ -119,8 +107,8 @@ def checkSpotifyRunning():
         if 'Spotify.exe' in process.info['name']:
             return True
     return False
+
 #Try blocking spotify updates by changing permissions (Windows only) 
-#Warning this function is unstable!
 def blockSpotifyUpdate(active):
     if active:
         try:
@@ -145,7 +133,7 @@ def blockSpotifyUpdate(active):
             print(f'Error: {e.returncode}. patcher failed.')
             return e.returncode
 
-# Checks if spotify updates are blocked (unfinished)
+# Checks if spotify updates are blocked !WIP!
 def checkSpotifyBlockedUpdate():
 
     directory_path = r'C:\path\to\directory'

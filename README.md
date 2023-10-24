@@ -77,6 +77,13 @@ Clicking on the update button will check for version numbers first before initia
 
 2. Auto apply spicetify after updates (or block them completely)
 
+## Manager API
+
+Due to rate limiting I decided to create my own relay for the official Github api.
+It just returns the latest release tag from the spicetify-cli repo.   
+You can monitor the status here: [![Netlify Status](https://api.netlify.com/api/v1/badges/a32b6502-e8ec-45a7-b3e3-4af087f5d38e/deploy-status)](https://app.netlify.com/sites/spicetifymanagerapi/deploys)   
+There might be more efficient ways to do this so feel free to suggest any improvements as an issue!
+
 
 ## Acknowledgements
 - [Spicetify](https://spicetify.app/)

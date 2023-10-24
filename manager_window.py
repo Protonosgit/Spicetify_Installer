@@ -5,12 +5,12 @@ import os
 import sys
 import subprocess
 from PyQt6.QtWidgets import  QMainWindow
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QUrl
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices
 from components.popups import errorDialog, infoDialog, windowsNotification
-from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand, getLatestRelease,checkApplied,blockSpotifyUpdate
-
+from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand,checkApplied,blockSpotifyUpdate
+from components.tools import getLatestRelease
 from components.afterinstall_popup import Popup
     
 
@@ -39,6 +39,7 @@ class Manager(QMainWindow):
 
         self.bt_master.clicked.connect(self.masterButton)
         self.bt_uninstall.clicked.connect(self.startRemoval)
+        self.bt_refresh.clicked.connect(self.SystemSoftStatusCheck)
         self.bt_cmd.clicked.connect(self.Custom)
         self.check_noupdate.stateChanged.connect(self.DisableUpdate)
 
@@ -46,31 +47,20 @@ class Manager(QMainWindow):
     # Execute once window is loaded before listeners are enabled
     def InitWindow(self):
         self.SystemSoftStatusCheck()
+        print('Made by Protonos')
 
-    #Update user about progress while installing spicetify
-    def progressmaster(self, action):
-        if (action == "fail"):
-            self.l_status.setStyleSheet("color: red")
-            self.l_status.setText("Installation has failed")
-            errorDialog("The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
-        else:
-            self.l_status.setStyleSheet("color: Orange")
-            self.l_status.setText(action)
-            self.l_versioninfo.setText("This process may take a few minutes!")
-
-
-    # Launch installer task !WIP
+    # Master trigger for all requests
     def masterButton(self):
         if self.managermode == 0:
             os.startfile(os.path.join( os.path.expanduser('~'), 'AppData','Roaming/Spotify/Spotify.exe'))
             self.SystemSoftStatusCheck()
         if self.managermode == 1:
-            QDesktopServices.openUrl('https://download.scdn.co/SpotifySetup.exe')
+            QDesktopServices.openUrl(QUrl('https://download.scdn.co/SpotifySetup.exe'))
             self.SystemSoftStatusCheck()
         elif self.managermode == 2:
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_master.setEnabled(False)
-            self.bt_update.setEnabled(False)
+            self.bt_refresh.setEnabled(False)
             self.bt_uninstall.setEnabled(False)
             self.l_status.setText("Installling Spicetify...")
             self.l_versioninfo.setText('⏳Please wait⏳')
@@ -81,7 +71,7 @@ class Manager(QMainWindow):
         elif self.managermode == 3:
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_master.setEnabled(False)
-            self.bt_update.setEnabled(False)
+            self.bt_refresh.setEnabled(False)
             self.bt_uninstall.setEnabled(False)
             self.l_status.setText("Running apply")
             self.l_versioninfo.setText('⏳Please wait⏳')
@@ -97,22 +87,32 @@ class Manager(QMainWindow):
         elif self.managermode == 5:
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_master.setEnabled(False)
-            self.bt_update.setEnabled(False)
+            self.bt_refresh.setEnabled(False)
             self.bt_uninstall.setEnabled(False)
             self.l_status.setText("Updating patcher")
             self.l_versioninfo.setText('⏳Please wait⏳')
             self.iprocess = UpdateSpicetify()
             self.iprocess.finished_signal.connect(self.update_finished)
             self.iprocess.start()
+
+    #Update user about progress while installing spicetify
+    def progressmaster(self, action):
+        if (action == "fail"):
+            self.l_status.setStyleSheet("color: red")
+            self.l_status.setText("⚠️ Installer has crashed ⚠️")
+            errorDialog("The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
         else:
-            print("Error selection overshoot!")
+            self.l_status.setStyleSheet("color: Orange")
+            self.l_status.setText(action)
+            self.l_versioninfo.setText("This process may take a few minutes!")
+
         
 
     # Launch uninstaller task
     def startRemoval(self):
         self.setCursor(Qt.CursorShape.WaitCursor)
         self.bt_uninstall.setEnabled(False)
-        self.bt_update.setEnabled(False)
+        self.bt_refresh.setEnabled(False)
         self.bt_master.setEnabled(False)
         self.l_status.setStyleSheet("color: Orange")
         self.l_status.setText("Uninstalling Spicetify...")
@@ -192,11 +192,11 @@ class Manager(QMainWindow):
 
     def installerUiUpdate(self):
         self.setCursor(Qt.CursorShape.ArrowCursor)
-        self.bt_update.setEnabled(True)
+        self.bt_refresh.setEnabled(True)
         self.bt_uninstall.setEnabled(True)
         self.bt_master.setEnabled(True)
 
-        if(self.isSpotifyInstalled):
+        if (self.isSpotifyInstalled):
 
             if(self.isSpicetifyInstalled):
 

@@ -335,7 +335,7 @@ QPushButton{
       </property>
       <layout class="QHBoxLayout" name="advanced">
        <item>
-        <widget class="QPushButton" name="bt_update">
+        <widget class="QPushButton" name="bt_refresh">
          <property name="font">
           <font>
            <pointsize>-1</pointsize>
@@ -350,7 +350,7 @@ QPushButton{
 }</string>
          </property>
          <property name="text">
-          <string>Update</string>
+          <string>Refresh</string>
          </property>
          <property name="icon">
           <iconset>

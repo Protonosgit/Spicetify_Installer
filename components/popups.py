@@ -14,6 +14,14 @@ def infoDialog(title, text):
     info_dialog.setText(text)
     info_dialog.exec()
 
+def confirmDialog(title, text):
+    confirm_dialog = QMessageBox()
+    confirm_dialog.setWindowTitle(title)
+    confirm_dialog.setText(text)
+    confirm_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
+    confirm_dialog.exec()
+    
+
 def windowsNotification(title, message):
     notification.notify(
         title=title,
