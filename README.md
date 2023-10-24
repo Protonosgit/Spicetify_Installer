@@ -4,7 +4,6 @@ A project for installing and managing Spicetify from a Gui written in python
 
 Contributers wellcome!
 
-![MIT License](https://badgen.net/badge/project/SpicyGreen)
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/Protonosgit/Spicetify_Manager?filter=*alpha)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/Protonosgit/Spicetify_Manager)
 ![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Protonosgit/Spicetify_Manager)
