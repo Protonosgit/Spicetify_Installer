@@ -68,15 +68,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>81</width>
-     <height>231</height>
+     <width>71</width>
+     <height>291</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>spotify_sidebar.jpg</pixmap>
+    <pixmap>spotify-sidebar-hint.jpg</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -85,9 +85,9 @@
   <widget class="QTextBrowser" name="textBrowser">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>90</x>
      <y>20</y>
-     <width>381</width>
+     <width>391</width>
      <height>211</height>
     </rect>
    </property>

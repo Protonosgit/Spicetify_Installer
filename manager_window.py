@@ -4,7 +4,7 @@
 import os
 import sys
 import subprocess
-from PyQt6.QtWidgets import  QMainWindow
+from PyQt6.QtWidgets import  QMainWindow,QMessageBox
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices
@@ -66,7 +66,7 @@ class Manager(QMainWindow):
             self.l_versioninfo.setText('⏳Please wait⏳')
             self.iprocess = InstallSpicetify()
             self.iprocess.finished_signal.connect(self.setup_finished)
-            self.iprocess.progress_signal.connect(self.progressmaster)
+            self.iprocess.progress_signal.connect(self.installProgress)
             self.iprocess.start()
         elif self.managermode == 3:
             self.setCursor(Qt.CursorShape.WaitCursor)
@@ -96,11 +96,16 @@ class Manager(QMainWindow):
             self.iprocess.start()
 
     #Update user about progress while installing spicetify
-    def progressmaster(self, action):
+    def installProgress(self, action):
         if (action == "fail"):
             self.l_status.setStyleSheet("color: red")
             self.l_status.setText("⚠️ Installer has crashed ⚠️")
             errorDialog("The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
+        elif (action == "done"):
+            self.SystemSoftStatusCheck()
+            windowsNotification("Spicetify Manager", "Spicetify has successfully been installed!")
+            dialog = Popup(self)
+            dialog.exec()
         else:
             self.l_status.setStyleSheet("color: Orange")
             self.l_status.setText(action)
@@ -110,15 +115,19 @@ class Manager(QMainWindow):
 
     # Launch uninstaller task
     def startRemoval(self):
-        self.setCursor(Qt.CursorShape.WaitCursor)
-        self.bt_uninstall.setEnabled(False)
-        self.bt_refresh.setEnabled(False)
-        self.bt_master.setEnabled(False)
-        self.l_status.setStyleSheet("color: Orange")
-        self.l_status.setText("Uninstalling Spicetify...")
-        self.iprocess = UninstallSpicetify()
-        self.iprocess.finished_signal.connect(self.uninstall_finished)
-        self.iprocess.start()
+        reply = QMessageBox.question(None, 'Confirmation', 'Are you sure you want to uninstall Spicetify?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if reply == QMessageBox.StandardButton.Yes:
+            self.setCursor(Qt.CursorShape.WaitCursor)
+            self.bt_uninstall.setEnabled(False)
+            self.bt_refresh.setEnabled(False)
+            self.bt_master.setEnabled(False)
+            self.l_status.setStyleSheet("color: Orange")
+            self.l_status.setText("Uninstalling Spicetify...")
+            self.iprocess = UninstallSpicetify()
+            self.iprocess.finished_signal.connect(self.uninstall_finished)
+            self.iprocess.start()
+        else:
+            return False
 
 
     # Run custom commands
@@ -138,10 +147,7 @@ class Manager(QMainWindow):
 
     #Called when spicetify is installed or not?
     def setup_finished(self):
-        self.SystemSoftStatusCheck()
-        dialog = Popup(self)
-        dialog.exec()
-        windowsNotification("Spicetify Manager", "Spicetify has successfully been installed!")
+        pass
         
     #Called when spicetify is applied
     def apply_finished(self):
@@ -152,6 +158,7 @@ class Manager(QMainWindow):
     def update_finished(self):
         self.SystemSoftStatusCheck()
         windowsNotification("Spicetify Manager", "Spicetify has been updated!")
+
 
     #Called when spicetify is uninstalled
     def uninstall_finished(self):
@@ -234,10 +241,12 @@ class Manager(QMainWindow):
                 self.l_versioninfo.setText('Press install to start the process')
                 #self.l_versioninfo.setText('Latest version: '+self.LATESTSPICETIFYVER)
                 self.bt_master.setText("Install")
+                self.bt_uninstall.setEnabled(False)
                 self.managermode = 2
         else:
             self.l_status.setText("Spotify is not installed")
             self.l_status.setStyleSheet("color: red")
             self.l_versioninfo.setText('Download Spotify from the official website')
             self.bt_master.setText("Download")
+            self.bt_uninstall.setEnabled(False)
             self.managermode = 1

@@ -3,7 +3,7 @@ from plyer import notification
 
 def errorDialog(text):
     error_dialog = QErrorMessage()
-    error_dialog.setWindowTitle('Warning an error occured')
+    error_dialog.setWindowTitle('Warning an error was detected')
     error_dialog.showMessage(text)
     error_dialog.exec()
 

@@ -4,7 +4,6 @@ import subprocess
 import psutil
 import shutil
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
-import requests
 
 # Installer task for both windows and linux/mac with progress and error handling
 class InstallSpicetify(QThread):
@@ -25,12 +24,12 @@ class InstallSpicetify(QThread):
                 subprocess.run('spicetify apply -n -q',check=True)
                 self.progress_signal.emit("Installing Marketplace...")
                 subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"',check=True)
+                self.progress_signal.emit("done")
         except Exception as e:
             print("Error detected!")
             print(e)
             self.progress_signal.emit("fail")
-        finally:
-            self.progress_signal.emit("done")
+
         self.finished_signal.emit()
 
 # Update spicetify task
