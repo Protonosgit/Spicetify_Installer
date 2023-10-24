@@ -312,6 +312,9 @@ QPushButton:pressed
       <property name="cursor">
        <cursorShape>PointingHandCursor</cursorShape>
       </property>
+      <property name="toolTip">
+       <string>Install Spicetify and Spicetify marketplace</string>
+      </property>
       <property name="styleSheet">
        <string notr="true">QPushButton:!enabled{
 	background-color: rgba(220, 20, 60, 150);
@@ -323,69 +326,6 @@ QPushButton{
       <property name="text">
        <string>Install</string>
       </property>
-     </widget>
-     <widget class="QWidget" name="horizontalLayoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>250</x>
-        <y>250</y>
-        <width>281</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="advanced">
-       <item>
-        <widget class="QPushButton" name="bt_refresh">
-         <property name="font">
-          <font>
-           <pointsize>-1</pointsize>
-          </font>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton:!enabled{
-	background-color: rgba(220, 20, 60, 150);
-}</string>
-         </property>
-         <property name="text">
-          <string>Refresh</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>ic_update.png</normaloff>ic_update.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="bt_uninstall">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>-1</pointsize>
-          </font>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton:!enabled{
-	background-color: rgba(220, 20, 60, 150);
-}</string>
-         </property>
-         <property name="text">
-          <string>Uninstall</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>ic_delete.png</normaloff>ic_delete.png</iconset>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
      <widget class="QFrame" name="infoFrame">
       <property name="geometry">
@@ -459,6 +399,75 @@ QPushButton{
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
+     </widget>
+     <widget class="QPushButton" name="bt_refresh">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>260</y>
+        <width>61</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Refresh the manager status</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton:!enabled{
+	background-color: rgba(220, 20, 60, 150);
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>ic_update.png</normaloff>ic_update.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="bt_uninstall">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>260</y>
+        <width>61</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Removes Spicetify and all of its components</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton:!enabled{
+	background-color: rgba(220, 20, 60, 150);
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>ic_delete.png</normaloff>ic_delete.png</iconset>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">

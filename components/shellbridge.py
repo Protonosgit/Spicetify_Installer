@@ -100,6 +100,7 @@ def checkApplied():
         return True
     else:
         return False
+    
 #Checks if spicetify is running using a tasksearch
 def checkSpotifyRunning():
     for process in psutil.process_iter(attrs=['pid', 'name']):

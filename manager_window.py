@@ -120,7 +120,7 @@ class Manager(QMainWindow):
 
     # Launch uninstaller task
     def startRemoval(self):
-        reply = QMessageBox.question(None, 'Confirmation', 'Are you sure you want to uninstall Spicetify?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        reply = QMessageBox.question(None, 'Uninstall', 'Are you sure you want to uninstall Spicetify and remove all installed mods/themes ?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if reply == QMessageBox.StandardButton.Yes:
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_uninstall.setEnabled(False)
@@ -144,10 +144,21 @@ class Manager(QMainWindow):
 
     # Disables Spotify self update function using permissions
     def DisableUpdate(self):
-        if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
-            windowsNotification("Spicetify Manager", "Update supression change failed!")
+        if self.check_noupdate.isChecked():
+            reply = QMessageBox.question(None, 'Deactivate Updates', 'This function will try to disable all automatic updates for Spotify! Are you sure you want to do this?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            if reply == QMessageBox.StandardButton.Yes:
+                if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
+                    windowsNotification("Spicetify Manager", "Update supression change failed!")
+                else:
+                    windowsNotification("Spicetify Manager", "Update supression updated")
+            else:
+                self.check_noupdate.setChecked(not self.check_noupdate.isChecked())
         else:
-            windowsNotification("Spicetify Manager", "Update supression updated")
+            if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
+                windowsNotification("Spicetify Manager", "Update supression change failed!")
+            else:
+                windowsNotification("Spicetify Manager", "Update supression updated")
+
 
 
     #Called when spicetify is installed or not?
@@ -204,6 +215,7 @@ class Manager(QMainWindow):
 
     def installerUiUpdate(self):
         self.setCursor(Qt.CursorShape.ArrowCursor)
+
         self.bt_refresh.setEnabled(True)
         self.bt_uninstall.setEnabled(True)
         self.bt_master.setEnabled(True)
