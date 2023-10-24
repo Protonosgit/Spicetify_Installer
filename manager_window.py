@@ -9,8 +9,8 @@ from PyQt6.QtCore import Qt, QUrl
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices
 from components.popups import errorDialog, infoDialog, windowsNotification
-from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand,checkApplied,blockSpotifyUpdate
-from components.tools import getLatestRelease
+from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand,checkApplied,blockSpotifyUpdate,checkUpdateSupression
+from components.tools import getLatestRelease, writeManagerPoint
 from components.afterinstall_popup import Popup
     
 
@@ -47,7 +47,10 @@ class Manager(QMainWindow):
     # Execute once window is loaded before listeners are enabled
     def InitWindow(self):
         self.SystemSoftStatusCheck()
-        print('Made by Protonos')
+        if(checkUpdateSupression()):
+            self.check_noupdate.setChecked(True)
+        else:
+            self.check_noupdate.setChecked(False)
 
     # Master trigger for all requests
     def masterButton(self):
@@ -98,10 +101,12 @@ class Manager(QMainWindow):
     #Update user about progress while installing spicetify
     def installProgress(self, action):
         if (action == "fail"):
+            writeManagerPoint('nok')
             self.l_status.setStyleSheet("color: red")
             self.l_status.setText("⚠️ Installer has crashed ⚠️")
             errorDialog("The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
         elif (action == "done"):
+            writeManagerPoint('ok')
             self.SystemSoftStatusCheck()
             windowsNotification("Spicetify Manager", "Spicetify has successfully been installed!")
             dialog = Popup(self)
@@ -139,10 +144,10 @@ class Manager(QMainWindow):
 
     # Disables Spotify self update function using permissions
     def DisableUpdate(self):
-        if not (blockSpotifyUpdate(self.check_noupdate.isChecked())):
-            windowsNotification("Spicetify Manager", "Update supression failed!")
+        if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
+            windowsNotification("Spicetify Manager", "Update supression change failed!")
         else:
-            windowsNotification("Spicetify Manager", "Update supression activated!")
+            windowsNotification("Spicetify Manager", "Update supression updated")
 
 
     #Called when spicetify is installed or not?

@@ -133,20 +133,10 @@ def blockSpotifyUpdate(active):
             return e.returncode
 
 # Checks if spotify updates are blocked !WIP!
-def checkSpotifyBlockedUpdate():
+def checkUpdateSupression():
+    if not os.path.exists(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update")):
+        return False
+    else:
+        return True
 
-    directory_path = r'C:\path\to\directory'
-    permission_to_check = 'D'
-
-    command = f'icacls "{directory_path}"'
-
-    try:
-        result = subprocess.check_output(command, shell=True, text=True)
-    
-        if f'"{permission_to_check}":(R)' in result:
-            print(f'Permission {permission_to_check} is active on {directory_path}')
-        else:
-            print(f'Permission {permission_to_check} is not active on {directory_path}')
-    except subprocess.CalledProcessError as e:
-        print(f'Error: {e.returncode}. Failed to check permissions.')
 

@@ -1,5 +1,6 @@
 import configparser
 import requests
+import os
 
 #Reads config files
 def readConfig(file_path,section,key):
@@ -21,3 +22,8 @@ def getLatestRelease():
             return '0.0.0'
     except:
         return '0.0.0'
+    
+#Writes a short info about the installation status to a text file in spicetifys folder
+def writeManagerPoint(data):
+    with open(os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify', 'protonosmanager.txt'), 'w') as f:
+        f.write(data)
