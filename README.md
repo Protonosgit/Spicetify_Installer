@@ -4,7 +4,7 @@ A project for installing and managing Spicetify from a Gui written in python
 
 Contributers wellcome!
 
-![GitHub release (with filter)](https://img.shields.io/github/v/release/Protonosgit/Spicetify_Manager?filter=*alpha)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/Protonosgit/Spicetify_Installer)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/Protonosgit/Spicetify_Manager)
 ![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Protonosgit/Spicetify_Manager)
 ![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/Protonosgit/Spicetify_Manager)
