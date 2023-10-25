@@ -3,9 +3,12 @@
 
 name: Python build binary
 
+
 on:
-  push:
-    branches: [ "release" ]
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'test build tags'
 
 jobs:
   build:
