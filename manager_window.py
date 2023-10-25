@@ -24,6 +24,7 @@ class Manager(QMainWindow):
         self.isApplied = False
         self.isBackedUp = False
         self.isActive = False
+        self.isMarketInstalled = False
         self.managermode = 0
 
         self.LOCALSPOTIFYVER = ''
@@ -96,6 +97,18 @@ class Manager(QMainWindow):
             self.l_versioninfo.setText('⏳Please wait⏳')
             self.iprocess = UpdateSpicetify()
             self.iprocess.finished_signal.connect(self.update_finished)
+            self.iprocess.start()
+        elif self.managermode == 6:
+            #install marketplace
+            self.setCursor(Qt.CursorShape.WaitCursor)
+            self.bt_master.setEnabled(False)
+            self.bt_refresh.setEnabled(False)
+            self.bt_uninstall.setEnabled(False)
+            self.l_status.setText("Installling Spicetify...")
+            self.l_versioninfo.setText('⏳Please wait⏳')
+            self.iprocess = InstallSpicetify()
+            self.iprocess.finished_signal.connect(self.setup_finished)
+            self.iprocess.progress_signal.connect(self.installProgress)
             self.iprocess.start()
 
     #Update user about progress while installing spicetify
@@ -210,6 +223,12 @@ class Manager(QMainWindow):
             self.isActive = False
         else:
             self.isActive = True
+
+        marketpath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Apps', 'xpui', 'spicetify-routes-marketplace.js')
+        if os.path.exists(marketpath):
+            self.isMarketInstalled = True
+        else:
+            self.isMarketInstalled = False
         
         self.installerUiUpdate()
 
@@ -229,11 +248,19 @@ class Manager(QMainWindow):
                     if(self.isActive):
 
                         if(self.LOCALSPICETIFYVER == self.LATESTSPICETIFYVER):
-                            self.l_status.setText("🔥 Spotify is spiced up 🔥")
-                            self.l_status.setStyleSheet("color: lime")
-                            self.bt_master.setText("Launch Spotify")
-                            self.l_versioninfo.setText('Version: '+self.LOCALSPICETIFYVER)
-                            self.managermode = 0
+
+                            if (self.isMarketInstalled):
+                                self.l_status.setText("🔥 Spotify is spiced up 🔥")
+                                self.l_status.setStyleSheet("color: lime")
+                                self.bt_master.setText("Launch Spotify")
+                                self.l_versioninfo.setText('Version: '+self.LOCALSPICETIFYVER)
+                                self.managermode = 0
+                            else:
+                                self.l_status.setText("⚠️ Marketplace is not installed ⚠️")
+                                self.l_status.setStyleSheet("color: yellow")
+                                self.l_versioninfo.setText('Install now to download mods/themes inside Spotify itself')
+                                self.bt_master.setText("Install")
+                                self.managermode = 6
                         else:
                             self.l_status.setText("♻️ Update available ♻️")
                             self.l_status.setStyleSheet("color: yellow")

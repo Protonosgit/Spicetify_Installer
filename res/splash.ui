@@ -14,7 +14,7 @@
    <cursorShape>CrossCursor</cursorShape>
   </property>
   <property name="windowTitle">
-   <string>Spicetify Installer 0.3</string>
+   <string>Spicetify Installer 0.4 stable</string>
   </property>
   <property name="windowIcon">
    <iconset>
