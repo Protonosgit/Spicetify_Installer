@@ -10,7 +10,7 @@ from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices
 from components.popups import errorDialog, infoDialog, windowsNotification
 from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand,checkApplied,blockSpotifyUpdate,checkUpdateSupression
-from components.tools import getLatestRelease, writeManagerPoint
+from components.tools import getLatestSpicetifyRelease, writeManagerPoint, selfUpdate
 from components.afterinstall_popup import Popup
     
 
@@ -210,7 +210,7 @@ class Manager(QMainWindow):
         else:
             self.isSpicetifyInstalled = False
         
-        self.LATESTSPICETIFYVER = getLatestRelease().replace("v","").strip()
+        self.LATESTSPICETIFYVER = getLatestSpicetifyRelease().replace("v","").strip()
 
         workpath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Apps', 'xpui')
         if os.path.exists(workpath):

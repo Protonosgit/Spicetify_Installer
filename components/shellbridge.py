@@ -37,7 +37,7 @@ class UpdateSpicetify(QThread):
     finished_signal = pyqtSignal()
     def run(self):
         print("Update started")
-        subprocess.run('spicetify upgrade -n -q')
+        subprocess.run('spicetify upgrade -q')
         self.finished_signal.emit()
 
 # Apply mods task
@@ -45,7 +45,7 @@ class ApplySpicetify(QThread):
     finished_signal = pyqtSignal()
     def run(self):
         print("Apply started")
-        subprocess.check_output('spicetify apply -n -q')
+        subprocess.check_output('spicetify apply -q')
         self.finished_signal.emit()
 
 # Unisnatll spicetify task

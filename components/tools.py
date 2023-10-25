@@ -9,7 +9,7 @@ def readConfig(file_path,section,key):
     return config[section][key]
 
 #Checks for the latest spicetify version
-def getLatestRelease():
+def getLatestSpicetifyRelease():
     try:
         url = f"https://spicetifymanagerapi.netlify.app/.netlify/functions/api/latest/spicetifycli"
         response = requests.get(url)
@@ -22,6 +22,21 @@ def getLatestRelease():
             return '0.0.0'
     except:
         return '0.0.0'
+    
+def selfUpdate():
+    try:
+        url = f"https://spicetifymanagerapi.netlify.app/.netlify/functions/api/latest/manager"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            latest_release = response.json()
+            tag_name = latest_release["tag_name"]
+            if int(tag_name.replace(".","")) > 99:
+                return True
+        else:
+            return False
+    except:
+        return False
     
 #Writes a short info about the installation status to a text file in spicetifys folder
 def writeManagerPoint(data):
