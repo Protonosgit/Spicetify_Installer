@@ -29,3 +29,9 @@ jobs:
     - name: Build with pyinstaller
       run: |
         pyinstaller main.spec
+
+    - uses: actions/upload-artifact@v3
+      with:
+          name: my-artifact
+          path: dist/spicetify_installer.exe
+      
