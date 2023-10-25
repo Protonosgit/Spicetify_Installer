@@ -97,6 +97,7 @@ class Manager(QMainWindow):
             self.l_versioninfo.setText('⏳Please wait⏳')
             self.iprocess = UpdateSpicetify()
             self.iprocess.finished_signal.connect(self.update_finished)
+            self.iprocess.progress_signal.connect(self.updateProgress)
             self.iprocess.start()
         elif self.managermode == 6:
             #install marketplace
@@ -122,6 +123,23 @@ class Manager(QMainWindow):
             writeManagerPoint('ok')
             self.SystemSoftStatusCheck()
             windowsNotification("Spicetify Manager", "Spicetify has successfully been installed!")
+            dialog = Popup(self)
+            dialog.exec()
+        else:
+            self.l_status.setStyleSheet("color: Orange")
+            self.l_status.setText(action)
+            self.l_versioninfo.setText("This process may take a few minutes!")
+
+    def updateProgress(self, action):
+        if (action == "fail"):
+            writeManagerPoint('nok')
+            self.l_status.setStyleSheet("color: red")
+            self.l_status.setText("⚠️ Updater has crashed ⚠️")
+            errorDialog("The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
+        elif (action == "done"):
+            writeManagerPoint('ok')
+            self.SystemSoftStatusCheck()
+            windowsNotification("Spicetify Manager", "Spicetify has successfully been updated to the newest verion!")
             dialog = Popup(self)
             dialog.exec()
         else:
@@ -177,23 +195,20 @@ class Manager(QMainWindow):
     #Called when spicetify is installed or not?
     def setup_finished(self):
         pass
+
+    #Called when spicetify is updated
+    def update_finished(self):
+        pass
         
     #Called when spicetify is applied
     def apply_finished(self):
         self.SystemSoftStatusCheck()
         windowsNotification("Spicetify Manager", "Spicetify has been applied!")
 
-    #Called when spicetify is updated
-    def update_finished(self):
-        self.SystemSoftStatusCheck()
-        windowsNotification("Spicetify Manager", "Spicetify has been updated!")
-
-
     #Called when spicetify is uninstalled
     def uninstall_finished(self):
         self.SystemSoftStatusCheck()
         windowsNotification("Spicetify Manager", "Spicetify has been uninstalled!")
-
 
    # Spicetify status check
     def SystemSoftStatusCheck(self):

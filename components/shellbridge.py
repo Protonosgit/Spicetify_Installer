@@ -20,7 +20,7 @@ class InstallSpicetify(QThread):
                 subprocess.run('spicetify backup -n -q',check=True)
                 self.progress_signal.emit("Enabling devtools...")
                 subprocess.run('spicetify enable-devtools -n -q',check=True)
-                self.progress_signal.emit("Applying modification...")
+                self.progress_signal.emit("Applying modifications...")
                 subprocess.run('spicetify apply -n -q',check=True)
                 self.progress_signal.emit("Installing Marketplace...")
                 subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"',check=True)
@@ -34,11 +34,24 @@ class InstallSpicetify(QThread):
 
 # Update spicetify task
 class UpdateSpicetify(QThread):
+    progress_signal = pyqtSignal(str)
     finished_signal = pyqtSignal()
     def run(self):
         print("Update started")
-        subprocess.run('spicetify upgrade -q')
-        subprocess.run('spicetify update -q')
+        try:
+            self.progress_signal.emit("Updating...")
+            subprocess.run('spicetify upgrade -q')
+            self.progress_signal.emit("Restoring backup...")
+            subprocess.run('spicetify restore -q -n')
+            self.progress_signal.emit("Creating new backup...")
+            subprocess.run('spicetify backup -q')
+            self.progress_signal.emit("Applying modifications...")
+            subprocess.run('spicetify apply -q')
+            self.progress_signal.emit("done")
+        except Exception as e:
+            self.progress_signal.emit("fail")
+            print("Error detected!")
+            print(e)
         self.finished_signal.emit()
 
 # Apply mods task
