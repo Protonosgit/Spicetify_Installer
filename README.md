@@ -19,6 +19,7 @@ Contributers wellcome!
 - [X] Installation status/version checker
 - [x] Clean and easy removal
 - [x] Custom cli commands
+- [x] Suggest new versions of Spicetify / Manager
 - [ ] Automatically update spicetify and apply patches after spotify update
 
  Currently **Windows only**!

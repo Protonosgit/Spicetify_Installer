@@ -38,6 +38,7 @@ class UpdateSpicetify(QThread):
     def run(self):
         print("Update started")
         subprocess.run('spicetify upgrade -q')
+        subprocess.run('spicetify update -q')
         self.finished_signal.emit()
 
 # Apply mods task
