@@ -33,8 +33,8 @@ class Manager(QMainWindow):
         self.LATESTSPICETIFYVER = ''
 
         #Switch when building
-        loadUi("res/manager.ui", self)
-        #loadUi(os.path.join(sys._MEIPASS, 'res', 'manager.ui'), self)
+        #loadUi("res/manager.ui", self)
+        loadUi(os.path.join(sys._MEIPASS, 'res', 'manager.ui'), self)
 
         self.InitWindow()
 

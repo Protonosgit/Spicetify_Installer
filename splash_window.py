@@ -11,7 +11,7 @@ class Splash(QMainWindow):
         super().__init__()
         
         #Switch when building
-        loadUi("res/splash.ui", self)
-        #loadUi(os.path.join(sys._MEIPASS, 'res', 'splash.ui'), self)
+        #loadUi("res/splash.ui", self)
+        loadUi(os.path.join(sys._MEIPASS, 'res', 'splash.ui'), self)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
