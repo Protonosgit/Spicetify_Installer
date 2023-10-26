@@ -44,7 +44,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>Frame 12.png</normaloff>Frame 12.png</iconset>
+    <normaloff>icon.png</normaloff>icon.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -224,7 +224,7 @@ QPushButton:pressed
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>Frame 12.png</pixmap>
+     <pixmap>icon.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -386,7 +386,7 @@ QPushButton{
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>14</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -710,7 +710,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <string notr="true">color:white;</string>
       </property>
       <property name="text">
-       <string>Project spicy green 2023 v0.4</string>
+       <string>Protonos 2023 v 1.0.0</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

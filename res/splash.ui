@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>icon.png</normaloff>icon.png</iconset>
+    <normaloff>spicetify_icon.png</normaloff>spicetify_icon.png</iconset>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -108,7 +108,7 @@ background: rgba(0,0,0,0.5);</string>
       <rect>
        <x>0</x>
        <y>380</y>
-       <width>71</width>
+       <width>111</width>
        <height>21</height>
       </rect>
      </property>
@@ -122,7 +122,7 @@ background: rgba(0,0,0,0.5);</string>
 background: rgba(0,0,0,0.0);</string>
      </property>
      <property name="text">
-      <string>V 0.4</string>
+      <string>V 1.0.0 stable</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

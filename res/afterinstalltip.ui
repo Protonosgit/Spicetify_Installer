@@ -33,7 +33,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>firething.gif</normaloff>firething.gif</iconset>
+    <normaloff>spicetify_icon.png</normaloff>spicetify_icon.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog {
