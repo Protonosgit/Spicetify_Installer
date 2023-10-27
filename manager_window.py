@@ -32,9 +32,12 @@ class Manager(QMainWindow):
         self.LOCALSPICETIFYVER = ''
         self.LATESTSPICETIFYVER = ''
 
-        #Switch when building
-        loadUi("res/manager.ui", self)
-        #loadUi(os.path.join(sys._MEIPASS, 'res', 'manager.ui'), self)
+        if getattr(sys, 'frozen', False):
+            # Switch to using the frozen resources path
+            loadUi(os.path.join(sys._MEIPASS, 'res', 'manager.ui'), self)
+        else:
+            # Use the regular resources path
+            loadUi("res/manager.ui", self)
 
         self.InitWindow()
 

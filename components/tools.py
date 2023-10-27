@@ -31,7 +31,7 @@ def selfUpdate():
         if response.status_code == 200:
             latest_release = response.json()
             tag_name = latest_release["tag_name"]
-            if int(tag_name.replace(".","")) > 100:
+            if int(tag_name.replace(".","")) > 101:
                 return True
         else:
             return False
