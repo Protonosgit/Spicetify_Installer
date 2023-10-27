@@ -75,7 +75,7 @@ Clicking on the update button will check for version numbers first before initia
 
 1. Run after spotify startup (check for updates)
 
-2. Auto apply spicetify after updates (or block them completely)
+2. Auto apply spicetify after updates
 
 ## Manager API
 

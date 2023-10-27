@@ -13,17 +13,17 @@ class InstallSpicetify(QThread):
         try:
             if sys.platform == 'win32':
                 self.progress_signal.emit("Downloading Spicetify...")
-                subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"',check=True)
+                subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"',check=True,shell=True)
                 self.progress_signal.emit("Cleaning up...")
-                subprocess.run('spicetify clear -n -q',check=True)
+                subprocess.run('spicetify clear -n -q',check=True,shell=True)
                 self.progress_signal.emit("Creating backup...")
-                subprocess.run('spicetify backup -n -q',check=True)
+                subprocess.run('spicetify backup -n -q',check=True,shell=True)
                 self.progress_signal.emit("Enabling devtools...")
-                subprocess.run('spicetify enable-devtools -n -q',check=True)
+                subprocess.run('spicetify enable-devtools -n -q',check=True,shell=True)
                 self.progress_signal.emit("Applying modifications...")
-                subprocess.run('spicetify apply -n -q',check=True)
+                subprocess.run('spicetify apply -n -q',check=True,shell=True)
                 self.progress_signal.emit("Installing Marketplace...")
-                subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"',check=True)
+                subprocess.run('powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"',check=True,shell=True)
                 self.progress_signal.emit("done")
         except Exception as e:
             print("Error detected!")
@@ -40,13 +40,13 @@ class UpdateSpicetify(QThread):
         print("Update started")
         try:
             self.progress_signal.emit("Updating...")
-            subprocess.run('spicetify upgrade -q')
+            subprocess.run('spicetify upgrade -q' ,shell=True)
             self.progress_signal.emit("Restoring backup...")
-            subprocess.run('spicetify restore -q -n')
+            subprocess.run('spicetify restore -q -n',shell=True)
             self.progress_signal.emit("Creating new backup...")
-            subprocess.run('spicetify backup -q')
+            subprocess.run('spicetify backup -q',shell=True)
             self.progress_signal.emit("Applying modifications...")
-            subprocess.run('spicetify apply -q')
+            subprocess.run('spicetify apply -q',shell=True)
             self.progress_signal.emit("done")
         except Exception as e:
             self.progress_signal.emit("fail")
@@ -59,7 +59,7 @@ class ApplySpicetify(QThread):
     finished_signal = pyqtSignal()
     def run(self):
         print("Apply started")
-        subprocess.check_output('spicetify apply -q')
+        subprocess.check_output('spicetify apply -q',shell=True)
         self.finished_signal.emit()
 
 # Unisnatll spicetify task
@@ -68,8 +68,8 @@ class UninstallSpicetify(QThread):
     def run(self):
         subprocess.run('spicetify restore')
         if sys.platform == 'win32':
-            subprocess.run('powershell.exe -Command "rmdir -r -fo $env:APPDATA\spicetify"',check=True)
-            subprocess.run('powershell.exe -Command "rmdir -r -fo $env:LOCALAPPDATA\spicetify"',check=True)
+            subprocess.run('powershell.exe -Command "rmdir -r -fo $env:APPDATA\spicetify"',check=True,shell=True)
+            subprocess.run('powershell.exe -Command "rmdir -r -fo $env:LOCALAPPDATA\spicetify"',check=True,shell=True)
         else:
             subprocess.run('rm -rf ~/.spicetify')
             subprocess.run('rm -rf ~/.config/spicetify')
