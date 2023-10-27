@@ -290,7 +290,7 @@ QPushButton:pressed
        <normaloff>icon.png</normaloff>icon.png</iconset>
      </attribute>
      <attribute name="title">
-      <string>Simple</string>
+      <string>Basic</string>
      </attribute>
      <widget class="QPushButton" name="bt_master">
       <property name="enabled">
