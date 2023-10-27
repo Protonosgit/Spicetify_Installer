@@ -66,13 +66,12 @@ class ApplySpicetify(QThread):
 class UninstallSpicetify(QThread):
     finished_signal = pyqtSignal()
     def run(self):
-        subprocess.run('spicetify restore')
-        if sys.platform == 'win32':
+        try:
+            subprocess.run('spicetify restore',shell=True)
             subprocess.run('powershell.exe -Command "rmdir -r -fo $env:APPDATA\spicetify"',check=True,shell=True)
             subprocess.run('powershell.exe -Command "rmdir -r -fo $env:LOCALAPPDATA\spicetify"',check=True,shell=True)
-        else:
-            subprocess.run('rm -rf ~/.spicetify')
-            subprocess.run('rm -rf ~/.config/spicetify')
+        except:
+            print("Error while uninstalling!")
         self.finished_signal.emit()
     
 # Custom command task

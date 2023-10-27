@@ -8,9 +8,9 @@ from PyQt6.QtWidgets import  QMainWindow,QMessageBox
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices
-from components.popups import errorDialog, infoDialog, windowsNotification
+from components.popups import errorDialog
 from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand,checkApplied,blockSpotifyUpdate,checkUpdateSupression
-from components.tools import getLatestSpicetifyRelease, writeManagerPoint, selfUpdate
+from components.tools import getLatestSpicetifyRelease, writeManagerPoint
 from components.afterinstall_popup import Popup
     
 
@@ -125,7 +125,6 @@ class Manager(QMainWindow):
         elif (action == "done"):
             writeManagerPoint('ok')
             self.SystemSoftStatusCheck()
-            windowsNotification("Spicetify Manager", "Spicetify has successfully been installed!")
             dialog = Popup(self)
             dialog.exec()
         else:
@@ -142,7 +141,6 @@ class Manager(QMainWindow):
         elif (action == "done"):
             writeManagerPoint('ok')
             self.SystemSoftStatusCheck()
-            windowsNotification("Spicetify Manager", "Spicetify has successfully been updated to the newest verion!")
             dialog = Popup(self)
             dialog.exec()
         else:
@@ -182,16 +180,20 @@ class Manager(QMainWindow):
             reply = QMessageBox.question(None, 'Deactivate Updates', 'This function will try to disable all automatic updates for Spotify! Are you sure you want to do this?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
             if reply == QMessageBox.StandardButton.Yes:
                 if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
-                    windowsNotification("Spicetify Manager", "Update supression change failed!")
+                    pass
+                    #windowsNotification("Spicetify Manager", "Update supression change failed!")
                 else:
-                    windowsNotification("Spicetify Manager", "Update supression updated")
+                    pass
+                    #windowsNotification("Spicetify Manager", "Update supression updated")
             else:
                 self.check_noupdate.setChecked(not self.check_noupdate.isChecked())
         else:
             if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
-                windowsNotification("Spicetify Manager", "Update supression change failed!")
+                pass
+                #windowsNotification("Spicetify Manager", "Update supression change failed!")
             else:
-                windowsNotification("Spicetify Manager", "Update supression updated")
+                pass
+                #windowsNotification("Spicetify Manager", "Update supression updated")
 
 
 
@@ -206,12 +208,12 @@ class Manager(QMainWindow):
     #Called when spicetify is applied
     def apply_finished(self):
         self.SystemSoftStatusCheck()
-        windowsNotification("Spicetify Manager", "Spicetify has been applied!")
+        #windowsNotification("Spicetify Manager", "Spicetify has been applied!")
 
     #Called when spicetify is uninstalled
     def uninstall_finished(self):
         self.SystemSoftStatusCheck()
-        windowsNotification("Spicetify Manager", "Spicetify has been uninstalled!")
+        #windowsNotification("Spicetify Manager", "Spicetify has been uninstalled!")
 
    # Spicetify status check
     def SystemSoftStatusCheck(self):
