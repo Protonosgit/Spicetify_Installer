@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication
-from PyQt6.QtCore import Qt, QTimer, QThread
+from PyQt6.QtCore import QTimer, QThread
 from splash_window import Splash
 from manager_window import Manager
 from bottle import route, run

@@ -153,13 +153,21 @@ def checkUpdateSupression():
     else:
         return True
 
-# Checks if spotify updates are blocked !WIP!
-def watchwitchInjector():
-    pass
-    # C:\Users\{username}\\AppData\Roaming\Spotify\Apps\xpui\index.html
-
-    #<script>
-	#   fetch('http://localhost:5000/watchwitch/startup')
-    #</script>
+# Patches Spotify with WatchWitch
+def watchwitchInjector(mode):
+    witchpath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Apps', 'xpui', 'index.html')
+    patchstring = '''<script>fetch('http://localhost:1738/watchwitch/spotify/startup')</script>'''
+    if mode:
+        with open(witchpath, 'a', encoding='utf-8') as file:
+            print("patching")
+            file.write(patchstring) 
+    else:
+        with open(witchpath, 'r+', encoding='utf-8') as file:
+            print("unpatching")
+            content = file.read()
+            updated_content = content.replace(patchstring, '')
+            file.seek(0)
+            file.write(updated_content)
+            file.truncate()
 
 

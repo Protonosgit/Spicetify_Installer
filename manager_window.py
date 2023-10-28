@@ -9,7 +9,7 @@ from PyQt6.QtCore import Qt, QUrl
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices
 from components.popups import errorDialog,windowsToast,interactableWindowsToast
-from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand,checkApplied,blockSpotifyUpdate,checkUpdateSupression
+from components.shellbridge import InstallSpicetify, watchwitchInjector, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand,checkApplied,blockSpotifyUpdate,checkUpdateSupression
 from components.tools import getLatestSpicetifyRelease, writeManagerPoint
 from components.afterinstall_popup import Popup
     
@@ -196,12 +196,7 @@ class Manager(QMainWindow):
                 windowsToast("Update supression updated", "")
 
     def PatchWatchWitch(self):
-        witchpath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify', 'spicetify.exe')
-        patchstring = '''<script>fetch('http://localhost:1738/watchwitch/spotify/startup')</script>'''
-        with open(witchpath, 'r+', encoding='utf-8') as file:
-            content = file.read()
-            if patchstring not in content:
-                file.write(patchstring) 
+        watchwitchInjector(self.check_watchwitch.isChecked())
 
 
     #Called when spicetify is installed or not?
