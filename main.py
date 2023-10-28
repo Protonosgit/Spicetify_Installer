@@ -39,12 +39,13 @@ def index():
     windowsToast("Spicetify Manager", "Spotify just started!")
     return 'ok'
 
-class FlaskThread(QThread):
+class BottleThread(QThread):
     def run(self):
+        print("Flask started")
         run(host='localhost', port=1738)
 
-flask_thread = FlaskThread()
-flask_thread.start()
+watchwitch = BottleThread()
+watchwitch.start()
 
 #start the app
 if __name__ == "__main__":

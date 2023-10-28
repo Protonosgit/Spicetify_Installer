@@ -197,12 +197,8 @@ class Manager(QMainWindow):
 
     def PatchWatchWitch(self):
         witchpath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify', 'spicetify.exe')
-        patchstring = '''
-<script>
-    fetch('http://localhost:1738/watchwitch/spotify/startup')
-</script>
-'''
-        with open(witchpath, 'r+') as file:
+        patchstring = '''<script>fetch('http://localhost:1738/watchwitch/spotify/startup')</script>'''
+        with open(witchpath, 'r+', encoding='utf-8') as file:
             content = file.read()
             if patchstring not in content:
                 file.write(patchstring) 
@@ -262,11 +258,7 @@ class Manager(QMainWindow):
             self.isMarketInstalled = False
 
         witchpath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Apps', 'xpui', 'index.html')
-        patchstring = '''
-<script>
-    fetch('http://localhost:1738/watchwitch/spotify/startup')
-</script>
-'''
+        patchstring = '''<script>fetch('http://localhost:1738/watchwitch/spotify/startup')</script>'''
         with open(witchpath, 'r+') as file:
             content = file.read()
             if patchstring not in content:
