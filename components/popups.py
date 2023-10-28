@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import  QErrorMessage, QMessageBox
-from plyer import notification
+from windows_toasts import WindowsToaster, Toast, ToastButton, InteractableWindowsToaster
 
 def errorDialog(text):
     error_dialog = QErrorMessage()
@@ -21,12 +21,20 @@ def confirmDialog(title, text):
     confirm_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
     confirm_dialog.exec()
     
+def windowsToast(title,message):
+    toaster = WindowsToaster('Spicetify Manager')
+    toastbuilder = Toast()
+    toastbuilder.text_fields = [title,message]
+    toaster.show_toast(toastbuilder)
 
-def windowsNotification(title, message):
-    notification.notify(
-        title=title,
-        message=message,
-        app_name="Spicetify Manager",
-        timeout=10,
-        app_icon=None,
-    )
+def interactableWindowsToast(title,message):
+
+    interactableToaster = InteractableWindowsToaster('Spicetify Manager')
+    newToast = Toast(['Can you dive?'])
+
+    # Add two actions (buttons)
+    newToast.AddAction(ToastButton('Definitely', 'response=decent'))
+    newToast.AddAction(ToastButton('Nope', 'response=bad'))
+
+    # Display it like usual
+    interactableToaster.show_toast(newToast)

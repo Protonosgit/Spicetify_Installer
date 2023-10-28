@@ -606,9 +606,9 @@ QPushButton{
        </size>
       </property>
      </widget>
-     <widget class="QCheckBox" name="check_noupdate_2">
+     <widget class="QCheckBox" name="check_watchwitch">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -624,7 +624,34 @@ QPushButton{
 }</string>
       </property>
       <property name="text">
-       <string>Auto check spicetify</string>
+       <string>Spotify WatchWitch server on port 1738 (detect startup)</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>50</width>
+        <height>50</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="check_autopatch">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>110</y>
+        <width>761</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QCheckBox:!enabled{
+	color: rgba(255, 255, 255, 120);
+}</string>
+      </property>
+      <property name="text">
+       <string>Auto update Spicetify in background</string>
       </property>
       <property name="iconSize">
        <size>
@@ -710,7 +737,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <string notr="true">color:white;</string>
       </property>
       <property name="text">
-       <string>Protonos 2023 v 1.0.1</string>
+       <string>Protonos 2023 v 1.1.0</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

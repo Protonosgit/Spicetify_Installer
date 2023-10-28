@@ -14,7 +14,7 @@
    <cursorShape>CrossCursor</cursorShape>
   </property>
   <property name="windowTitle">
-   <string>Spicetify Installer stable</string>
+   <string>Spicetify Installer</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -122,7 +122,7 @@ background: rgba(0,0,0,0.5);</string>
 background: rgba(0,0,0,0.0);</string>
      </property>
      <property name="text">
-      <string>V 1.0.1 stable</string>
+      <string>V 1.1.0 stable</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

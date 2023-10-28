@@ -71,7 +71,7 @@ Simply click on uninstall in the managers window and wait until spotify has rest
 
 Clicking on the update button will check for version numbers first before initiating the download sequence
 
-## Roadmap
+## Roadmap (will be implemented in 1.1.0 !)
 
 1. Run after spotify startup (check for updates)
 

@@ -1,9 +1,11 @@
 import sys
 from PyQt6.QtWidgets import QApplication
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer, QThread
 from splash_window import Splash
 from manager_window import Manager
+from bottle import route, run
 from components.popups import errorDialog
+from components.popups import windowsToast
 
 class SpicetifyPatcher:
     def __init__(self):
@@ -30,6 +32,21 @@ class SpicetifyPatcher:
     def run(self):
         sys.exit(self.app.exec())
 
+# Spotify WatchWitch on new thread (it's helloween)
+
+@route('/watchwitch/spotify/startup')
+def index():
+    windowsToast("Spicetify Manager", "Spotify just started!")
+    return 'ok'
+
+class FlaskThread(QThread):
+    def run(self):
+        run(host='localhost', port=1738)
+
+flask_thread = FlaskThread()
+flask_thread.start()
+
+#start the app
 if __name__ == "__main__":
     app = SpicetifyPatcher()
     app.run()

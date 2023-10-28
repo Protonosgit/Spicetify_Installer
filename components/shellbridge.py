@@ -153,4 +153,13 @@ def checkUpdateSupression():
     else:
         return True
 
+# Checks if spotify updates are blocked !WIP!
+def watchwitchInjector():
+    pass
+    # C:\Users\{username}\\AppData\Roaming\Spotify\Apps\xpui\index.html
+
+    #<script>
+	#   fetch('http://localhost:5000/watchwitch/startup')
+    #</script>
+
 

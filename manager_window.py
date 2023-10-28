@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import  QMainWindow,QMessageBox
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices
-from components.popups import errorDialog
+from components.popups import errorDialog,windowsToast,interactableWindowsToast
 from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand,checkApplied,blockSpotifyUpdate,checkUpdateSupression
 from components.tools import getLatestSpicetifyRelease, writeManagerPoint
 from components.afterinstall_popup import Popup
@@ -25,6 +25,7 @@ class Manager(QMainWindow):
         self.isBackedUp = False
         self.isActive = False
         self.isMarketInstalled = False
+        self.isWatchWitched = False
         self.managermode = 0
 
         self.LOCALSPOTIFYVER = ''
@@ -46,6 +47,7 @@ class Manager(QMainWindow):
         self.bt_refresh.clicked.connect(self.SystemSoftStatusCheck)
         self.bt_cmd.clicked.connect(self.Custom)
         self.check_noupdate.stateChanged.connect(self.DisableUpdate)
+        self.check_watchwitch.stateChanged.connect(self.PatchWatchWitch)
 
 
     # Execute once window is loaded before listeners are enabled
@@ -148,8 +150,6 @@ class Manager(QMainWindow):
             self.l_status.setText(action)
             self.l_versioninfo.setText("This process may take a few minutes!")
 
-        
-
     # Launch uninstaller task
     def startRemoval(self):
         reply = QMessageBox.question(None, 'Uninstall', 'Are you sure you want to uninstall Spicetify and remove all installed mods/themes ?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
@@ -181,20 +181,31 @@ class Manager(QMainWindow):
             if reply == QMessageBox.StandardButton.Yes:
                 if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
                     pass
-                    #windowsNotification("Spicetify Manager", "Update supression change failed!")
+                    windowsToast("Update supression change failed!", "")
                 else:
                     pass
-                    #windowsNotification("Spicetify Manager", "Update supression updated")
+                    windowsToast("Update supression updated", "")
             else:
                 self.check_noupdate.setChecked(not self.check_noupdate.isChecked())
         else:
             if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
                 pass
-                #windowsNotification("Spicetify Manager", "Update supression change failed!")
+                windowsToast("Update supression change failed", "")
             else:
                 pass
-                #windowsNotification("Spicetify Manager", "Update supression updated")
+                windowsToast("Update supression updated", "")
 
+    def PatchWatchWitch(self):
+        witchpath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify', 'spicetify.exe')
+        patchstring = '''
+<script>
+    fetch('http://localhost:1738/watchwitch/spotify/startup')
+</script>
+'''
+        with open(witchpath, 'r+') as file:
+            content = file.read()
+            if patchstring not in content:
+                file.write(patchstring) 
 
 
     #Called when spicetify is installed or not?
@@ -208,12 +219,12 @@ class Manager(QMainWindow):
     #Called when spicetify is applied
     def apply_finished(self):
         self.SystemSoftStatusCheck()
-        #windowsNotification("Spicetify Manager", "Spicetify has been applied!")
+        windowsToast("Spicetify has been applied!", "")
 
     #Called when spicetify is uninstalled
     def uninstall_finished(self):
         self.SystemSoftStatusCheck()
-        #windowsNotification("Spicetify Manager", "Spicetify has been uninstalled!")
+        windowsToast("Spicetify has been uninstalled!", "")
 
    # Spicetify status check
     def SystemSoftStatusCheck(self):
@@ -249,6 +260,19 @@ class Manager(QMainWindow):
             self.isMarketInstalled = True
         else:
             self.isMarketInstalled = False
+
+        witchpath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Apps', 'xpui', 'index.html')
+        patchstring = '''
+<script>
+    fetch('http://localhost:1738/watchwitch/spotify/startup')
+</script>
+'''
+        with open(witchpath, 'r+') as file:
+            content = file.read()
+            if patchstring not in content:
+                self.isWatchWitched = False
+            else:
+                self.isWatchWitched = True
         
         self.installerUiUpdate()
 
@@ -314,3 +338,5 @@ class Manager(QMainWindow):
             self.bt_master.setText("Download")
             self.bt_uninstall.setEnabled(False)
             self.managermode = 1
+        
+        self.check_watchwitch.setChecked(self.isWatchWitched)
