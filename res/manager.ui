@@ -624,7 +624,7 @@ QPushButton{
 }</string>
       </property>
       <property name="text">
-       <string>Spotify WatchWitch server on port 1738 (detect startup)</string>
+       <string>Spotify startup listener server on port 1738</string>
       </property>
       <property name="iconSize">
        <size>

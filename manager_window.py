@@ -10,7 +10,7 @@ from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices
 from components.popups import errorDialog,windowsToast,interactableWindowsToast
 from components.shellbridge import InstallSpicetify, watchwitchInjector, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand,checkApplied,blockSpotifyUpdate,checkUpdateSupression
-from components.tools import getLatestSpicetifyRelease, writeManagerPoint
+from components.tools import getLatestSpicetifyRelease,readConfig,writeConfig
 from components.afterinstall_popup import Popup
     
 
@@ -120,12 +120,10 @@ class Manager(QMainWindow):
     #Update user about progress while installing spicetify
     def installProgress(self, action):
         if (action == "fail"):
-            writeManagerPoint('nok')
             self.l_status.setStyleSheet("color: red")
             self.l_status.setText("⚠️ Installer has crashed ⚠️")
             errorDialog("The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
         elif (action == "done"):
-            writeManagerPoint('ok')
             self.SystemSoftStatusCheck()
             dialog = Popup(self)
             dialog.exec()
@@ -136,12 +134,10 @@ class Manager(QMainWindow):
 
     def updateProgress(self, action):
         if (action == "fail"):
-            writeManagerPoint('nok')
             self.l_status.setStyleSheet("color: red")
             self.l_status.setText("⚠️ Updater has crashed ⚠️")
             errorDialog("The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
         elif (action == "done"):
-            writeManagerPoint('ok')
             self.SystemSoftStatusCheck()
             dialog = Popup(self)
             dialog.exec()
@@ -176,6 +172,7 @@ class Manager(QMainWindow):
 
     # Disables Spotify self update function using permissions
     def DisableUpdate(self):
+        writeConfig('Manager','NoUpdate',str(self.check_noupdate.isChecked()))
         if self.check_noupdate.isChecked():
             reply = QMessageBox.question(None, 'Deactivate Updates', 'This function will try to disable all automatic updates for Spotify! Are you sure you want to do this?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
             if reply == QMessageBox.StandardButton.Yes:
@@ -196,6 +193,7 @@ class Manager(QMainWindow):
                 windowsToast("Update supression updated", "")
 
     def PatchWatchWitch(self):
+        writeConfig('Manager','watchwitch',str(self.check_watchwitch.isChecked()))
         watchwitchInjector(self.check_watchwitch.isChecked())
 
 

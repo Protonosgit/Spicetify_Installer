@@ -1,11 +1,14 @@
 import sys
+import os
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import QTimer, QThread
 from splash_window import Splash
 from manager_window import Manager
 from bottle import route, run
-from components.popups import errorDialog
-from components.popups import windowsToast
+from components.popups import errorDialog,windowsToast
+from components.tools import writeConfig,readConfig,initConfig
+
+initConfig()
 
 class SpicetifyPatcher:
     def __init__(self):
@@ -41,12 +44,12 @@ def index():
 
 class BottleThread(QThread):
     def run(self):
-        print("Flask started")
+        print("Server started")
         run(host='localhost', port=1738)
 
-watchwitch = BottleThread()
-watchwitch.start()
-
+if (readConfig('Manager','watchwitch') == "True"):
+    watchwitch = BottleThread()
+    watchwitch.start()
 #start the app
 if __name__ == "__main__":
     app = SpicetifyPatcher()
