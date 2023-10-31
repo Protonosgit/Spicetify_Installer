@@ -217,6 +217,8 @@ class Manager(QMainWindow):
 
    # Spicetify status check
     def SystemSoftStatusCheck(self):
+        self.bt_refresh.setEnabled(False)
+
         spotipath = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Roaming'), 'Spotify', 'Spotify.exe')
         if os.path.exists(spotipath):
             self.isSpotifyInstalled = True
