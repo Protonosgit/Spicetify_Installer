@@ -26,6 +26,7 @@ class Manager(QMainWindow):
         self.isActive = False
         self.isMarketInstalled = False
         self.isWatchWitched = False
+        self.isAutoClosing = False
         self.managermode = 0
 
         self.LOCALSPOTIFYVER = ''
@@ -48,6 +49,7 @@ class Manager(QMainWindow):
         self.bt_cmd.clicked.connect(self.Custom)
         self.check_noupdate.stateChanged.connect(self.DisableUpdate)
         self.check_watchwitch.stateChanged.connect(self.PatchWatchWitch)
+        self.check_autoclose.stateChanged.connect(self.AutoClose)
 
 
     # Execute once window is loaded before listeners are enabled
@@ -196,24 +198,33 @@ class Manager(QMainWindow):
         writeConfig('Manager','watchwitch',str(self.check_watchwitch.isChecked()))
         watchwitchInjector(self.check_watchwitch.isChecked())
 
+    def AutoClose(self):
+        writeConfig('Manager','autoclose',str(self.check_autoclose.isChecked()))
+
 
     #Called when spicetify is installed or not?
     def setup_finished(self):
-        pass
+        if self.isAutoClosing:
+            self.close()
 
     #Called when spicetify is updated
     def update_finished(self):
-        pass
+        if self.isAutoClosing:
+            self.close()
         
     #Called when spicetify is applied
     def apply_finished(self):
         self.SystemSoftStatusCheck()
         windowsToast("Spicetify has been applied!", "")
+        if self.isAutoClosing:
+            self.close()
 
     #Called when spicetify is uninstalled
     def uninstall_finished(self):
         self.SystemSoftStatusCheck()
         windowsToast("Spicetify has been uninstalled!", "")
+        if self.isAutoClosing:
+            self.close()
 
    # Spicetify status check
     def SystemSoftStatusCheck(self):
@@ -260,6 +271,13 @@ class Manager(QMainWindow):
                 self.isWatchWitched = False
             else:
                 self.isWatchWitched = True
+
+        if(readConfig('Manager','autoclose') == 'True'):
+            self.check_autoclose.setChecked(True)
+            self.isAutoClosing = True
+        else:
+            self.check_autoclose.setChecked(False)
+            self.isAutoClosing = False
         
         self.installerUiUpdate()
 
@@ -295,7 +313,7 @@ class Manager(QMainWindow):
                         else:
                             self.l_status.setText("♻️ Update available ♻️")
                             self.l_status.setStyleSheet("color: yellow")
-                            self.l_versioninfo.setText('Update now to the latest version: '+self.LATESTSPICETIFYVER)
+                            self.l_versioninfo.setText('Update Spicetify to the latest version: '+self.LATESTSPICETIFYVER)
                             self.bt_master.setText("Update")
                             self.managermode = 5
                     else:
@@ -313,7 +331,7 @@ class Manager(QMainWindow):
             else:
                 self.l_status.setText("Spicetify is not installed")
                 self.l_status.setStyleSheet("color: White")
-                self.l_versioninfo.setText('Press install to start the process')
+                self.l_versioninfo.setText('Press install to start the setup process')
                 #self.l_versioninfo.setText('Latest version: '+self.LATESTSPICETIFYVER)
                 self.bt_master.setText("Install")
                 self.bt_uninstall.setEnabled(False)
