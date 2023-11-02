@@ -287,10 +287,10 @@ QPushButton:pressed
      </property>
      <attribute name="icon">
       <iconset>
-       <normaloff>icon.png</normaloff>icon.png</iconset>
+       <normaloff>ic_wrench.png</normaloff>ic_wrench.png</iconset>
      </attribute>
      <attribute name="title">
-      <string>Basic</string>
+      <string>Installer</string>
      </attribute>
      <widget class="QPushButton" name="bt_master">
       <property name="enabled">

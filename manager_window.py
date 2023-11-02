@@ -10,7 +10,7 @@ from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices
 from components.popups import errorDialog,windowsToast,interactableWindowsToast
 from components.shellbridge import InstallSpicetify, watchwitchInjector, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand,checkApplied,blockSpotifyUpdate,checkUpdateSupression
-from components.tools import getLatestSpicetifyRelease,readConfig,writeConfig
+from components.tools import getLatestSpicetifyRelease,readConfig,writeConfig,addToStartup
 from components.afterinstall_popup import Popup
     
 
@@ -194,9 +194,20 @@ class Manager(QMainWindow):
                 pass
                 windowsToast("Update supression updated", "")
 
+    # Apply Watchwitch server
     def PatchWatchWitch(self):
-        writeConfig('Manager','watchwitch',str(self.check_watchwitch.isChecked()))
-        watchwitchInjector(self.check_watchwitch.isChecked())
+        print(self.check_watchwitch.isChecked())
+        folder_path = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify','Manager.exe')
+        if os.path.exists(folder_path):
+            writeConfig('Manager','watchwitch',str(self.check_watchwitch.isChecked()))
+            watchwitchInjector(self.check_watchwitch.isChecked())
+            addToStartup(self.check_watchwitch.isChecked())
+        else:
+            self.check_watchwitch.setChecked(False)
+            folder_path = os.path.join(os.path.join( os.path.expanduser('~'), 'AppData','Local'), 'spicetify')
+            reply = QMessageBox.question(None, 'Executeable not found', 'Please put the manager executeable in the "localappdata/spicetify/Manager.exe" folder! \n Do you want to open the folder?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            if reply == QMessageBox.StandardButton.Yes:
+                os.startfile(folder_path)
 
     def AutoClose(self):
         writeConfig('Manager','autoclose',str(self.check_autoclose.isChecked()))
