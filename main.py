@@ -4,7 +4,8 @@ from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import QTimer, QThread
 from splash_window import Splash
 from manager_window import Manager
-from bottle import route, run
+from werkzeug.serving import run_simple
+from werkzeug.wrappers import Request, Response
 from components.popups import errorDialog,windowsToast
 from components.tools import writeConfig,readConfig,initConfig
 
@@ -37,18 +38,20 @@ class SpicetifyPatcher:
 
 # Spotify WatchWitch on new thread (it's helloween)
 
-@route('/watchwitch/spotify/startup')
-def index():
-    windowsToast("Spicetify Manager", "Spotify just started!")
-    return 'ok'
+@Request.application
+def application(request):
+    if request.path == '/watchwitch/spotify/startup':
+        windowsToast("Spicetify Manager", "Spotify just started!")
+        return Response('ok', content_type='text/plain')
+    return Response('Not Found', status=404, content_type='text/plain')
 
-class BottleThread(QThread):
+class WerkzeugThread(QThread):
     def run(self):
         print("Server started")
-        run(host='localhost', port=1738)
+        run_simple('localhost', 1738, application)
 
-if (readConfig('Manager','watchwitch') == "True"):
-    watchwitch = BottleThread()
+if readConfig('Manager', 'watchwitch') == "True":
+    watchwitch = WerkzeugThread()
     watchwitch.start()
 #start the app
 if __name__ == "__main__":
