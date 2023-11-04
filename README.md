@@ -29,11 +29,11 @@ Contributers wellcome!
 Download project from Github and install dependencies
 
 ```bash
+  # Download the project
   git clone https://github.com/Protonosgit/Spicetify_Installer.git
 
-  # Warning you might need additional dependecies which are not shown here
-  python -m pip install pyqt6
-  python -m pip install pyqt6-tools
+  # Some dependencies might not be used to run the project
+  python -m pip install requirements.txt
 
   python main.py
 ```
@@ -45,8 +45,15 @@ The other files are dynamically used as components and windows.
 ## Building binary
 
 ```bash
+  # Download the project
+  git clone https://github.com/Protonosgit/Spicetify_Installer.git
+
+  # Some dependencies might not be used to run the project
+  python -m pip install requirements.txt
+
   # Build using pyinstaller and predefined config
   pyinstaller main.spec
+
 
   # Alternatively overwrite with your own config
   pyinstaller main.py
