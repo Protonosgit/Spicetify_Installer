@@ -2,6 +2,7 @@ import configparser
 import requests
 import os
 import winreg
+import subprocess
 
 # Initiates the Manager.ini config file
 
@@ -101,3 +102,18 @@ def addToStartup(mode):
                              "Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_SET_VALUE)
         winreg.DeleteValue(key, "SpicetifyManager")
         winreg.CloseKey(key)
+
+
+def spicetifyStatusCheck():
+    LOCALSPICETIFYVER = subprocess.check_output(
+        'spicetify --version', shell=True).decode("utf-8").strip()
+    LATESTSPICETIFYVER = getLatestSpicetifyRelease().replace("v", "").strip()
+    linkpath = os.path.join(os.path.join(os.path.expanduser(
+        '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
+    if os.path.exists(linkpath):
+        if (LOCALSPICETIFYVER == LATESTSPICETIFYVER):
+            return 0
+        else:
+            return 1
+    else:
+        return 2

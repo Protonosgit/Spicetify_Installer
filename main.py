@@ -1,14 +1,14 @@
 import sys
 import os
-from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMessageBox, QWidget
-from PyQt6.QtGui import QIcon, QAction
+from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
+from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import QTimer, QThread
 from splash_window import Splash
 from manager_window import Manager
 from werkzeug.serving import run_simple
 from werkzeug.wrappers import Request, Response
 from components.popups import errorDialog, windowsToast
-from components.tools import writeConfig, readConfig, initConfig
+from components.tools import writeConfig, readConfig, initConfig, spicetifyStatusCheck
 
 # Initiate ini config file in spicetify folder
 initConfig()
@@ -65,8 +65,7 @@ class SpicetifyPatcher:
 @Request.application
 def application(request):
     if request.path == '/watchwitch/spotify/startup':
-        print("Spotify just started!")
-        windowsToast("Spicetify Manager", "Spotify just started!")
+        alertSpicetifyStatus()
         return Response('ok', content_type='text/plain')
     return Response('!! Spicetify Manager is using this port !!', status=500, content_type='text/plain')
 
@@ -83,10 +82,18 @@ class WerkzeugThread(QThread):
 if readConfig('Manager', 'watchwitch') == "True":
     watchwitch = WerkzeugThread()
     watchwitch.start()
+# Checks if spicetify is ok
+
+
+def alertSpicetifyStatus():
+    status = spicetifyStatusCheck()
+    if status == 2:
+        windowsToast("Spicetify Manager", "Update available!")
+    elif status == 1:
+        windowsToast("Spicetify Manager", "Not applied!")
 
 
 # start the app
 if __name__ == "__main__":
     manager = SpicetifyPatcher()
-
     manager.run()
