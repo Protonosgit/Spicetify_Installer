@@ -1,6 +1,7 @@
 <img src="./res/icon.png" alt="spicetify manager icon" width="80"/> <br>
 # Spicetify Manager
-A project for installing and managing Spicetify from a Gui written in python
+A project for installing and managing Spicetify from a Gui written in python.
+Additionally I included some useful tools to improve your experience with Spotify!
 
 Contributers wellcome!
 
@@ -17,7 +18,9 @@ Contributers wellcome!
 
 - [x] Simple installation / update
 - [X] Installation status/version checker
+- [X] Block Spotify updates
 - [x] Clean and easy removal
+- [X] Always use the newest spicetify version
 - [x] Custom cli commands
 - [x] Suggest new versions of Spicetify / Manager
 - [ ] Automatically update spicetify and apply patches after spotify update
@@ -25,14 +28,13 @@ Contributers wellcome!
  Currently **Windows only**!
  If would like to improve support for other Platforms feel free to do so!
  ## Installation and Running
-
 Download project from Github and install dependencies
 
 ```bash
   # Download the project
   git clone https://github.com/Protonosgit/Spicetify_Installer.git
 
-  # Some dependencies might not be used to run the project
+  # Some dependencies might not be required to run the project
   python -m pip install requirements.txt
 
   python main.py
@@ -48,7 +50,7 @@ The other files are dynamically used as components and windows.
   # Download the project
   git clone https://github.com/Protonosgit/Spicetify_Installer.git
 
-  # Some dependencies might not be used to run the project
+  # Some dependencies might not be required to run the project
   python -m pip install requirements.txt
 
   # Build using pyinstaller and predefined config
@@ -78,12 +80,6 @@ Simply click on uninstall in the managers window and wait until spotify has rest
 
 Clicking on the update button will check for version numbers first before initiating the download sequence
 
-## Roadmap (will be implemented in 1.1.0 !)
-
-1. Run after spotify startup (check for updates)
-
-2. Auto apply spicetify after updates
-
 ## Manager API
 
 Due to rate limiting I decided to create my own relay for the official Github api.
@@ -91,9 +87,12 @@ It just returns the latest release tag from the spicetify-cli repo.
 You can monitor the status here: [![Netlify Status](https://api.netlify.com/api/v1/badges/a32b6502-e8ec-45a7-b3e3-4af087f5d38e/deploy-status)](https://app.netlify.com/sites/spicetifymanagerapi/deploys)   
 There might be more efficient ways to do this so feel free to suggest any improvements as an issue!
 
+## Safety 
+This project was flagged by some antivirus programs and I currently don't know how to avoid this!
+So feel free to download the executables from Github actions and use them instead of the release files (They are identical)
+
 
 ## Acknowledgements
 - [Spicetify](https://spicetify.app/)
 - [Marketplace](https://github.com/spicetify/spicetify-marketplace)
 - [Badges by Shields.io](https://shields.io/)
-- Inspired by Spicetify Easyinstall

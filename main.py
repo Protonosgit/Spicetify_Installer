@@ -40,7 +40,7 @@ class SpicetifyPatcher:
             )))
             self.tray.setVisible(True)
 
-    # Check os and redirect to manager if windows detected
+    # Check os and redirect to manager window if windows detected
 
     def show_menu(self):
         if sys.platform == 'win32':
@@ -68,7 +68,7 @@ def application(request):
         print("Spotify just started!")
         windowsToast("Spicetify Manager", "Spotify just started!")
         return Response('ok', content_type='text/plain')
-    return Response('Spicetify Manager is holding this port!!', status=500, content_type='text/plain')
+    return Response('!! Spicetify Manager is using this port !!', status=500, content_type='text/plain')
 
 # Server configuration
 
