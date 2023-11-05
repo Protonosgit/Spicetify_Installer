@@ -400,39 +400,6 @@ QPushButton{
        </property>
       </widget>
      </widget>
-     <widget class="QPushButton" name="bt_refresh">
-      <property name="geometry">
-       <rect>
-        <x>320</x>
-        <y>260</y>
-        <width>61</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>-1</pointsize>
-       </font>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="toolTip">
-       <string>Refresh the manager status</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton:!enabled{
-	background-color: rgba(220, 20, 60, 150);
-}</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>ic_update.png</normaloff>ic_update.png</iconset>
-      </property>
-     </widget>
      <widget class="QPushButton" name="bt_uninstall">
       <property name="enabled">
        <bool>true</bool>

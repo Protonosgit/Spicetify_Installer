@@ -10,15 +10,18 @@ from werkzeug.wrappers import Request, Response
 from components.popups import errorDialog, windowsToast
 from components.tools import writeConfig, readConfig, initConfig
 
+# Initiate ini config file in spicetify folder
 initConfig()
 
 
 class SpicetifyPatcher:
     def __init__(self):
+        # load windows (menu is also preloaded due to api requests)
         self.app = QApplication(sys.argv)
         self.splash_window = Splash()
         self.manager_window = Manager()
 
+        # Check if application was launched by windows on boot (cmd argu)
         if not "--startup" in sys.argv:
             self.splash_window.show()
 
@@ -37,7 +40,7 @@ class SpicetifyPatcher:
             )))
             self.tray.setVisible(True)
 
-    # Check os and redirect to manager
+    # Check os and redirect to manager if windows detected
 
     def show_menu(self):
         if sys.platform == 'win32':
@@ -52,7 +55,11 @@ class SpicetifyPatcher:
         app = QApplication(sys.argv)
         sys.exit(self.app.exec())
 
+#
 # Spotify WatchWitch on new thread (it's helloween)
+#
+
+# Server request endpoint for watchwitch
 
 
 @Request.application
@@ -63,6 +70,8 @@ def application(request):
         return Response('ok', content_type='text/plain')
     return Response('Spicetify Manager is holding this port!!', status=500, content_type='text/plain')
 
+# Server configuration
+
 
 class WerkzeugThread(QThread):
     def run(self):
@@ -70,6 +79,7 @@ class WerkzeugThread(QThread):
         run_simple('localhost', 1738, application)
 
 
+# Runs the server if enabled
 if readConfig('Manager', 'watchwitch') == "True":
     watchwitch = WerkzeugThread()
     watchwitch.start()

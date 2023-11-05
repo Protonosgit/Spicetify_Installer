@@ -46,7 +46,6 @@ class Manager(QMainWindow):
 
         self.bt_master.clicked.connect(self.masterButton)
         self.bt_uninstall.clicked.connect(self.startRemoval)
-        self.bt_refresh.clicked.connect(self.SystemSoftStatusCheck)
         self.bt_cmd.clicked.connect(self.Custom)
         self.check_noupdate.stateChanged.connect(self.DisableUpdate)
         self.check_watchwitch.stateChanged.connect(self.PatchWatchWitch)
@@ -81,20 +80,22 @@ class Manager(QMainWindow):
         else:
             event.accept()
 
-    # Master trigger for all requests
+    # Master trigger for all actions related to spicetify
     def masterButton(self):
+        # opne spotify
         if self.managermode == 0:
             os.startfile(os.path.join(os.path.expanduser('~'),
                          'AppData', 'Roaming/Spotify/Spotify.exe'))
             self.SystemSoftStatusCheck()
-        if self.managermode == 1:
+        elif self.managermode == 1:
+            # Download spotify installer latest
             QDesktopServices.openUrl(
                 QUrl('https://download.scdn.co/SpotifySetup.exe'))
             self.SystemSoftStatusCheck()
         elif self.managermode == 2:
+            # Install spicetify
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_master.setEnabled(False)
-            self.bt_refresh.setEnabled(False)
             self.bt_uninstall.setEnabled(False)
             self.l_status.setText("Installling Spicetify...")
             self.l_versioninfo.setText('⏳Please wait⏳')
@@ -103,9 +104,9 @@ class Manager(QMainWindow):
             self.iprocess.progress_signal.connect(self.installProgress)
             self.iprocess.start()
         elif self.managermode == 3:
+            # Apply spicetify
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_master.setEnabled(False)
-            self.bt_refresh.setEnabled(False)
             self.bt_uninstall.setEnabled(False)
             self.l_status.setText("Running apply")
             self.l_versioninfo.setText('⏳Please wait⏳')
@@ -113,6 +114,7 @@ class Manager(QMainWindow):
             self.iprocess.finished_signal.connect(self.apply_finished)
             self.iprocess.start()
         elif self.managermode == 4:
+            # Re-apply after spotify update
             killpath1 = os.path.join(os.path.join(os.path.expanduser(
                 '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
             killpath2 = os.path.join(os.path.join(os.path.expanduser(
@@ -121,9 +123,9 @@ class Manager(QMainWindow):
             os.remove(killpath2)
             self.SystemSoftStatusCheck()
         elif self.managermode == 5:
+            # update spicetify cli
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_master.setEnabled(False)
-            self.bt_refresh.setEnabled(False)
             self.bt_uninstall.setEnabled(False)
             self.l_status.setText("Updating patcher")
             self.l_versioninfo.setText('⏳Please wait⏳')
@@ -135,7 +137,6 @@ class Manager(QMainWindow):
             # install marketplace
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_master.setEnabled(False)
-            self.bt_refresh.setEnabled(False)
             self.bt_uninstall.setEnabled(False)
             self.l_status.setText("Installling Spicetify...")
             self.l_versioninfo.setText('⏳Please wait⏳')
@@ -160,6 +161,7 @@ class Manager(QMainWindow):
             self.l_status.setText(action)
             self.l_versioninfo.setText("This process may take a few minutes!")
 
+    # Update user about progress while updating spicetify
     def updateProgress(self, action):
         if (action == "fail"):
             self.l_status.setStyleSheet("color: red")
@@ -182,7 +184,6 @@ class Manager(QMainWindow):
         if reply == QMessageBox.StandardButton.Yes:
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_uninstall.setEnabled(False)
-            self.bt_refresh.setEnabled(False)
             self.bt_master.setEnabled(False)
             self.l_status.setStyleSheet("color: Orange")
             self.l_status.setText("Uninstalling Spicetify...")
@@ -243,12 +244,13 @@ class Manager(QMainWindow):
                                          QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
             if reply == QMessageBox.StandardButton.Yes:
                 os.startfile(folder_path)
+    # Auto close manager after completing actions (does not check for status!)
 
     def AutoClose(self):
         writeConfig('Manager', 'autoclose', str(
             self.check_autoclose.isChecked()))
 
-    # Called when spicetify is installed or not?
+    # Called when spicetify is installed or not
 
     def setup_finished(self):
         if self.isAutoClosing:
@@ -273,9 +275,8 @@ class Manager(QMainWindow):
         if self.isAutoClosing:
             self.close()
 
-   # Spicetify status check
+   # Spicetify status check (read var names for context)
     def SystemSoftStatusCheck(self):
-        self.bt_refresh.setEnabled(False)
 
         spotipath = os.path.join(os.path.join(os.path.expanduser(
             '~'), 'AppData', 'Roaming'), 'Spotify', 'Spotify.exe')
@@ -335,10 +336,10 @@ class Manager(QMainWindow):
 
         self.installerUiUpdate()
 
+# Define the ui of the manager according to the status of spicetify/spotify
     def installerUiUpdate(self):
         self.setCursor(Qt.CursorShape.ArrowCursor)
 
-        self.bt_refresh.setEnabled(True)
         self.bt_uninstall.setEnabled(True)
         self.bt_master.setEnabled(True)
 

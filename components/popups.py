@@ -1,6 +1,10 @@
 from PyQt6.QtWidgets import QErrorMessage, QMessageBox
 from windows_toasts import WindowsToaster, Toast, ToastButton, InteractableWindowsToaster
 
+# !!!
+# This module will be getting a rework so everything is subject to change!!!
+# !!!
+
 
 def errorDialog(text):
     error_dialog = QMessageBox()
@@ -32,6 +36,8 @@ def windowsToast(title, message):
     toastbuilder = Toast()
     toastbuilder.text_fields = [title, message]
     toaster.show_toast(toastbuilder)
+
+# Unused
 
 
 def interactableWindowsToast(title, message):
