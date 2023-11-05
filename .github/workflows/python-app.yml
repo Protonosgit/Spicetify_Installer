@@ -33,5 +33,5 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
           name: manager_build
-          path: dist/spicetify_installer.exe
+          path: dist/Manager.exe
       
