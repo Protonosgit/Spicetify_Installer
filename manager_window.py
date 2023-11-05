@@ -61,6 +61,26 @@ class Manager(QMainWindow):
         else:
             self.check_noupdate.setChecked(False)
 
+    # Ask user to keep manager in background
+
+    def closeEvent(self, event):
+        if "--startup" in sys.argv:
+            message_box = QMessageBox(self)
+            message_box.setWindowTitle("Move to background")
+            message_box.setText(
+                "Would you like to keep the Manager running in the background?")
+            message_box.setIcon(QMessageBox.Icon.Question)
+            message_box.setStandardButtons(
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            response = message_box.exec()
+            if response == QMessageBox.StandardButton.Yes:
+                event.ignore()
+                self.hide()
+            else:
+                event.accept()
+        else:
+            event.accept()
+
     # Master trigger for all requests
     def masterButton(self):
         if self.managermode == 0:

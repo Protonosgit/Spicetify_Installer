@@ -1,6 +1,6 @@
 import sys
 import os
-from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMessageBox
+from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMessageBox, QWidget
 from PyQt6.QtGui import QIcon, QAction
 from PyQt6.QtCore import QTimer, QThread
 from splash_window import Splash
@@ -36,19 +36,6 @@ class SpicetifyPatcher:
                 os.path.dirname(__file__), 'res', 'icon.png'
             )))
             self.tray.setVisible(True)
-
-    def closeEvent(self, event):
-        message_box = QMessageBox(self)
-        message_box.setWindowTitle("Exit Confirmation")
-        message_box.setText("Are you sure you want to exit?")
-        message_box.setIcon(QMessageBox.Icon.Question)
-        message_box.setStandardButtons(
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-        response = message_box.exec()
-        if response == QMessageBox.StandardButton.Yes:
-            event.accept()
-        else:
-            event.ignore()
 
     # Check os and redirect to manager
 
@@ -90,6 +77,6 @@ if readConfig('Manager', 'watchwitch') == "True":
 
 # start the app
 if __name__ == "__main__":
-    app = SpicetifyPatcher()
+    manager = SpicetifyPatcher()
 
-    app.run()
+    manager.run()
