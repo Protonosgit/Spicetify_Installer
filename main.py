@@ -2,7 +2,7 @@ import sys
 import os
 from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
 from PyQt6.QtGui import QIcon
-from PyQt6.QtCore import QTimer, QThread
+from PyQt6.QtCore import QThread, pyqtSignal, QObject, QTimer
 from splash_window import Splash
 from manager_window import Manager
 from werkzeug.serving import run_simple
@@ -82,6 +82,7 @@ class WerkzeugThread(QThread):
 if readConfig('Manager', 'watchwitch') == "True":
     watchwitch = WerkzeugThread()
     watchwitch.start()
+
 # Checks if spicetify is ok
 
 

@@ -12,7 +12,7 @@ from PyQt6.QtGui import QDesktopServices
 from components.popups import errorDialog, windowsToast, interactableWindowsToast
 from components.shellbridge import InstallSpicetify, watchwitchInjector, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand, checkApplied, blockSpotifyUpdate, checkUpdateSupression
 from components.tools import getLatestSpicetifyRelease, readConfig, writeConfig, addToStartup
-from components.afterinstall_popup import Popup
+from components.dialog_windows import AfterInstall
 
 
 class Manager(QMainWindow):
@@ -154,7 +154,7 @@ class Manager(QMainWindow):
                 "The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
         elif (action == "done"):
             self.SystemSoftStatusCheck()
-            dialog = Popup(self)
+            dialog = AfterInstall(self)
             dialog.exec()
         else:
             self.l_status.setStyleSheet("color: Orange")
@@ -170,7 +170,7 @@ class Manager(QMainWindow):
                 "The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
         elif (action == "done"):
             self.SystemSoftStatusCheck()
-            dialog = Popup(self)
+            dialog = AfterInstall(self)
             dialog.exec()
         else:
             self.l_status.setStyleSheet("color: Orange")
