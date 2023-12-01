@@ -15,6 +15,7 @@ initConfig()
 
 
 class SpicetifyPatcher:
+
     def __init__(self):
         # load windows (menu is also preloaded due to api requests)
         self.app = QApplication(sys.argv)
@@ -52,7 +53,6 @@ class SpicetifyPatcher:
             errorDialog("This script is only compatible with Windows!")
 
     def run(self):
-        app = QApplication(sys.argv)
         sys.exit(self.app.exec())
 
 #
@@ -90,6 +90,7 @@ def alertSpicetifyStatus():
     status = spicetifyStatusCheck()
     if status == 2:
         windowsToast("Spicetify Manager", "Update available!")
+        # manager.show_manager_signal.emit()
     elif status == 1:
         windowsToast("Spicetify Manager", "Not applied!")
 

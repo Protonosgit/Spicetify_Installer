@@ -5,10 +5,9 @@ import os
 import sys
 import subprocess
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QApplication
-
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.uic import loadUi
-from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtGui import QDesktopServices, QMovie
 from components.popups import errorDialog, windowsToast, interactableWindowsToast
 from components.shellbridge import InstallSpicetify, watchwitchInjector, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand, checkApplied, blockSpotifyUpdate, checkUpdateSupression
 from components.tools import getLatestSpicetifyRelease, readConfig, writeConfig, addToStartup
@@ -59,6 +58,15 @@ class Manager(QMainWindow):
             self.check_noupdate.setChecked(True)
         else:
             self.check_noupdate.setChecked(False)
+        # self.testmovie = QLabel()
+        # parent_directory = os.path.abspath(
+        # os.path.join(os.path.dirname(__file__), ".."))
+        # movie = QMovie(os.path.join(parent_directory, "res", "neon2.gif"))
+        movie = QMovie("res/retroflicker.gif")
+        self.background_graphics.setMovie(movie)
+        self.background_graphics.show()
+        self.background_graphics.setStyleSheet("opacity: 0.2;")
+        movie.start()
 
     # Ask user to keep manager in background
 

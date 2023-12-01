@@ -18,6 +18,7 @@ Contributers wellcome!
 
 - [x] Simple installation / update
 - [X] Installation status/version checker
+- [X] Fix,update and manage previous spicetify installations
 - [X] Block Spotify updates
 - [x] Clean and easy removal
 - [X] Always use the newest spicetify version
