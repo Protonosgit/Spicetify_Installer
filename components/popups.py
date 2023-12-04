@@ -40,14 +40,12 @@ def windowsToast(title, message):
 # Unused
 
 
-def interactableWindowsToast(title, message):
+def winUpdateToast():
 
     interactableToaster = InteractableWindowsToaster('Spicetify Manager')
-    newToast = Toast(['Can you dive?'])
+    newToast = Toast(['Spicetify is not active'], 'Spicetify Manager')
 
-    # Add two actions (buttons)
-    newToast.AddAction(ToastButton('Definitely', 'response=decent'))
-    newToast.AddAction(ToastButton('Nope', 'response=bad'))
+    newToast.AddAction(ToastButton('Open Manager', 'response=decent'))
+    newToast.AddAction(ToastButton('Ignore', 'response=bad'))
 
-    # Display it like usual
     interactableToaster.show_toast(newToast)

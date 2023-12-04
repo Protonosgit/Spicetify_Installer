@@ -8,7 +8,7 @@ from manager_window import Manager
 from werkzeug.serving import run_simple
 from werkzeug.wrappers import Request, Response
 from components.popups import errorDialog, windowsToast
-from components.tools import writeConfig, readConfig, initConfig, spicetifyStatusCheck
+from components.tools import writeConfig, readConfig, initConfig, spicetifyStatusCheck, isAddedToStartup
 
 # Initiate ini config file in spicetify folder
 initConfig()
@@ -79,7 +79,7 @@ class WerkzeugThread(QThread):
 
 
 # Runs the server if enabled
-if readConfig('Manager', 'watchwitch') == "True":
+if (isAddedToStartup()):
     watchwitch = WerkzeugThread()
     watchwitch.start()
 
@@ -90,7 +90,6 @@ def alertSpicetifyStatus():
     status = spicetifyStatusCheck()
     if status == 2:
         windowsToast("Spicetify Manager", "Update available!")
-        # manager.show_manager_signal.emit()
     elif status == 1:
         windowsToast("Spicetify Manager", "Not applied!")
 
