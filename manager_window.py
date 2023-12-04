@@ -58,9 +58,12 @@ class Manager(QMainWindow):
             self.check_noupdate.setChecked(True)
         else:
             self.check_noupdate.setChecked(False)
-        # movie = QMovie("res/retroflicker.gif")
-        movie = QMovie(os.path.join(
-            os.path.dirname(__file__), "res", "retroflicker.gif"))
+
+        if getattr(sys, 'frozen', False):
+            loadUi(os.path.join(sys._MEIPASS, 'res', 'retroflicker.gif'), self)
+        else:
+            movie = QMovie("res/retroflicker.gif")
+
         self.background_graphics.setMovie(movie)
         self.background_graphics.show()
         self.background_graphics.setStyleSheet("opacity: 0.2;")
