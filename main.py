@@ -21,9 +21,9 @@ class SpicetifyPatcher:
         self.app = QApplication(sys.argv)
         self.splash_window = Splash()
         self.manager_window = Manager()
-
         # Check if application was launched by windows on boot (cmd argu)
         if not "--startup" in sys.argv:
+            # if "--startup" in sys.argv:
             self.splash_window.show()
 
             self.timer = QTimer()

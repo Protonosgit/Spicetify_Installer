@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QMainWindow, QMessageBox, QApplication
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices, QMovie
-from components.popups import errorDialog, windowsToast, winUpdateToast
+from components.popups import errorDialog, infoDialog, windowsToast, winUpdateToast
 from components.shellbridge import InstallSpicetify, watchwitchInjector, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand, checkApplied, blockSpotifyUpdate, checkUpdateSupression
 from components.tools import getLatestSpicetifyRelease, readConfig, writeConfig, addToStartup
 from components.dialog_windows import AfterInstall
@@ -66,6 +66,7 @@ class Manager(QMainWindow):
         self.background_graphics.show()
         self.background_graphics.setStyleSheet("opacity: 0.2;")
         movie.start()
+        infoDialog('Lorem Ipsum')
 
     # Ask user to keep manager in background
 
@@ -88,6 +89,7 @@ class Manager(QMainWindow):
             event.accept()
 
     # Master trigger for all actions related to spicetify
+
     def masterButton(self):
         # opne spotify
         if self.managermode == 0:

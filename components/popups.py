@@ -14,10 +14,10 @@ def errorDialog(text):
     error_dialog.exec()
 
 
-def infoDialog(title, text):
+def infoDialog(text):
     info_dialog = QMessageBox()
     info_dialog.setIcon(QMessageBox.Icon.Information)
-    info_dialog.setWindowTitle(title)
+    info_dialog.setWindowTitle('Information')
     info_dialog.setText(text)
     info_dialog.exec()
 
@@ -41,7 +41,7 @@ def windowsToast(title, message):
 
 
 def winUpdateToast():
-
+    # unused due to limitations related to the window manager in main.py
     interactableToaster = InteractableWindowsToaster('Spicetify Manager')
     newToast = Toast(['Spicetify is not active'], 'Spicetify Manager')
 
