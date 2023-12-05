@@ -124,12 +124,15 @@ class Manager(QMainWindow):
             self.iprocess.start()
         elif self.managermode == 4:
             # Re-apply after spotify update
-            killpath1 = os.path.join(os.path.join(os.path.expanduser(
-                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
-            killpath2 = os.path.join(os.path.join(os.path.expanduser(
-                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui.spa')
-            os.remove(killpath1)
-            os.remove(killpath2)
+            try:
+                killpath1 = os.path.join(os.path.join(os.path.expanduser(
+                    '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
+                killpath2 = os.path.join(os.path.join(os.path.expanduser(
+                    '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui.spa')
+                os.remove(killpath1)
+                os.remove(killpath2)
+            except:
+                print("Error while removing login.spa and xpui.spa")
             self.SystemSoftStatusCheck()
         elif self.managermode == 5:
             # update spicetify cli
@@ -286,62 +289,70 @@ class Manager(QMainWindow):
 
    # Spicetify status check (read var names for context)
     def SystemSoftStatusCheck(self):
+        try:
 
-        spotipath = os.path.join(os.path.join(os.path.expanduser(
-            '~'), 'AppData', 'Roaming'), 'Spotify', 'Spotify.exe')
-        if os.path.exists(spotipath):
-            self.isSpotifyInstalled = True
-        else:
-            self.isSpotifyInstalled = False
-
-        spicypath = os.path.join(os.path.join(os.path.expanduser(
-            '~'), 'AppData', 'Local'), 'spicetify', 'spicetify.exe')
-        if os.path.exists(spicypath):
-            self.isSpicetifyInstalled = True
-            self.LOCALSPICETIFYVER = subprocess.check_output(
-                'spicetify --version', shell=True).decode("utf-8").strip()
-        else:
-            self.isSpicetifyInstalled = False
-
-        self.LATESTSPICETIFYVER = getLatestSpicetifyRelease().replace("v", "").strip()
-
-        workpath = os.path.join(os.path.join(os.path.expanduser(
-            '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui')
-        if os.path.exists(workpath):
-            self.isApplied = True
-        else:
-            self.isApplied = False
-
-        linkpath = os.path.join(os.path.join(os.path.expanduser(
-            '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
-        if os.path.exists(linkpath):
-            self.isActive = False
-        else:
-            self.isActive = True
-
-        marketpath = os.path.join(os.path.join(os.path.expanduser(
-            '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui', 'spicetify-routes-marketplace.js')
-        if os.path.exists(marketpath):
-            self.isMarketInstalled = True
-        else:
-            self.isMarketInstalled = False
-
-        witchpath = os.path.join(os.path.join(os.path.expanduser(
-            '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui', 'index.html')
-        patchstring = '''<script>fetch('http://localhost:1738/watchwitch/spotify/startup')</script>'''
-        with open(witchpath, 'r+') as file:
-            content = file.read()
-            if patchstring not in content:
-                self.isWatchWitched = False
+            spotipath = os.path.join(os.path.join(os.path.expanduser(
+                '~'), 'AppData', 'Roaming'), 'Spotify', 'Spotify.exe')
+            if os.path.exists(spotipath):
+                self.isSpotifyInstalled = True
             else:
-                self.isWatchWitched = True
+                self.isSpotifyInstalled = False
 
-        if (readConfig('Manager', 'autoclose') == 'True'):
-            self.check_autoclose.setChecked(True)
-            self.isAutoClosing = True
-        else:
-            self.check_autoclose.setChecked(False)
-            self.isAutoClosing = False
+            spicypath = os.path.join(os.path.join(os.path.expanduser(
+                '~'), 'AppData', 'Local'), 'spicetify', 'spicetify.exe')
+            if os.path.exists(spicypath):
+                self.isSpicetifyInstalled = True
+                self.LOCALSPICETIFYVER = subprocess.check_output(
+                    'spicetify --version', shell=True).decode("utf-8").strip()
+            else:
+                self.isSpicetifyInstalled = False
+
+            self.LATESTSPICETIFYVER = getLatestSpicetifyRelease().replace("v", "").strip()
+
+            workpath = os.path.join(os.path.join(os.path.expanduser(
+                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui')
+            if os.path.exists(workpath):
+                self.isApplied = True
+            else:
+                self.isApplied = False
+
+            linkpath = os.path.join(os.path.join(os.path.expanduser(
+                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
+            if os.path.exists(linkpath):
+                self.isActive = False
+            else:
+                self.isActive = True
+
+            marketpath = os.path.join(os.path.join(os.path.expanduser(
+                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui', 'spicetify-routes-marketplace.js')
+            if os.path.exists(marketpath):
+                self.isMarketInstalled = True
+            else:
+                self.isMarketInstalled = False
+
+            witchpath = os.path.join(os.path.join(os.path.expanduser(
+                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui', 'index.html')
+            patchstring = '''<script>fetch('http://localhost:1738/watchwitch/spotify/startup')</script>'''
+            try:
+                if (self.isApplied):
+                    with open(witchpath, 'r+') as file:
+                        content = file.read()
+                        if patchstring not in content:
+                            self.isWatchWitched = False
+                        else:
+                            self.isWatchWitched = True
+
+            except:
+                print("Error while reading watchwitch file")
+
+            if (readConfig('Manager', 'autoclose') == 'True'):
+                self.check_autoclose.setChecked(True)
+                self.isAutoClosing = True
+            else:
+                self.check_autoclose.setChecked(False)
+                self.isAutoClosing = False
+        except Exception as e:
+            print(e)
 
         self.installerUiUpdate()
 
