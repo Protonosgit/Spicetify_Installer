@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QMainWindow, QMessageBox, QApplication
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices, QMovie
-from components.popups import errorDialog, infoDialog, windowsToast, winUpdateToast
+from components.popups import errorDialog, infoDialog, windowsToast, confirmationModal
 from components.shellbridge import InstallSpicetify, watchwitchInjector, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand, checkApplied, blockSpotifyUpdate, checkUpdateSupression
 from components.tools import getLatestSpicetifyRelease, readConfig, writeConfig, addToStartup
 from components.dialog_windows import AfterInstall
@@ -64,9 +64,10 @@ class Manager(QMainWindow):
 
         self.background_graphics.setMovie(movie)
         self.background_graphics.show()
-        self.background_graphics.setStyleSheet("opacity: 0.2;")
         movie.start()
-        infoDialog('Lorem Ipsum')
+        reply = confirmationModal('hi', 'User')
+        if reply == QMessageBox.StandardButton.Yes:
+            print('confirm')
 
     # Ask user to keep manager in background
 
@@ -191,8 +192,8 @@ class Manager(QMainWindow):
 
     # Launch uninstaller task
     def startRemoval(self):
-        reply = QMessageBox.question(None, 'Uninstall', 'Are you sure you want to uninstall Spicetify and remove all installed mods/themes ?',
-                                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        reply = confirmationModal(
+            'Uninstall', 'Are you sure you want to uninstall Spicetify and remove all installed mods/themes ?')
         if reply == QMessageBox.StandardButton.Yes:
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_uninstall.setEnabled(False)
@@ -218,8 +219,8 @@ class Manager(QMainWindow):
         writeConfig('Manager', 'NoUpdate', str(
             self.check_noupdate.isChecked()))
         if self.check_noupdate.isChecked():
-            reply = QMessageBox.question(None, 'Deactivate Updates', 'This function will try to disable all automatic updates for Spotify! Are you sure you want to do this?',
-                                         QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            reply = confirmationModal(
+                'Disable Updates', 'Are you sure you want to disable all automatic updates for Spotify?')
             if reply == QMessageBox.StandardButton.Yes:
                 if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
                     pass
@@ -240,7 +241,6 @@ class Manager(QMainWindow):
 
     # Apply Watchwitch server
     def PatchWatchWitch(self):
-        print(self.check_watchwitch.isChecked())
         folder_path = os.path.join(os.path.join(os.path.expanduser(
             '~'), 'AppData', 'Local'), 'spicetify', 'Manager.exe')
         if os.path.exists(folder_path):
@@ -252,8 +252,8 @@ class Manager(QMainWindow):
             self.check_watchwitch.setChecked(False)
             folder_path = os.path.join(os.path.join(
                 os.path.expanduser('~'), 'AppData', 'Local'), 'spicetify')
-            reply = QMessageBox.question(None, 'Executeable not found', 'Please put the manager executeable in the "localappdata/spicetify/Manager.exe" folder! \n Do you want to open the folder?',
-                                         QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            reply = confirmationModal(
+                'Executeable not found', 'Please put the manager executeable in the "localappdata/spicetify/Manager.exe" folder! \n Do you want to open the folder?')
             if reply == QMessageBox.StandardButton.Yes:
                 os.startfile(folder_path)
     # Auto close manager after completing actions (does not check for status!)
@@ -352,6 +352,7 @@ class Manager(QMainWindow):
                 self.check_autoclose.setChecked(False)
                 self.isAutoClosing = False
         except Exception as e:
+            print('Error while checking spicetify status')
             print(e)
 
         self.installerUiUpdate()

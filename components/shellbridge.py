@@ -50,7 +50,7 @@ class UpdateSpicetify(QThread):
         print("Update started")
         try:
             self.progress_signal.emit("Auto Updating...")
-            subprocess.run('spicetify upgrade -q', shell=True)
+            subprocess.run('spicetify upgrade -q -n', shell=True)
             self.progress_signal.emit("done")
         except Exception as e:
             self.progress_signal.emit("fail")

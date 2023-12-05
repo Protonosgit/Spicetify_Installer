@@ -22,13 +22,16 @@ def infoDialog(text):
     info_dialog.exec()
 
 
-def confirmDialog(title, text):
-    confirm_dialog = QMessageBox()
-    confirm_dialog.setIcon(QMessageBox.Icon.Question)
-    confirm_dialog.setWindowTitle(title)
-    confirm_dialog.setText(text)
-    confirm_dialog.setStandardButtons(QMessageBox.StandardButton.Ok)
-    confirm_dialog.exec()
+def warnDialog(text):
+    info_dialog = QMessageBox()
+    info_dialog.setIcon(QMessageBox.Icon.Warning)
+    info_dialog.setWindowTitle('Warning')
+    info_dialog.setText(text)
+    info_dialog.exec()
+
+
+def confirmationModal(title, message):
+    return QMessageBox.question(None, title, QMessageBox.Icon.Information, message, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
 
 
 def windowsToast(title, message):

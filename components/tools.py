@@ -8,7 +8,6 @@ import subprocess
 
 
 def initConfig():
-    print('!! Temporary Action3 called !!')
     try:
         file_path = os.path.join(os.path.join(os.path.expanduser(
             '~'), 'AppData', 'Local'), 'spicetify', 'Manager.ini')
@@ -21,7 +20,7 @@ noupdate = False
 autoclose = False
     '''
     except:
-        print("Error while creating config file")
+        print("Error while checking config file")
     try:
         with open(file_path, 'w') as f:
             f.write(config_dict)
@@ -31,9 +30,7 @@ autoclose = False
 
 # Reads config files
 def readConfig(section, key):
-    print('!! Temporary Action1 called !!')
     try:
-        print(key)
         file_path = os.path.join(os.path.join(os.path.expanduser(
             '~'), 'AppData', 'Local'), 'spicetify', 'Manager.ini')
         config = configparser.ConfigParser()
@@ -50,7 +47,6 @@ def readConfig(section, key):
 
 
 def writeConfig(section, key, value):
-    print('!! Temporary Action2 called !!')
     try:
         file_path = os.path.join(os.path.join(os.path.expanduser(
             '~'), 'AppData', 'Local'), 'spicetify', 'Manager.ini')
@@ -131,6 +127,7 @@ def isAddedToStartup():
     except FileNotFoundError:
         return False
     except Exception as e:
+        print("Error while checking if added to startup")
         print(e)
         return False
 
