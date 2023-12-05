@@ -31,7 +31,7 @@ def warnDialog(text):
 
 
 def confirmationModal(title, message):
-    return QMessageBox.question(None, title, QMessageBox.Icon.Information, message, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+    return QMessageBox.question(None, title, message, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
 
 
 def windowsToast(title, message):

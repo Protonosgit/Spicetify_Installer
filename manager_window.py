@@ -65,9 +65,6 @@ class Manager(QMainWindow):
         self.background_graphics.setMovie(movie)
         self.background_graphics.show()
         movie.start()
-        reply = confirmationModal('hi', 'User')
-        if reply == QMessageBox.StandardButton.Yes:
-            print('confirm')
 
     # Ask user to keep manager in background
 
