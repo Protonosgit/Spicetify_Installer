@@ -495,7 +495,6 @@ if not (isAddedToStartup()):
 
 def alertSpicetifyStatus():
     status = spicetifyStatusCheck()
-    print(status)
     if status == 2:
         windowsToast("Spicetify Manager", "Update available!")
     elif status == 1:
