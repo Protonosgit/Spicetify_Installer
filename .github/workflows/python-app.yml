@@ -28,7 +28,7 @@ jobs:
         pip install -r requirements.txt
     - name: Build with pyinstaller
       run: |
-        pyinstaller main.spec
+        pyinstaller main.spec --upx-dir "./upx"
 
     - uses: actions/upload-artifact@v3
       with:
