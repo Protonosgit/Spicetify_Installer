@@ -28,6 +28,10 @@ Contributers wellcome!
 
  Currently **Windows only**!
  If would like to improve support for other Platforms feel free to do so!
+
+## ⚠️ Warning 1.2.0 icomming codebase undergoing major changes ⚠️
+If you would like to contribute please first open an issue to discuss your changes!
+
  ## Installation and Running
 Download project from Github and install dependencies
 
