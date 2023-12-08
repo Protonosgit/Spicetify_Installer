@@ -1,8 +1,6 @@
 import configparser
-import requests
 import os
 import winreg
-import subprocess
 
 # Initiates the Manager.ini config file
 
@@ -58,40 +56,6 @@ def writeConfig(section, key, value):
     except:
         print("Error while writing config file")
 
-# Checks for the latest spicetify version
-
-
-def getLatestSpicetifyRelease():
-    try:
-        url = f"https://spicetifymanagerapi.netlify.app/.netlify/functions/api/latest/spicetifycli"
-        response = requests.get(url)
-
-        if response.status_code == 200:
-            latest_release = response.json()
-            tag_name = latest_release["tag_name"]
-            return tag_name
-        else:
-            return '0.0.0'
-    except:
-        return '0.0.0'
-
-# Checks if a new version of the manager is available
-
-
-def managerUpdateCheck():
-    try:
-        url = f"https://spicetifymanagerapi.netlify.app/.netlify/functions/api/latest/manager"
-        response = requests.get(url)
-
-        if response.status_code == 200:
-            latest_release = response.json()
-            tag_name = latest_release["tag_name"]
-            if int(tag_name.replace(".", "")) > 120:
-                return True
-        else:
-            return False
-    except:
-        return False
 
 # Add exe to startup of windows /remove it again
 
@@ -116,35 +80,25 @@ def addToStartup(mode):
     except:
         print("Error while adding to startup")
 
+# Patches Spotify with WatchWitch
 
-def isAddedToStartup():
+
+def watchwitchInjector(mode):
     try:
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
-                             "Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_READ)
-        _, value, _ = winreg.QueryValueEx(key, "SpicetifyManager")
-        winreg.CloseKey(key)
-        return True
-    except FileNotFoundError:
-        return False
-    except Exception as e:
-        print("Error while checking if added to startup")
-        print(e)
-        return False
-
-
-def spicetifyStatusCheck():
-    try:
-        LOCALSPICETIFYVER = subprocess.check_output(
-            'spicetify --version', shell=True).decode("utf-8").strip()
-        LATESTSPICETIFYVER = getLatestSpicetifyRelease().replace("v", "").strip()
-        linkpath = os.path.join(os.path.join(os.path.expanduser(
-            '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
-        if os.path.exists(linkpath):
-            if (LOCALSPICETIFYVER == LATESTSPICETIFYVER):
-                return 0
-            else:
-                return 1
+        witchpath = os.path.join(os.path.join(os.path.expanduser(
+            '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui', 'index.html')
+        patchstring = '''<script>fetch('http://localhost:1738/watchwitch/spotify/startup')</script>'''
+        if mode:
+            with open(witchpath, 'a', encoding='utf-8') as file:
+                print("patching")
+                file.write(patchstring)
         else:
-            return 2
+            with open(witchpath, 'r+', encoding='utf-8') as file:
+                print("unpatching")
+                content = file.read()
+                updated_content = content.replace(patchstring, '')
+                file.seek(0)
+                file.write(updated_content)
+                file.truncate()
     except:
-        return 0
+        print("Error while patching")

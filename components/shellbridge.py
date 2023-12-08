@@ -1,7 +1,6 @@
 import sys
 import os
 import subprocess
-import psutil
 import shutil
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 
@@ -69,7 +68,7 @@ class ApplySpicetify(QThread):
         subprocess.check_output('spicetify apply -q', shell=True)
         self.finished_signal.emit()
 
-# Unisnatll spicetify task
+# Uninstall  spicetify task
 
 
 class UninstallSpicetify(QThread):
@@ -113,38 +112,7 @@ class CustomCommand(QThread):
             print("Error while running custom command!")
 
 
-# Checks if spicetify is installed by checking appdata folder
-def checkInstalled():
-    folder_path = os.path.join(os.path.join(
-        os.path.expanduser('~'), 'AppData', 'Local'), 'spicetify')
-    if os.path.exists(folder_path) and os.path.isdir(folder_path):
-        return True
-    else:
-        return False
-
-# Checks if spicetify is applied by checking appdata folder of spotify
-
-
-def checkApplied():
-    folder_path = os.path.join(os.path.expanduser(
-        '~'), 'AppData', 'Roaming/Spotify/Apps/xpui')
-    if os.path.exists(folder_path) and os.path.isdir(folder_path):
-        return True
-    else:
-        return False
-
-# Checks if spicetify is running using a tasksearch
-
-
-def checkSpotifyRunning():
-    for process in psutil.process_iter(attrs=['pid', 'name']):
-        if 'Spotify.exe' in process.info['name']:
-            return True
-    return False
-
 # Try blocking spotify updates by changing permissions (Windows only)
-
-
 def blockSpotifyUpdate(active):
     if active:
         try:
@@ -174,35 +142,3 @@ def blockSpotifyUpdate(active):
         except subprocess.CalledProcessError as e:
             print(f'Error: {e.returncode}. patcher failed.')
             return e.returncode
-
-# Checks if spotify updates are blocked !WIP!
-
-
-def checkUpdateSupression():
-    if not os.path.exists(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update")):
-        return False
-    else:
-        return True
-
-# Patches Spotify with WatchWitch
-
-
-def watchwitchInjector(mode):
-    try:
-        witchpath = os.path.join(os.path.join(os.path.expanduser(
-            '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui', 'index.html')
-        patchstring = '''<script>fetch('http://localhost:1738/watchwitch/spotify/startup')</script>'''
-        if mode:
-            with open(witchpath, 'a', encoding='utf-8') as file:
-                print("patching")
-                file.write(patchstring)
-        else:
-            with open(witchpath, 'r+', encoding='utf-8') as file:
-                print("unpatching")
-                content = file.read()
-                updated_content = content.replace(patchstring, '')
-                file.seek(0)
-                file.write(updated_content)
-                file.truncate()
-    except:
-        print("Error while patching")

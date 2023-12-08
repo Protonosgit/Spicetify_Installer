@@ -9,8 +9,9 @@ from PyQt6.QtCore import Qt, QUrl, QThread
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices, QMovie, QIcon
 from components.popups import errorDialog, infoDialog, windowsToast, confirmationModal
-from components.shellbridge import InstallSpicetify, watchwitchInjector, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand, checkApplied, blockSpotifyUpdate, checkUpdateSupression
-from components.tools import managerUpdateCheck, getLatestSpicetifyRelease, readConfig, writeConfig, initConfig, spicetifyStatusCheck, isAddedToStartup, addToStartup
+from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand, blockSpotifyUpdate
+from components.statusInfo import *
+from components.tools import *
 from components.dialog_windows import AfterInstall
 from werkzeug.wrappers import Request, Response
 from werkzeug.serving import run_simple
@@ -27,15 +28,12 @@ class Manager(QMainWindow):
         self.isSpotifyInstalled = False
         self.isSpicetifyInstalled = False
         self.isApplied = False
-        self.isBackedUp = False
         self.isActive = False
         self.isMarketInstalled = False
         self.isWatchWitched = False
         self.isAutoClosing = False
         self.managermode = 0
 
-        self.LOCALSPOTIFYVER = ''
-        self.LATESTSPOTIFYVER = ''
         self.LOCALSPICETIFYVER = ''
         self.LATESTSPICETIFYVER = ''
 
@@ -49,6 +47,7 @@ class Manager(QMainWindow):
 
         if not "--startup" in sys.argv:
             # if "--startup" in sys.argv:
+            self.InitWindow()
             self.show()
         else:
             # Add task tray icon which makes menu window visible on click
@@ -61,9 +60,6 @@ class Manager(QMainWindow):
             )))
             self.tray.setVisible(True)
             # Check if window is visible and toggle visibility
-
-        self.InitWindow()
-        # self.show()
 
         self.bt_master.clicked.connect(self.masterButton)
         self.bt_uninstall.clicked.connect(self.startRemoval)
@@ -463,7 +459,7 @@ class Manager(QMainWindow):
 
 
 #
-# Spotify WatchWitch on new thread (it's helloween)
+# Start Spotify WatchWitch on new thread (it's helloween)
 #
 
 # Server request endpoint for watchwitch
@@ -486,7 +482,7 @@ class WerkzeugThread(QThread):
 
 
 # Runs the server if enabled
-if not (isAddedToStartup()):
+if (isAddedToStartup()):
     watchwitch = WerkzeugThread()
     watchwitch.start()
 
