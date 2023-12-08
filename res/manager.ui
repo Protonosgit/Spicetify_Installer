@@ -706,7 +706,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <string notr="true">color:white;</string>
       </property>
       <property name="text">
-       <string>Protonos 2023 v 1.1.3</string>
+       <string>Protonos 2023 v 1.2.0</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
