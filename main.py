@@ -71,11 +71,7 @@ class Manager(QMainWindow):
     # Execute once window is loaded before listeners are enabled
 
     def InitWindow(self):
-        self.SystemSoftStatusCheck()
-        if (checkUpdateSupression()):
-            self.check_noupdate.setChecked(True)
-        else:
-            self.check_noupdate.setChecked(False)
+        self.statusUpdate()
 
         movie = QMovie(os.path.join(
             os.path.dirname(__file__), "res", "retroflicker.gif"))
@@ -111,12 +107,12 @@ class Manager(QMainWindow):
         if self.managermode == 0:
             os.startfile(os.path.join(os.path.expanduser('~'),
                          'AppData', 'Roaming/Spotify/Spotify.exe'))
-            self.SystemSoftStatusCheck()
+            self.statusUpdate()
         elif self.managermode == 1:
             # Download spotify installer latest
             QDesktopServices.openUrl(
                 QUrl('https://download.scdn.co/SpotifySetup.exe'))
-            self.SystemSoftStatusCheck()
+            self.statusUpdate()
         elif self.managermode == 2:
             # Install spicetify
             self.setCursor(Qt.CursorShape.WaitCursor)
@@ -149,7 +145,7 @@ class Manager(QMainWindow):
                 os.remove(killpath2)
             except:
                 print("Error while removing login.spa and xpui.spa")
-            self.SystemSoftStatusCheck()
+            self.statusUpdate()
         elif self.managermode == 5:
             # update spicetify cli
             self.setCursor(Qt.CursorShape.WaitCursor)
@@ -181,7 +177,7 @@ class Manager(QMainWindow):
             errorDialog(
                 "The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
         elif (action == "done"):
-            self.SystemSoftStatusCheck()
+            self.statusUpdate()
             dialog = AfterInstall(self)
             dialog.exec()
         else:
@@ -197,7 +193,7 @@ class Manager(QMainWindow):
             errorDialog(
                 "The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
         elif (action == "done"):
-            self.SystemSoftStatusCheck()
+            self.statusUpdate()
             dialog = AfterInstall(self)
             dialog.exec()
         else:
@@ -290,90 +286,53 @@ class Manager(QMainWindow):
 
     # Called when spicetify is applied
     def apply_finished(self):
-        self.SystemSoftStatusCheck()
+        self.statusUpdate()
         windowsToast("Spicetify has been applied!", "")
         if self.isAutoClosing:
             self.close()
 
     # Called when spicetify is uninstalled
     def uninstall_finished(self):
-        self.SystemSoftStatusCheck()
+        self.statusUpdate()
         windowsToast("Spicetify has been uninstalled!", "")
         if self.isAutoClosing:
             self.close()
 
    # Spicetify status check (read var names for context)
-    def SystemSoftStatusCheck(self):
+    def statusUpdate(self):
         try:
+            self.isSpotifyInstalled = checkSpotifyInstalled()
 
-            spotipath = os.path.join(os.path.join(os.path.expanduser(
-                '~'), 'AppData', 'Roaming'), 'Spotify', 'Spotify.exe')
-            if os.path.exists(spotipath):
-                self.isSpotifyInstalled = True
-            else:
-                self.isSpotifyInstalled = False
+            self.isSpicetifyInstalled = checkSpicetifyInstalled()
 
-            spicypath = os.path.join(os.path.join(os.path.expanduser(
-                '~'), 'AppData', 'Local'), 'spicetify', 'spicetify.exe')
-            if os.path.exists(spicypath):
-                self.isSpicetifyInstalled = True
-                self.LOCALSPICETIFYVER = subprocess.check_output(
-                    'spicetify --version', shell=True).decode("utf-8").strip()
-            else:
-                self.isSpicetifyInstalled = False
+            self.isApplied = checkSpicetifyApplied()
+
+            self.isActive = checkSpicetifyActive()
+
+            self.isMarketInstalled = checkMarketplaceInstalled()
 
             self.LATESTSPICETIFYVER = getLatestSpicetifyRelease().replace("v", "").strip()
 
-            workpath = os.path.join(os.path.join(os.path.expanduser(
-                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui')
-            if os.path.exists(workpath):
-                self.isApplied = True
-            else:
-                self.isApplied = False
+            if self.isSpicetifyInstalled:
+                self.LOCALSPICETIFYVER = subprocess.check_output(
+                    'spicetify --version', shell=True).decode("utf-8").strip()
 
-            linkpath = os.path.join(os.path.join(os.path.expanduser(
-                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
-            if os.path.exists(linkpath):
-                self.isActive = False
-            else:
-                self.isActive = True
-
-            marketpath = os.path.join(os.path.join(os.path.expanduser(
-                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui', 'spicetify-routes-marketplace.js')
-            if os.path.exists(marketpath):
-                self.isMarketInstalled = True
-            else:
-                self.isMarketInstalled = False
-
-            witchpath = os.path.join(os.path.join(os.path.expanduser(
-                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui', 'index.html')
-            patchstring = '''<script>fetch('http://localhost:1738/watchwitch/spotify/startup')</script>'''
-            try:
-                if (self.isApplied):
-                    with open(witchpath, 'r+') as file:
-                        content = file.read()
-                        if patchstring not in content:
-                            self.isWatchWitched = False
-                        else:
-                            self.isWatchWitched = True
-
-            except:
-                print("Error while reading watchwitch file")
+            if self.isApplied:
+                self.isWatchWitched = checkWatchWitch()
 
             if (readConfig('Manager', 'autoclose') == 'True'):
-                self.check_autoclose.setChecked(True)
                 self.isAutoClosing = True
             else:
-                self.check_autoclose.setChecked(False)
                 self.isAutoClosing = False
+
         except Exception as e:
             print('Error while checking spicetify status')
             print(e)
 
-        self.installerUiUpdate()
+        self.uiUpdate()
 
 # Define the ui of the manager according to the status of spicetify/spotify
-    def installerUiUpdate(self):
+    def uiUpdate(self):
         self.setCursor(Qt.CursorShape.ArrowCursor)
 
         self.bt_uninstall.setEnabled(True)
@@ -444,7 +403,9 @@ class Manager(QMainWindow):
             self.bt_uninstall.setEnabled(False)
             self.managermode = 1
 
+        self.check_noupdate.setChecked(checkUpdateSupression())
         self.check_watchwitch.setChecked(self.isWatchWitched)
+        self.check_autoclose.setChecked(self.isAutoClosing)
 
     def checkUpdateAvailable(self):
         if (managerUpdateCheck()):
@@ -482,7 +443,7 @@ class WerkzeugThread(QThread):
 
 
 # Runs the server if enabled
-if (isAddedToStartup()):
+if (isManagerOnBoot()):
     watchwitch = WerkzeugThread()
     watchwitch.start()
 
