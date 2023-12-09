@@ -8,13 +8,14 @@ from PyQt6.QtWidgets import QMainWindow, QMessageBox, QApplication, QSystemTrayI
 from PyQt6.QtCore import Qt, QUrl, QThread
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices, QMovie, QIcon
-from components.popups import errorDialog, infoDialog, windowsToast, confirmationModal
+from components.popups import errorDialog, infoDialog, windowsToast, confirmationModal, spicetifyStatusToast
 from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand, blockSpotifyUpdate
 from components.statusInfo import *
 from components.tools import *
 from components.dialog_windows import AfterInstall
 from werkzeug.wrappers import Request, Response
 from werkzeug.serving import run_simple
+from windows_toasts import ToastActivatedEventArgs
 
 initConfig()
 
@@ -451,12 +452,19 @@ if (isManagerOnBoot()):
 def alertSpicetifyStatus():
     status = spicetifyStatusCheck()
     if status == 2:
-        windowsToast("Spicetify Manager", "Update available!")
+        spicetifyStatusToast(
+            'A new version of Spicetify is available').on_activated = toast_callback
     elif status == 1:
-        windowsToast("Spicetify Manager", "Not applied!")
+        spicetifyStatusToast(
+            'Spicetify is not working correctly').on_activated = toast_callback
+
+
+def toast_callback(activatedEventArgs: ToastActivatedEventArgs):
+    print('For some f***ing reason this is not working pls help')
 
 
 # start the app
+manager = None
 if __name__ == "__main__":
     manager = Manager()
     manager.run()

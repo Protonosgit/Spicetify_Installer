@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QErrorMessage, QMessageBox
+from PyQt6.QtWidgets import QMessageBox
 from windows_toasts import WindowsToaster, Toast, ToastButton, InteractableWindowsToaster
 
 # !!!
@@ -40,15 +40,13 @@ def windowsToast(title, message):
     toastbuilder.text_fields = [title, message]
     toaster.show_toast(toastbuilder)
 
-# Unused
 
-
-def winUpdateToast():
-    # unused due to limitations related to the window manager in main.py
+def spicetifyStatusToast(message):
     interactableToaster = InteractableWindowsToaster('Spicetify Manager')
-    newToast = Toast(['Spicetify is not active'], 'Spicetify Manager')
+    newToast = Toast([message])
 
-    newToast.AddAction(ToastButton('Open Manager', 'response=decent'))
+    newToast.AddAction(ToastButton('Open manager', 'response=decent'))
     newToast.AddAction(ToastButton('Ignore', 'response=bad'))
 
     interactableToaster.show_toast(newToast)
+    return newToast

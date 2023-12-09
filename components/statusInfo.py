@@ -154,17 +154,17 @@ def checkMarketplaceInstalled():
 
 def spicetifyStatusCheck():
     try:
-        LOCALSPICETIFYVER = subprocess.check_output(
-            'spicetify --version', shell=True).decode("utf-8").strip()
-        LATESTSPICETIFYVER = getLatestSpicetifyRelease().replace("v", "").strip()
-        linkpath = os.path.join(os.path.join(os.path.expanduser(
-            '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
-        if os.path.exists(linkpath):
-            if (LOCALSPICETIFYVER == LATESTSPICETIFYVER):
-                return 0
+        if checkSpicetifyInstalled():
+            spicetifylatest = getLatestSpicetifyRelease().replace("v", "").strip()
+            spicetifylocal = subprocess.check_output(
+                'spicetify --version', shell=True).decode("utf-8").strip()
+            if checkSpicetifyActive():
+                if spicetifylatest == spicetifylocal:
+                    return 0
+                else:
+                    return 2
             else:
                 return 1
-        else:
-            return 2
+        return 0
     except:
         return 0
