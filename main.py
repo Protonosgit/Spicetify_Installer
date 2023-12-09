@@ -15,7 +15,7 @@ from components.tools import *
 from components.dialog_windows import AfterInstall
 from werkzeug.wrappers import Request, Response
 from werkzeug.serving import run_simple
-from windows_toasts import ToastActivatedEventArgs
+from windows_toasts import ToastActivatedEventArgs, WindowsToaster, Toast, ToastButton, InteractableWindowsToaster
 
 initConfig()
 
@@ -47,10 +47,13 @@ class Manager(QMainWindow):
             print('Launching in debug mode...')
 
         if not "--startup" in sys.argv:
-            # if "--startup" in sys.argv:
             self.InitWindow()
             self.show()
+
         else:
+            self.InitWindow()
+            self.show()
+            self.hide()
             # Add task tray icon which makes menu window visible on click
             self.tray = QSystemTrayIcon()
             menu = QMenu()
@@ -60,7 +63,6 @@ class Manager(QMainWindow):
                 os.path.dirname(__file__), 'res', 'icon.png'
             )))
             self.tray.setVisible(True)
-            # Check if window is visible and toggle visibility
 
         self.bt_master.clicked.connect(self.masterButton)
         self.bt_uninstall.clicked.connect(self.startRemoval)
@@ -449,19 +451,29 @@ if (isManagerOnBoot()):
 # Checks if spicetify is ok
 
 
+newToast = Toast(['Spicetify Manager'])
+newToast.AddAction(ToastButton('Open Manager', 'response=manager'))
+
+
 def alertSpicetifyStatus():
     status = spicetifyStatusCheck()
-    if status == 2:
-        spicetifyStatusToast(
-            'A new version of Spicetify is available').on_activated = toast_callback
+    if status == 0:
+        print("A new version of Spicetify is available")
+        interactableToaster = InteractableWindowsToaster(
+            'An update for spicetify is available')
+        interactableToaster.show_toast(newToast)
     elif status == 1:
-        spicetifyStatusToast(
-            'Spicetify is not working correctly').on_activated = toast_callback
+        print("Spicetify is not working correctly")
+        interactableToaster = InteractableWindowsToaster(
+            'Spicetify is not working correctly')
+        interactableToaster.show_toast(newToast)
 
 
-def toast_callback(activatedEventArgs: ToastActivatedEventArgs):
-    print('For some f***ing reason this is not working pls help')
+def activated_callback(activatedEventArgs: ToastActivatedEventArgs):
+    manager.show()
 
+
+newToast.on_activated = activated_callback
 
 # start the app
 manager = None
