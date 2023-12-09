@@ -12,8 +12,7 @@ Contributers wellcome!
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Protonosgit/Spicetify_Manager)
 ![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Protonosgit/Spicetify_Manager)
 
-![Logo](/.ghres/preview.png)
-
+![Screenshot](/.ghres/screenshot.jpg)
 ## Features
 
 - [x] Simple installation / update
@@ -29,19 +28,17 @@ Contributers wellcome!
  Currently **Windows only**!
  If would like to improve support for other Platforms feel free to do so!
 
-## ⚠️ Warning 1.2.0 icomming codebase undergoing major changes ⚠️
-If you would like to contribute please first open an issue to discuss your changes!
-
  ## Installation and Running
-Download project from Github and install dependencies
+If you do not trust the generated binary you can run the application directly with your local python installation using the provide instructions.
 
 ```bash
   # Download the project
   git clone https://github.com/Protonosgit/Spicetify_Installer.git
 
-  # Some dependencies might not be required to run the project
+  # Install required dependencies
   python -m pip install requirements.txt
-
+  
+  #Start the application
   python main.py
 ```
 
@@ -55,16 +52,12 @@ The other files are dynamically used as components and windows.
   # Download the project
   git clone https://github.com/Protonosgit/Spicetify_Installer.git
 
-  # Some dependencies might not be required to run the project
+  # Install required dependencies
   python -m pip install requirements.txt
+  python -m pip install pyinstaller
 
   # Build using pyinstaller and predefined config
   pyinstaller main.spec
-
-
-  # Alternatively overwrite with your own config
-  pyinstaller main.py
-
 ```
 
 ## Usage Guide
@@ -79,11 +72,11 @@ The other files are dynamically used as components and windows.
 
 ### Uninstalling
 
-Simply click on uninstall in the managers window and wait until spotify has restarted
+Simply click on the uninstall icon in the bottom right and confirm your choice
 
-### Updating
+### Updating, Activating, Repairing
 
-Clicking on the update button will check for version numbers first before initiating the download sequence
+All of the above will be automatically detected, just confirm the actions!
 
 ## Manager API
 
@@ -94,10 +87,11 @@ There might be more efficient ways to do this so feel free to suggest any improv
 
 ## Safety 
 This project was flagged by some antivirus programs and I currently don't know how to avoid this!
-So feel free to download the executables from Github actions and use them instead of the release files (They are identical)
+So feel free to download the executables from **Github actions** and use them instead of the release files (They are identical)
 
 
 ## Acknowledgements
 - [Spicetify](https://spicetify.app/)
 - [Marketplace](https://github.com/spicetify/spicetify-marketplace)
 - [Badges by Shields.io](https://shields.io/)
+- [Api hosted on Netlify](https://netlify.com)
