@@ -72,10 +72,8 @@ class Manager(QMainWindow):
 
     def InitWindow(self):
         self.statusUpdate()
-
         movie = QMovie(os.path.join(
             os.path.dirname(__file__), "res", "retroflicker.gif"))
-
         self.background_graphics.setMovie(movie)
         self.background_graphics.show()
         movie.start()
