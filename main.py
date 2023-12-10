@@ -58,7 +58,7 @@ class Manager(QMainWindow):
             self.tray = QSystemTrayIcon()
             menu = QMenu()
             self.tray.setContextMenu(menu)
-            # self.tray.activated.connect()
+            self.tray.activated.connect(self.showManagerWindow)
             self.tray.setIcon(QIcon(os.path.join(
                 os.path.dirname(__file__), 'res', 'icon.png'
             )))
@@ -80,6 +80,10 @@ class Manager(QMainWindow):
         self.background_graphics.setMovie(movie)
         self.background_graphics.show()
         movie.start()
+
+    def showManagerWindow(self):
+        self.InitWindow()
+        self.show()
 
     # Ask user to keep manager in background
 
