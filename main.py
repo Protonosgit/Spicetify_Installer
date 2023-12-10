@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QMainWindow, QMessageBox, QApplication, QSystemTrayI
 from PyQt6.QtCore import Qt, QUrl, QThread
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices, QMovie, QIcon
-from components.popups import errorDialog, infoDialog, windowsToast, confirmationModal, spicetifyStatusToast
+from components.popups import errorDialog, warnDialog, windowsToast, confirmationModal, spicetifyStatusToast
 from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand, blockSpotifyUpdate
 from components.statusInfo import *
 from components.tools import *
@@ -31,7 +31,8 @@ class Manager(QMainWindow):
         self.isApplied = False
         self.isActive = False
         self.isMarketInstalled = False
-        self.isWatchWitched = False
+        self.isWatchWitchPatched = False
+        self.isRunningOnBoot = False
         self.isAutoClosing = False
         self.managermode = 0
 
@@ -70,6 +71,7 @@ class Manager(QMainWindow):
         self.check_noupdate.stateChanged.connect(self.DisableUpdate)
         self.check_watchwitch.stateChanged.connect(self.PatchWatchWitch)
         self.check_autoclose.stateChanged.connect(self.AutoClose)
+        self.check_startonboot.stateChanged.connect(self.startOnBoot)
 
     # Execute once window is loaded before listeners are enabled
 
@@ -81,6 +83,7 @@ class Manager(QMainWindow):
         self.background_graphics.show()
         movie.start()
 
+    # Display manager window
     def showManagerWindow(self):
         self.InitWindow()
         self.show()
@@ -255,28 +258,32 @@ class Manager(QMainWindow):
                 pass
                 windowsToast("Update supression updated", "")
 
-    # Apply Watchwitch server
+    # Enable Watchwitch server
     def PatchWatchWitch(self):
-        folder_path = os.path.join(os.path.join(os.path.expanduser(
-            '~'), 'AppData', 'Local'), 'spicetify', 'Manager.exe')
-        if os.path.exists(folder_path):
-            writeConfig('Manager', 'watchwitch', str(
-                self.check_watchwitch.isChecked()))
-            watchwitchInjector(self.check_watchwitch.isChecked())
-            addToStartup(self.check_watchwitch.isChecked())
-        else:
-            self.check_watchwitch.setChecked(False)
-            folder_path = os.path.join(os.path.join(
-                os.path.expanduser('~'), 'AppData', 'Local'), 'spicetify')
-            reply = confirmationModal(
-                'Executeable not found', 'Please put the manager executeable in the "localappdata/spicetify/Manager.exe" folder! \n Do you want to open the folder?')
-            if reply == QMessageBox.StandardButton.Yes:
-                os.startfile(folder_path)
-    # Auto close manager after completing actions (does not check for status!)
+        writeConfig('Manager', 'watchwitch', str(
+            self.check_watchwitch.isChecked()))
+        watchwitchInjector(self.check_watchwitch.isChecked())
+        if not self.check_startonboot.isChecked() and self.check_watchwitch.isChecked():
+            warnDialog(
+                "Start on boot is not enabled! \nThe server will not start on boot!")
 
+    # Auto close manager after completing actions (does not check for status!)
     def AutoClose(self):
         writeConfig('Manager', 'autoclose', str(
             self.check_autoclose.isChecked()))
+
+    # Start on boot
+    def startOnBoot(self):
+        managerpath = os.path.join(os.path.join(os.path.expanduser(
+            '~'), 'AppData', 'Local'), 'spicetify', 'Manager.exe')
+        addToStartup(self.check_startonboot.isChecked())
+        if not os.path.exists(managerpath):
+            folder_path = os.path.join(os.path.join(
+                os.path.expanduser('~'), 'AppData', 'Local'), 'spicetify')
+            reply = confirmationModal(
+                'Executeable not found', 'Please put the manager executeable in the "localappdata/spicetify/Manager.exe" folder or else the manager will not start! \n Do you want to open the folder?')
+            if reply == QMessageBox.StandardButton.Yes:
+                os.startfile(folder_path)
 
     # Called when spicetify is installed or not
 
@@ -323,12 +330,14 @@ class Manager(QMainWindow):
                     'spicetify --version', shell=True).decode("utf-8").strip()
 
             if self.isApplied:
-                self.isWatchWitched = checkWatchWitch()
+                self.isWatchWitchPatched = checkWatchWitchPatched()
 
             if (readConfig('Manager', 'autoclose') == 'True'):
                 self.isAutoClosing = True
             else:
                 self.isAutoClosing = False
+
+            self.isRunningOnBoot = isAddedToStartup()
 
         except Exception as e:
             print('Error while checking spicetify status')
@@ -409,8 +418,9 @@ class Manager(QMainWindow):
             self.managermode = 1
 
         self.check_noupdate.setChecked(checkUpdateSupression())
-        self.check_watchwitch.setChecked(self.isWatchWitched)
+        self.check_watchwitch.setChecked(self.isWatchWitchPatched)
         self.check_autoclose.setChecked(self.isAutoClosing)
+        self.check_startonboot.setChecked(self.isRunningOnBoot)
 
     def checkUpdateAvailable(self):
         if (managerUpdateCheck()):
@@ -448,7 +458,7 @@ class WerkzeugThread(QThread):
 
 
 # Runs the server if enabled
-if (isManagerOnBoot()):
+if (readConfig('Manager', 'watchwitch') == 'True'):
     watchwitch = WerkzeugThread()
     watchwitch.start()
 

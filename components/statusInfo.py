@@ -50,7 +50,7 @@ def checkSpotifyRunning():
         return False
 
 
-def checkWatchWitch():
+def checkWatchWitchPatched():
     try:
         witchpath = os.path.join(os.path.join(os.path.expanduser(
             '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui', 'index.html')
@@ -65,18 +65,17 @@ def checkWatchWitch():
         return False
 
 
-def isManagerOnBoot():
+def isAddedToStartup():
     try:
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
                              "Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_READ)
-        _, value, _ = winreg.QueryValueEx(key, "SpicetifyManager")
+        value, regtype = winreg.QueryValueEx(key, "SpicetifyManager")
         winreg.CloseKey(key)
         return True
     except FileNotFoundError:
         return False
     except Exception as e:
-        print("Error while checking if added to startup")
-        print(e)
+        print(f"An error occurred: {e}")
         return False
 
 
