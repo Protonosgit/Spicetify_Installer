@@ -150,7 +150,7 @@
 }
 QCheckBox {
 	color: white;
-	font-size: 16px;
+	font-size: 18px;
 }
 QCheckBox::indicator {
 	width: 15px;
@@ -577,7 +577,7 @@ QPushButton:hover
      </widget>
      <widget class="QCheckBox" name="check_autopatch">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -645,6 +645,33 @@ QPushButton:hover
       </property>
       <property name="text">
        <string>Start manager on boot</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>50</width>
+        <height>50</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="check_neverrestart">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>220</y>
+        <width>381</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QCheckBox:!enabled{
+	color: rgba(255, 255, 255, 120);
+}</string>
+      </property>
+      <property name="text">
+       <string>Never restart Spotify</string>
       </property>
       <property name="iconSize">
        <size>

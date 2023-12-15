@@ -2,7 +2,9 @@ import sys
 import os
 import subprocess
 import shutil
+import time
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
+from components.statusInfo import checkSpotifyRunning
 
 # Installer task for both windows and linux/mac with progress and error handling
 
@@ -85,6 +87,25 @@ class UninstallSpicetify(QThread):
             print("Error while uninstalling!")
         self.finished_signal.emit()
 
+# Activate spicetify  task
+
+
+class ActivateSpicetify(QThread):
+    finished_signal = pyqtSignal()
+
+    def run(self):
+        print("Activation started")
+        try:
+            killpath1 = os.path.join(os.path.join(os.path.expanduser(
+                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
+            killpath2 = os.path.join(os.path.join(os.path.expanduser(
+                '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui.spa')
+            os.remove(killpath1)
+            os.remove(killpath2)
+        except:
+            print("Error while removing login.spa and xpui.spa")
+        self.finished_signal.emit()
+
 # Custom command task
 
 
@@ -142,3 +163,16 @@ def blockSpotifyUpdate(active):
         except subprocess.CalledProcessError as e:
             print(f'Error: {e.returncode}. patcher failed.')
             return e.returncode
+
+# Restart Spotify
+
+
+class RestartSpotify(QThread):
+    def run(self):
+        print("Restarting Spotify")
+        if checkSpotifyRunning():
+            subprocess.run('taskkill /f /im Spotify.exe')
+            time.sleep(2)
+            spotipath = os.path.join(os.path.join(os.path.expanduser(
+                '~'), 'AppData', 'Roaming'), 'Spotify', 'Spotify.exe')
+            subprocess.Popen(spotipath)

@@ -9,13 +9,13 @@ from PyQt6.QtCore import Qt, QUrl, QThread
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices, QMovie, QIcon
 from components.popups import errorDialog, warnDialog, windowsToast, confirmationModal, spicetifyStatusToast
-from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, UninstallSpicetify, CustomCommand, blockSpotifyUpdate
+from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, ActivateSpicetify, UninstallSpicetify, CustomCommand, blockSpotifyUpdate, RestartSpotify
 from components.statusInfo import *
 from components.tools import *
 from components.dialog_windows import AfterInstall
 from werkzeug.wrappers import Request, Response
 from werkzeug.serving import run_simple
-from windows_toasts import ToastActivatedEventArgs, WindowsToaster, Toast, ToastButton, InteractableWindowsToaster
+from windows_toasts import ToastActivatedEventArgs, Toast, ToastButton, InteractableWindowsToaster
 
 initConfig()
 
@@ -34,6 +34,8 @@ class Manager(QMainWindow):
         self.isWatchWitchPatched = False
         self.isRunningOnBoot = False
         self.isAutoClosing = False
+        self.isNeverRestarting = False
+        self.isAutoPatching = False
         self.managermode = 0
 
         self.LOCALSPICETIFYVER = ''
@@ -71,7 +73,9 @@ class Manager(QMainWindow):
         self.check_noupdate.stateChanged.connect(self.DisableUpdate)
         self.check_watchwitch.stateChanged.connect(self.PatchWatchWitch)
         self.check_autoclose.stateChanged.connect(self.AutoClose)
+        self.check_autopatch.stateChanged.connect(self.AutoPatchInBackground)
         self.check_startonboot.stateChanged.connect(self.startOnBoot)
+        self.check_neverrestart.stateChanged.connect(self.NeverRestart)
 
     # Execute once window is loaded before listeners are enabled
 
@@ -144,16 +148,15 @@ class Manager(QMainWindow):
             self.iprocess.start()
         elif self.managermode == 4:
             # Re-apply after spotify update
-            try:
-                killpath1 = os.path.join(os.path.join(os.path.expanduser(
-                    '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
-                killpath2 = os.path.join(os.path.join(os.path.expanduser(
-                    '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui.spa')
-                os.remove(killpath1)
-                os.remove(killpath2)
-            except:
-                print("Error while removing login.spa and xpui.spa")
-            self.statusUpdate()
+
+            self.setCursor(Qt.CursorShape.WaitCursor)
+            self.bt_master.setEnabled(False)
+            self.bt_uninstall.setEnabled(False)
+            self.l_status.setText("Fixing Spotify...")
+            self.l_versioninfo.setText('⏳Please wait⏳')
+            self.iprocess = ActivateSpicetify()
+            self.iprocess.finished_signal.connect(self.activate_finished)
+            self.iprocess.start()
         elif self.managermode == 5:
             # update spicetify cli
             self.setCursor(Qt.CursorShape.WaitCursor)
@@ -272,6 +275,19 @@ class Manager(QMainWindow):
         writeConfig('Manager', 'autoclose', str(
             self.check_autoclose.isChecked()))
 
+    # Never restart Spotify after modifying app
+    def NeverRestart(self):
+        writeConfig('Manager', 'never_restart', str(
+            self.check_neverrestart.isChecked()))
+
+    # Auto patch in background
+    def AutoPatchInBackground(self):
+        if self.check_autopatch.isChecked() and not (self.check_startonboot.isChecked() and self.check_watchwitch.isChecked()):
+            warnDialog(
+                "Start on boot and/or startup listener is not enabled! \n This option will have no effect without those options enabled!")
+        writeConfig('Manager', 'autopatch', str(
+            self.check_autopatch.isChecked()))
+
     # Start on boot
     def startOnBoot(self):
         managerpath = os.path.join(os.path.join(os.path.expanduser(
@@ -286,7 +302,6 @@ class Manager(QMainWindow):
                 os.startfile(folder_path)
 
     # Called when spicetify is installed or not
-
     def setup_finished(self):
         if self.isAutoClosing:
             self.close()
@@ -307,6 +322,16 @@ class Manager(QMainWindow):
     def uninstall_finished(self):
         self.statusUpdate()
         windowsToast("Spicetify has been uninstalled!", "")
+        if self.isAutoClosing:
+            self.close()
+
+    # Called when spicetify was activated
+    def activate_finished(self):
+        self.statusUpdate()
+        windowsToast("Spicetify is now active again!", "")
+        if not self.isNeverRestarting:
+            self.iprocess = RestartSpotify()
+            self.iprocess.start()
         if self.isAutoClosing:
             self.close()
 
@@ -336,6 +361,16 @@ class Manager(QMainWindow):
                 self.isAutoClosing = True
             else:
                 self.isAutoClosing = False
+
+            if (readConfig('Manager', 'never_restart') == 'True'):
+                self.isNeverRestarting = True
+            else:
+                self.isNeverRestarting = False
+
+            if (readConfig('Manager', 'autopatch') == 'True'):
+                self.isAutoPatching = True
+            else:
+                self.isAutoPatching = False
 
             self.isRunningOnBoot = isAddedToStartup()
 
@@ -421,6 +456,8 @@ class Manager(QMainWindow):
         self.check_watchwitch.setChecked(self.isWatchWitchPatched)
         self.check_autoclose.setChecked(self.isAutoClosing)
         self.check_startonboot.setChecked(self.isRunningOnBoot)
+        self.check_neverrestart.setChecked(self.isNeverRestarting)
+        self.check_autopatch.setChecked(self.isAutoPatching)
 
     def checkUpdateAvailable(self):
         if (managerUpdateCheck()):
