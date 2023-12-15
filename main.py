@@ -303,11 +303,17 @@ class Manager(QMainWindow):
 
     # Called when spicetify is installed or not
     def setup_finished(self):
+        if not self.isNeverRestarting:
+            self.iprocess = RestartSpotify()
+            self.iprocess.start()
         if self.isAutoClosing:
             self.close()
 
     # Called when spicetify is updated
     def update_finished(self):
+        if not self.isNeverRestarting:
+            self.iprocess = RestartSpotify()
+            self.iprocess.start()
         if self.isAutoClosing:
             self.close()
 
@@ -315,6 +321,9 @@ class Manager(QMainWindow):
     def apply_finished(self):
         self.statusUpdate()
         windowsToast("Spicetify has been applied!", "")
+        if not self.isNeverRestarting:
+            self.iprocess = RestartSpotify()
+            self.iprocess.start()
         if self.isAutoClosing:
             self.close()
 
@@ -322,6 +331,9 @@ class Manager(QMainWindow):
     def uninstall_finished(self):
         self.statusUpdate()
         windowsToast("Spicetify has been uninstalled!", "")
+        if not self.isNeverRestarting:
+            self.iprocess = RestartSpotify()
+            self.iprocess.start()
         if self.isAutoClosing:
             self.close()
 

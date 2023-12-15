@@ -67,7 +67,7 @@ class ApplySpicetify(QThread):
 
     def run(self):
         print("Apply started")
-        subprocess.check_output('spicetify apply -q', shell=True)
+        subprocess.check_output('spicetify apply -q -n', shell=True)
         self.finished_signal.emit()
 
 # Uninstall  spicetify task
