@@ -9,7 +9,7 @@ from PyQt6.QtCore import Qt, QUrl, QThread
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices, QMovie, QIcon
 from components.popups import errorDialog, warnDialog, windowsToast, confirmationModal, spicetifyStatusToast
-from components.shellbridge import InstallSpicetify, UpdateSpicetify, ApplySpicetify, ActivateSpicetify, UninstallSpicetify, CustomCommand, blockSpotifyUpdate, RestartSpotify
+from components.shellbridge import *
 from components.statusInfo import *
 from components.tools import *
 from components.dialog_windows import AfterInstall
@@ -520,16 +520,27 @@ newToast.AddAction(ToastButton('Open Manager', 'response=manager'))
 
 def alertSpicetifyStatus():
     status = spicetifyStatusCheck()
-    if status == 0:
-        print("A new version of Spicetify is available")
-        interactableToaster = InteractableWindowsToaster(
-            'An update for spicetify is available')
-        interactableToaster.show_toast(newToast)
-    elif status == 1:
-        print("Spicetify is not working correctly")
-        interactableToaster = InteractableWindowsToaster(
-            'Spicetify is not working correctly')
-        interactableToaster.show_toast(newToast)
+    if readConfig('Manager', 'autopatch') == 'True':
+        if status == 0:
+            windowsToast("Spicetify is updating", "Prepare for restart!")
+            subprocess.run('spicetify upgrade -q', shell=True)
+        elif status == 1:
+            if backgroundActivate():
+                windowsToast("Background Patcher",
+                             "Spicetify has been activated!")
+            else:
+                windowsToast("Error", "Spicetify could not be activated!")
+    else:
+        if status == 0:
+            print("A new version of Spicetify is available")
+            interactableToaster = InteractableWindowsToaster(
+                'An update for spicetify is available')
+            interactableToaster.show_toast(newToast)
+        elif status == 1:
+            print("Spicetify is not working correctly")
+            interactableToaster = InteractableWindowsToaster(
+                'Spicetify is not working correctly')
+            interactableToaster.show_toast(newToast)
 
 
 def activated_callback(activatedEventArgs: ToastActivatedEventArgs):

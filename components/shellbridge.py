@@ -176,3 +176,17 @@ class RestartSpotify(QThread):
             spotipath = os.path.join(os.path.join(os.path.expanduser(
                 '~'), 'AppData', 'Roaming'), 'Spotify', 'Spotify.exe')
             subprocess.Popen(spotipath)
+
+
+def backgroundActivate():
+    try:
+        killpath1 = os.path.join(os.path.join(os.path.expanduser(
+            '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'login.spa')
+        killpath2 = os.path.join(os.path.join(os.path.expanduser(
+            '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui.spa')
+        os.remove(killpath1)
+        os.remove(killpath2)
+        return True
+    except:
+        print("Error while removing login.spa and xpui.spa")
+        return False
