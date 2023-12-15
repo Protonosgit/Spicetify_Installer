@@ -240,26 +240,15 @@ class Manager(QMainWindow):
     def DisableUpdate(self):
         writeConfig('Manager', 'NoUpdate', str(
             self.check_noupdate.isChecked()))
-        if self.check_noupdate.isChecked():
-            reply = confirmationModal(
-                'Disable Updates', 'Are you sure you want to disable all automatic updates for Spotify?')
-            if reply == QMessageBox.StandardButton.Yes:
-                if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
-                    pass
-                    windowsToast("Update supression change failed!", "")
-                else:
-                    pass
-                    windowsToast("Update supression updated", "")
-            else:
-                self.check_noupdate.setChecked(
-                    not self.check_noupdate.isChecked())
+        if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
+            windowsToast("Update supression change failed", "")
         else:
-            if (blockSpotifyUpdate(self.check_noupdate.isChecked())):
-                pass
-                windowsToast("Update supression change failed", "")
+            if self.check_noupdate.isChecked():
+                windowsToast("All automatic updates disabled",
+                             "No updates will be performed automatically by Spotify")
             else:
-                pass
-                windowsToast("Update supression updated", "")
+                windowsToast("Automatic updates enabled",
+                             "Spotify will autoupdate now")
 
     # Enable Watchwitch server
     def PatchWatchWitch(self):
@@ -293,7 +282,7 @@ class Manager(QMainWindow):
         managerpath = os.path.join(os.path.join(os.path.expanduser(
             '~'), 'AppData', 'Local'), 'spicetify', 'Manager.exe')
         addToStartup(self.check_startonboot.isChecked())
-        if not os.path.exists(managerpath):
+        if not os.path.exists(managerpath) and self.check_startonboot.isChecked():
             folder_path = os.path.join(os.path.join(
                 os.path.expanduser('~'), 'AppData', 'Local'), 'spicetify')
             reply = confirmationModal(
@@ -525,19 +514,13 @@ def alertSpicetifyStatus():
             windowsToast("Spicetify is updating", "Prepare for restart!")
             subprocess.run('spicetify upgrade -q', shell=True)
         elif status == 1:
-            if backgroundActivate():
-                windowsToast("Background Patcher",
-                             "Spicetify has been activated!")
-            else:
-                windowsToast("Error", "Spicetify could not be activated!")
+            windowsToast("Background Patcher", "Spicetify has been activated!")
     else:
         if status == 0:
-            print("A new version of Spicetify is available")
             interactableToaster = InteractableWindowsToaster(
                 'An update for spicetify is available')
             interactableToaster.show_toast(newToast)
         elif status == 1:
-            print("Spicetify is not working correctly")
             interactableToaster = InteractableWindowsToaster(
                 'Spicetify is not working correctly')
             interactableToaster.show_toast(newToast)

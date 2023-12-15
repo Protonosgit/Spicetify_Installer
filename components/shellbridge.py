@@ -186,7 +186,5 @@ def backgroundActivate():
             '~'), 'AppData', 'Roaming'), 'Spotify', 'Apps', 'xpui.spa')
         os.remove(killpath1)
         os.remove(killpath2)
-        return True
     except:
         print("Error while removing login.spa and xpui.spa")
-        return False

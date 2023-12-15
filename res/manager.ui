@@ -529,7 +529,7 @@ QPushButton:hover
        <rect>
         <x>20</x>
         <y>20</y>
-        <width>381</width>
+        <width>571</width>
         <height>31</height>
        </rect>
       </property>
@@ -539,7 +539,7 @@ QPushButton:hover
 }</string>
       </property>
       <property name="text">
-       <string>Try to block Spotify updates (Windows only)</string>
+       <string>Try to block Spotify updates</string>
       </property>
       <property name="iconSize">
        <size>
@@ -555,8 +555,8 @@ QPushButton:hover
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>100</y>
-        <width>381</width>
+        <y>180</y>
+        <width>571</width>
         <height>31</height>
        </rect>
       </property>
@@ -582,8 +582,8 @@ QPushButton:hover
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>180</y>
-        <width>381</width>
+        <y>220</y>
+        <width>571</width>
         <height>31</height>
        </rect>
       </property>
@@ -593,7 +593,7 @@ QPushButton:hover
 }</string>
       </property>
       <property name="text">
-       <string>Auto update Spicetify in background</string>
+       <string>Auto update/activate Spicetify in background</string>
       </property>
       <property name="iconSize">
        <size>
@@ -609,8 +609,8 @@ QPushButton:hover
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>140</y>
-        <width>381</width>
+        <y>100</y>
+        <width>571</width>
         <height>31</height>
        </rect>
       </property>
@@ -620,7 +620,7 @@ QPushButton:hover
 }</string>
       </property>
       <property name="text">
-       <string>Close manager after process</string>
+       <string>Close manager after update,install,etc</string>
       </property>
       <property name="iconSize">
        <size>
@@ -633,8 +633,8 @@ QPushButton:hover
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>60</y>
-        <width>381</width>
+        <y>140</y>
+        <width>571</width>
         <height>31</height>
        </rect>
       </property>
@@ -660,8 +660,8 @@ QPushButton:hover
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>220</y>
-        <width>381</width>
+        <y>60</y>
+        <width>571</width>
         <height>31</height>
        </rect>
       </property>
@@ -671,7 +671,7 @@ QPushButton:hover
 }</string>
       </property>
       <property name="text">
-       <string>Never restart Spotify</string>
+       <string>Never restart Spotify (excludes marketplace script)</string>
       </property>
       <property name="iconSize">
        <size>
