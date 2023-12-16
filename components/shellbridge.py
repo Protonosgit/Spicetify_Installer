@@ -3,7 +3,7 @@ import os
 import subprocess
 import shutil
 import time
-from PyQt6.QtCore import Qt, QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 from components.statusInfo import checkSpotifyRunning
 
 # Installer task for both windows and linux/mac with progress and error handling
@@ -51,7 +51,7 @@ class UpdateSpicetify(QThread):
         print("Update started")
         try:
             self.progress_signal.emit("Auto Updating...")
-            subprocess.run('spicetify upgrade -q -n', shell=True)
+            subprocess.run('spicetify upgrade -q -n', shell=True, check=True)
             self.progress_signal.emit("done")
         except Exception as e:
             self.progress_signal.emit("fail")
@@ -67,7 +67,11 @@ class ApplySpicetify(QThread):
 
     def run(self):
         print("Apply started")
-        subprocess.check_output('spicetify apply -q -n', shell=True)
+        try:
+            subprocess.check_output(
+                'spicetify apply -q -n', shell=True, check=True)
+        except:
+            pass
         self.finished_signal.emit()
 
 # Uninstall  spicetify task
@@ -75,15 +79,21 @@ class ApplySpicetify(QThread):
 
 class UninstallSpicetify(QThread):
     finished_signal = pyqtSignal()
+    progress_signal = pyqtSignal(str)
 
     def run(self):
         try:
-            subprocess.run('spicetify restore -q -n', shell=True)
+            self.progress_signal.emit("Restoring Spotify from backup")
+            subprocess.run('spicetify restore -q -n', shell=True, check=True)
+            self.progress_signal.emit("Removing Spicetify data folder")
             subprocess.run(
                 'powershell.exe -Command "rmdir -r -fo $env:APPDATA\spicetify"', check=True, shell=True)
+            self.progress_signal.emit("Removing Spicetify config folder")
             subprocess.run(
                 'powershell.exe -Command "rmdir -r -fo $env:LOCALAPPDATA\spicetify"', check=True, shell=True)
+            self.progress_signal.emit("done")
         except:
+            self.progress_signal.emit("fail")
             print("Error while uninstalling!")
         self.finished_signal.emit()
 

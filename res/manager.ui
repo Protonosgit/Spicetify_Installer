@@ -418,7 +418,7 @@ QPushButton:hover
        <normaloff>ic_plus.png</normaloff>ic_plus.png</iconset>
      </attribute>
      <attribute name="title">
-      <string>Advanced</string>
+      <string>Options</string>
      </attribute>
      <widget class="QWidget" name="horizontalLayoutWidget_2">
       <property name="geometry">

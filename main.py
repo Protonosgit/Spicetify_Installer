@@ -36,6 +36,7 @@ class Manager(QMainWindow):
         self.isAutoClosing = False
         self.isNeverRestarting = False
         self.isAutoPatching = False
+        self.isInFaultMode = False
         self.managermode = 0
 
         self.LOCALSPICETIFYVER = ''
@@ -49,6 +50,7 @@ class Manager(QMainWindow):
             loadUi("res/manager.ui", self)
             print('Launching in debug mode...')
 
+        # Checks if file is run on startup
         if not "--startup" in sys.argv:
             self.InitWindow()
             self.show()
@@ -112,9 +114,11 @@ class Manager(QMainWindow):
         else:
             event.accept()
 
+    #
     # Master trigger for all actions related to spicetify
-
+    #
     def masterButton(self):
+        self.isInFaultMode = False
         # opne spotify
         if self.managermode == 0:
             os.startfile(os.path.join(os.path.expanduser('~'),
@@ -148,7 +152,6 @@ class Manager(QMainWindow):
             self.iprocess.start()
         elif self.managermode == 4:
             # Re-apply after spotify update
-
             self.setCursor(Qt.CursorShape.WaitCursor)
             self.bt_master.setEnabled(False)
             self.bt_uninstall.setEnabled(False)
@@ -180,12 +183,34 @@ class Manager(QMainWindow):
             self.iprocess.progress_signal.connect(self.installProgress)
             self.iprocess.start()
 
+    #
+    # Uninstall Button listener
+    #
+    def startRemoval(self):
+        self.isInFaultMode = False
+        reply = confirmationModal(
+            'Uninstall', 'Are you sure you want to uninstall Spicetify and remove all installed mods/themes ?')
+        if reply == QMessageBox.StandardButton.Yes:
+            self.setCursor(Qt.CursorShape.WaitCursor)
+            self.bt_uninstall.setEnabled(False)
+            self.bt_master.setEnabled(False)
+            self.l_status.setStyleSheet("color: Orange")
+            self.l_status.setText("Uninstalling Spicetify...")
+            self.iprocess = UninstallSpicetify()
+            self.iprocess.finished_signal.connect(self.uninstall_finished)
+            self.iprocess.progress_signal.connect(self.uninstallProgress)
+            self.iprocess.start()
+        else:
+            return False
+
+    #
+    # Background worker progress update listener
+    #
+
     # Update user about progress while installing spicetify
     def installProgress(self, action):
         if (action == "fail"):
-            self.l_status.setStyleSheet("color: red")
-            self.l_status.setText("⚠️ Installer has crashed ⚠️")
-            errorDialog(
+            self.enterFaultMode(
                 "The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
         elif (action == "done"):
             self.statusUpdate()
@@ -199,41 +224,39 @@ class Manager(QMainWindow):
     # Update user about progress while updating spicetify
     def updateProgress(self, action):
         if (action == "fail"):
-            self.l_status.setStyleSheet("color: red")
-            self.l_status.setText("⚠️ Updater has crashed ⚠️")
-            errorDialog(
-                "The installation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.")
+            self.enterFaultMode(
+                "An error occured while updating spicetify! Check logs or ask for help.")
         elif (action == "done"):
             self.statusUpdate()
-            dialog = AfterInstall(self)
-            dialog.exec()
+        else:
+            self.l_status.setStyleSheet("color: Orange")
+            self.l_status.setText(action)
+            self.l_versioninfo.setText("This process may take a few minutes!")
+    # Update user about progress while uninstalling spicetify
+
+    def uninstallProgress(self, action):
+        if (action == "fail"):
+            self.enterFaultMode(
+                'The uninstallation of Spicetify has failed due to an unrecoverable error! Check logs or ask for help.')
         else:
             self.l_status.setStyleSheet("color: Orange")
             self.l_status.setText(action)
             self.l_versioninfo.setText("This process may take a few minutes!")
 
-    # Launch uninstaller task
-    def startRemoval(self):
-        reply = confirmationModal(
-            'Uninstall', 'Are you sure you want to uninstall Spicetify and remove all installed mods/themes ?')
-        if reply == QMessageBox.StandardButton.Yes:
-            self.setCursor(Qt.CursorShape.WaitCursor)
-            self.bt_uninstall.setEnabled(False)
-            self.bt_master.setEnabled(False)
-            self.l_status.setStyleSheet("color: Orange")
-            self.l_status.setText("Uninstalling Spicetify...")
-            self.iprocess = UninstallSpicetify()
-            self.iprocess.finished_signal.connect(self.uninstall_finished)
-            self.iprocess.start()
-        else:
-            return False
+    # Informs user about patch or other failure
+    def enterFaultMode(self, context):
+        self.isInFaultMode = True
+        self.setCursor(Qt.CursorShape.ArrowCursor)
+        self.bt_uninstall.setEnabled(True)
+        self.bt_master.setEnabled(True)
+        self.l_status.setStyleSheet("color: red")
+        self.l_status.setText("⚠️ An error occured ⚠️")
+        self.l_versioninfo.setText('Task not completed due to crash')
+        errorDialog(context)
 
-    # Run custom commands
-
-    def Custom(self):
-        self.iprocess = CustomCommand(self.combo_cmd.currentIndex())
-        self.iprocess.finished_signal.connect(self.uninstall_finished)
-        self.iprocess.start()
+    #
+    # Advanced checkbox changed event receivers
+    #
 
     # Disables Spotify self update function using permissions
 
@@ -290,13 +313,24 @@ class Manager(QMainWindow):
             if reply == QMessageBox.StandardButton.Yes:
                 os.startfile(folder_path)
 
+    # Run custom command button listener
+    def Custom(self):
+        self.iprocess = CustomCommand(self.combo_cmd.currentIndex())
+        self.iprocess.finished_signal.connect(self.uninstall_finished)
+        self.iprocess.start()
+
+    #
+    # Background Worker finished signal receivers (checks id successful)
+    #
+
     # Called when spicetify is installed or not
     def setup_finished(self):
-        if not self.isNeverRestarting:
-            self.iprocess = RestartSpotify()
-            self.iprocess.start()
-        if self.isAutoClosing:
-            self.close()
+        if not self.isInFaultMode:
+            if not self.isNeverRestarting:
+                self.iprocess = RestartSpotify()
+                self.iprocess.start()
+            if self.isAutoClosing:
+                self.close()
 
     # Called when spicetify is updated
     def update_finished(self):
@@ -308,35 +342,40 @@ class Manager(QMainWindow):
 
     # Called when spicetify is applied
     def apply_finished(self):
-        self.statusUpdate()
-        windowsToast("Spicetify has been applied!", "")
-        if not self.isNeverRestarting:
-            self.iprocess = RestartSpotify()
-            self.iprocess.start()
-        if self.isAutoClosing:
-            self.close()
+        if not self.isInFaultMode:
+            self.statusUpdate()
+            windowsToast("Spicetify has been applied!", "")
+            if not self.isNeverRestarting:
+                self.iprocess = RestartSpotify()
+                self.iprocess.start()
+            if self.isAutoClosing:
+                self.close()
 
     # Called when spicetify is uninstalled
     def uninstall_finished(self):
-        self.statusUpdate()
-        windowsToast("Spicetify has been uninstalled!", "")
-        if not self.isNeverRestarting:
-            self.iprocess = RestartSpotify()
-            self.iprocess.start()
-        if self.isAutoClosing:
-            self.close()
+        if not self.isInFaultMode:
+            self.statusUpdate()
+            windowsToast("Spicetify has been uninstalled!", "")
+            if not self.isNeverRestarting:
+                self.iprocess = RestartSpotify()
+                self.iprocess.start()
+            if self.isAutoClosing:
+                self.close()
 
     # Called when spicetify was activated
     def activate_finished(self):
-        self.statusUpdate()
-        windowsToast("Spicetify is now active again!", "")
-        if not self.isNeverRestarting:
-            self.iprocess = RestartSpotify()
-            self.iprocess.start()
-        if self.isAutoClosing:
-            self.close()
+        if not self.isInFaultMode:
+            self.statusUpdate()
+            windowsToast("Spicetify is now active again!", "")
+            if not self.isNeverRestarting:
+                self.iprocess = RestartSpotify()
+                self.iprocess.start()
+            if self.isAutoClosing:
+                self.close()
 
-   # Spicetify status check (read var names for context)
+    #
+    # Spicetify status check and variables init
+    #
     def statusUpdate(self):
         try:
             self.isSpotifyInstalled = checkSpotifyInstalled()
@@ -380,8 +419,10 @@ class Manager(QMainWindow):
             print(e)
 
         self.uiUpdate()
+    #
+    # Define the ui of the manager according to the status of spicetify/spotify
+    #
 
-# Define the ui of the manager according to the status of spicetify/spotify
     def uiUpdate(self):
         self.setCursor(Qt.CursorShape.ArrowCursor)
 
@@ -396,7 +437,7 @@ class Manager(QMainWindow):
 
                     if (self.isActive):
 
-                        if (self.LOCALSPICETIFYVER == self.LATESTSPICETIFYVER):
+                        if (self.LOCALSPICETIFYVER == self.LATESTSPICETIFYVER) or self.LATESTSPICETIFYVER == 'err':
 
                             if (self.isMarketInstalled):
                                 self.l_status.setText(
@@ -460,6 +501,7 @@ class Manager(QMainWindow):
         self.check_neverrestart.setChecked(self.isNeverRestarting)
         self.check_autopatch.setChecked(self.isAutoPatching)
 
+    # Check if manager has update available
     def checkUpdateAvailable(self):
         if (managerUpdateCheck()):
             reply = confirmationModal(
@@ -505,6 +547,8 @@ if (readConfig('Manager', 'watchwitch') == 'True'):
 
 newToast = Toast(['Spicetify Manager'])
 newToast.AddAction(ToastButton('Open Manager', 'response=manager'))
+
+# Listener for startup of spotify with notifications/autopatcher
 
 
 def alertSpicetifyStatus():

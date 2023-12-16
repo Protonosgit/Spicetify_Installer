@@ -35,9 +35,9 @@ def getLatestSpicetifyRelease():
             tag_name = latest_release["tag_name"]
             return tag_name
         else:
-            return '0.0.0'
+            return 'err'
     except:
-        return '0.0.0'
+        return 'err'
 
 
 def checkSpotifyRunning():
