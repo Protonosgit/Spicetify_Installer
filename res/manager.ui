@@ -566,7 +566,7 @@ QPushButton:hover
 }</string>
       </property>
       <property name="text">
-       <string>Spotify startup listener server on port 1738</string>
+       <string>Spotify startup listener server on port 1738 (restart to activate)</string>
       </property>
       <property name="iconSize">
        <size>

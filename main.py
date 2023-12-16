@@ -50,6 +50,17 @@ class Manager(QMainWindow):
             loadUi("res/manager.ui", self)
             print('Launching in debug mode...')
 
+        # Add task tray icon which makes menu window visible on click
+        if (readConfig('Manager', 'watchwitch') == 'True'):
+            self.tray = QSystemTrayIcon()
+            menu = QMenu()
+            self.tray.setContextMenu(menu)
+            self.tray.activated.connect(self.showManagerWindow)
+            self.tray.setIcon(QIcon(os.path.join(
+                os.path.dirname(__file__), 'res', 'icon.png'
+            )))
+            self.tray.setVisible(True)
+
         # Checks if file is run on startup
         if not "--startup" in sys.argv:
             self.InitWindow()
@@ -59,15 +70,6 @@ class Manager(QMainWindow):
             self.InitWindow()
             self.show()
             self.hide()
-            # Add task tray icon which makes menu window visible on click
-            self.tray = QSystemTrayIcon()
-            menu = QMenu()
-            self.tray.setContextMenu(menu)
-            self.tray.activated.connect(self.showManagerWindow)
-            self.tray.setIcon(QIcon(os.path.join(
-                os.path.dirname(__file__), 'res', 'icon.png'
-            )))
-            self.tray.setVisible(True)
 
         self.bt_master.clicked.connect(self.masterButton)
         self.bt_uninstall.clicked.connect(self.startRemoval)
@@ -97,7 +99,7 @@ class Manager(QMainWindow):
     # Ask user to keep manager in background
 
     def closeEvent(self, event):
-        if "--startup" in sys.argv:
+        if self.isWatchWitchPatched:
             message_box = QMessageBox(self)
             message_box.setWindowTitle("Move to background")
             message_box.setText(
@@ -111,8 +113,6 @@ class Manager(QMainWindow):
                 self.hide()
             else:
                 event.accept()
-        else:
-            event.accept()
 
     #
     # Master trigger for all actions related to spicetify
@@ -280,7 +280,7 @@ class Manager(QMainWindow):
         watchwitchInjector(self.check_watchwitch.isChecked())
         if not self.check_startonboot.isChecked() and self.check_watchwitch.isChecked():
             warnDialog(
-                "Start on boot is not enabled! \nThe server will not start on boot!")
+                "Start on boot is not enabled! \n This will only take effect when the the manager is running (or restart if you prefer this)")
 
     # Auto close manager after completing actions (does not check for status!)
     def AutoClose(self):
@@ -294,9 +294,9 @@ class Manager(QMainWindow):
 
     # Auto patch in background
     def AutoPatchInBackground(self):
-        if self.check_autopatch.isChecked() and not (self.check_startonboot.isChecked() and self.check_watchwitch.isChecked()):
+        if self.check_autopatch.isChecked() and not self.check_watchwitch.isChecked():
             warnDialog(
-                "Start on boot and/or startup listener is not enabled! \n This option will have no effect without those options enabled!")
+                "Start on boot and/or startup listener is not enabled! \n Detection will only work WITH the server!")
         writeConfig('Manager', 'autopatch', str(
             self.check_autopatch.isChecked()))
 
