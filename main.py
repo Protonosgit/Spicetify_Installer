@@ -90,6 +90,7 @@ class Manager(QMainWindow):
         self.background_graphics.setMovie(movie)
         self.background_graphics.show()
         movie.start()
+        self.checkUpdateAvailable()
 
     # Display manager window
     def showManagerWindow(self):
