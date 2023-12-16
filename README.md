@@ -13,20 +13,19 @@ Contributers wellcome!
 ![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Protonosgit/Spicetify_Manager)
 
 ![Screenshot](/.ghres/screenshot.jpg)
-## Features
+## Key Features
 
-- [x] Simple installation / update
+- [x] Simple installation,update,removal of Spicetify
 - [X] Installation status/version checker
-- [X] Fix,update and manage previous spicetify installations
+- [x] Automatically update spicetify and apply patches after spotify update
+- [X] Detect and solve problems with your spicetify installation
 - [X] Block Spotify updates
-- [x] Clean and easy removal
+- [x] Options to manage Spotify in background
 - [X] Always use the newest spicetify version
 - [x] Custom cli commands
 - [x] Suggest new versions of Spicetify / Manager
-- [ ] Automatically update spicetify and apply patches after spotify update
 
- Currently **Windows only**!
- If would like to improve support for other Platforms feel free to do so!
+#### Made with Love by Protonos
 
  ## Installation and Running
 If you do not trust the generated binary you can run the application directly with your local python installation using the provide instructions.
@@ -88,6 +87,9 @@ There might be more efficient ways to do this so feel free to suggest any improv
 ## Safety 
 This project was flagged by some antivirus programs and I currently don't know how to avoid this!
 So feel free to download the executables from **Github actions** and use them instead of the release files (They are identical)
+
+Currently **Windows only**!
+If would like to improve support for other Platforms feel free to do so!
 
 
 ## Acknowledgements
