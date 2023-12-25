@@ -3,7 +3,7 @@
 A project for installing and managing Spicetify from a Gui written in python.
 Additionally I included some useful tools to improve your experience with Spotify!
 
-Contributers wellcome!
+Contributers welcome!
 
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/Protonosgit/Spicetify_Installer)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/Protonosgit/Spicetify_Manager)
@@ -35,7 +35,7 @@ If you do not trust the generated binary you can run the application directly wi
   git clone https://github.com/Protonosgit/Spicetify_Installer.git
 
   # Install required dependencies
-  python -m pip install requirements.txt
+  pip install -r requirements.txt
   
   #Start the application
   python main.py
