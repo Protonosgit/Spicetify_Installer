@@ -166,3 +166,16 @@ def spicetifyStatusCheck():
         return 0
     except:
         return 0
+
+
+def checkInternetConnection():
+    try:
+        url = f"https://google.com"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+    except:
+        return False

@@ -5,7 +5,7 @@ import os
 import sys
 import subprocess
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QApplication, QSystemTrayIcon, QMenu
-from PyQt6.QtCore import Qt, QUrl, QThread
+from PyQt6.QtCore import Qt, QUrl, QThread, QTimer
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices, QMovie, QIcon
 from components.popups import errorDialog, warnDialog, windowsToast, confirmationModal, spicetifyStatusToast
@@ -37,6 +37,7 @@ class Manager(QMainWindow):
         self.isNeverRestarting = False
         self.isAutoPatching = False
         self.isInFaultMode = False
+        self.isConnectedToInternet = False
         self.managermode = 0
 
         self.LOCALSPICETIFYVER = ''
@@ -91,8 +92,14 @@ class Manager(QMainWindow):
         self.background_graphics.show()
         movie.start()
         self.checkUpdateAvailable()
+        # Status check interval
+        self.timer = QTimer(self)
+        self.timer.setInterval(120000)
+        self.timer.timeout.connect(self.statusUpdate)
+        self.timer.start()
 
     # Display manager window
+
     def showManagerWindow(self):
         self.InitWindow()
         self.show()
@@ -415,6 +422,8 @@ class Manager(QMainWindow):
 
             self.isRunningOnBoot = isAddedToStartup()
 
+            self.isConnectedToInternet = checkInternetConnection()
+
         except Exception as e:
             print('Error while checking spicetify status')
             print(e)
@@ -501,6 +510,11 @@ class Manager(QMainWindow):
         self.check_startonboot.setChecked(self.isRunningOnBoot)
         self.check_neverrestart.setChecked(self.isNeverRestarting)
         self.check_autopatch.setChecked(self.isAutoPatching)
+
+        if self.isConnectedToInternet:
+            self.network_error_icon.setVisible(False)
+        else:
+            self.network_error_icon.setVisible(True)
 
     # Check if manager has update available
     def checkUpdateAvailable(self):

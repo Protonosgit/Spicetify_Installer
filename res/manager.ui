@@ -353,6 +353,9 @@ QPushButton{
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+       </property>
       </widget>
      </widget>
      <widget class="QPushButton" name="bt_uninstall">
@@ -361,10 +364,10 @@ QPushButton{
       </property>
       <property name="geometry">
        <rect>
-        <x>740</x>
+        <x>730</x>
         <y>340</y>
-        <width>41</width>
-        <height>41</height>
+        <width>51</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="font">
@@ -409,6 +412,34 @@ QPushButton:hover
       </property>
       <property name="checked">
        <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="network_error_icon">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>340</y>
+        <width>49</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Your devoce seems to have issues with your internet connection!</string>
+      </property>
+      <property name="text">
+       <string notr="true"/>
+      </property>
+      <property name="pixmap">
+       <pixmap>net_error.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::NoTextInteraction</set>
       </property>
      </widget>
     </widget>
