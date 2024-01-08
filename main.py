@@ -68,9 +68,15 @@ class Manager(QMainWindow):
             self.show()
 
         else:
+            # Peek and run
             self.InitWindow()
             self.show()
             self.hide()
+            # Status check interval
+            self.timer = QTimer(self)
+            self.timer.setInterval(120000)
+            self.timer.timeout.connect(self.statusUpdate)
+            self.timer.start()
 
         self.bt_master.clicked.connect(self.masterButton)
         self.bt_uninstall.clicked.connect(self.startRemoval)
@@ -92,11 +98,6 @@ class Manager(QMainWindow):
         self.background_graphics.show()
         movie.start()
         self.checkUpdateAvailable()
-        # Status check interval
-        self.timer = QTimer(self)
-        self.timer.setInterval(120000)
-        self.timer.timeout.connect(self.statusUpdate)
-        self.timer.start()
 
     # Display manager window
 
