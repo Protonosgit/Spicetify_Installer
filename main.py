@@ -388,16 +388,17 @@ class Manager(QMainWindow):
     def statusUpdate(self):
         try:
             self.isSpotifyInstalled = checkSpotifyInstalled()
+            if self.isSpotifyInstalled:
 
-            self.isSpicetifyInstalled = checkSpicetifyInstalled()
+                self.isSpicetifyInstalled = checkSpicetifyInstalled()
+                if self.isSpicetifyInstalled:
 
-            self.isApplied = checkSpicetifyApplied()
+                    self.isApplied = checkSpicetifyApplied()
+                    self.isActive = checkSpicetifyActive()
 
-            self.isActive = checkSpicetifyActive()
+                    self.isMarketInstalled = checkMarketplaceInstalled()
 
-            self.isMarketInstalled = checkMarketplaceInstalled()
-
-            self.LATESTSPICETIFYVER = getLatestSpicetifyRelease().replace("v", "").strip()
+                    self.LATESTSPICETIFYVER = getLatestSpicetifyRelease().replace("v", "").strip()
 
             if self.isSpicetifyInstalled:
                 self.LOCALSPICETIFYVER = subprocess.check_output(
