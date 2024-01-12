@@ -87,6 +87,8 @@ class Manager(QMainWindow):
         self.check_autopatch.stateChanged.connect(self.AutoPatchInBackground)
         self.check_startonboot.stateChanged.connect(self.startOnBoot)
         self.check_neverrestart.stateChanged.connect(self.NeverRestart)
+        self.check_denymanagerupdate.stateChanged.connect(
+            self.denyManagerUpdate)
 
     # Execute once window is loaded before listeners are enabled
 
@@ -97,7 +99,8 @@ class Manager(QMainWindow):
         self.background_graphics.setMovie(movie)
         self.background_graphics.show()
         movie.start()
-        self.checkUpdateAvailable()
+        if not readConfig('Manager', 'donotcheckupdate') == 'True':
+            self.checkUpdateAvailable()
 
     # Display manager window
 
@@ -322,6 +325,11 @@ class Manager(QMainWindow):
             if reply == QMessageBox.StandardButton.Yes:
                 os.startfile(folder_path)
 
+    # Do not check for manager updates
+    def denyManagerUpdate(self):
+        writeConfig('Manager', 'donotcheckupdate', str(
+            self.check_denymanagerupdate.isChecked()))
+
     # Run custom command button listener
     def Custom(self):
         self.iprocess = CustomCommand(self.combo_cmd.currentIndex())
@@ -517,6 +525,9 @@ class Manager(QMainWindow):
             self.network_error_icon.setVisible(False)
         else:
             self.network_error_icon.setVisible(True)
+
+        if (readConfig('Manager', 'donotcheckupdate') == 'True'):
+            self.check_denymanagerupdate.setChecked(True)
 
     # Check if manager has update available
     def checkUpdateAvailable(self):
