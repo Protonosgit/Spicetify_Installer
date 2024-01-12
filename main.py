@@ -93,7 +93,6 @@ class Manager(QMainWindow):
     # Execute once window is loaded before listeners are enabled
 
     def InitWindow(self):
-        self.statusUpdate()
         movie = QMovie(os.path.join(
             os.path.dirname(__file__), "res", "retroflicker.gif"))
         self.background_graphics.setMovie(movie)
@@ -101,6 +100,7 @@ class Manager(QMainWindow):
         movie.start()
         if not readConfig('Manager', 'donotcheckupdate') == 'True':
             self.checkUpdateAvailable()
+        self.statusUpdate()
 
     # Display manager window
 
