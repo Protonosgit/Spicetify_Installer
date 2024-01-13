@@ -90,7 +90,7 @@ class Manager(QMainWindow):
         self.check_denymanagerupdate.stateChanged.connect(
             self.denyManagerUpdate)
 
-        # Perform status update
+        # Perform status update after window visible
         self.showEvent = self.statusUpdate()
 
     # Execute once window is loaded before listeners are enabled

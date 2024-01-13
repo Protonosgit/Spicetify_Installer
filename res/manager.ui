@@ -251,7 +251,7 @@ QPushButton:pressed
      </attribute>
      <widget class="QPushButton" name="bt_master">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -281,7 +281,7 @@ QPushButton{
 }</string>
       </property>
       <property name="text">
-       <string>Install</string>
+       <string>Loading...</string>
       </property>
      </widget>
      <widget class="QFrame" name="infoFrame">
@@ -348,7 +348,7 @@ QPushButton{
         <string notr="true">color:white;</string>
        </property>
        <property name="text">
-        <string>Please wait..</string>
+        <string>Please wait</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -651,7 +651,7 @@ QPushButton:hover
 }</string>
       </property>
       <property name="text">
-       <string>Close manager after update,install,etc</string>
+       <string>Close manager after update, install, etc</string>
       </property>
       <property name="iconSize">
        <size>
