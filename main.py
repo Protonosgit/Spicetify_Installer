@@ -90,6 +90,9 @@ class Manager(QMainWindow):
         self.check_denymanagerupdate.stateChanged.connect(
             self.denyManagerUpdate)
 
+        # Perform status update
+        self.showEvent = self.statusUpdate()
+
     # Execute once window is loaded before listeners are enabled
 
     def InitWindow(self):
@@ -100,7 +103,7 @@ class Manager(QMainWindow):
         movie.start()
         if not readConfig('Manager', 'donotcheckupdate') == 'True':
             self.checkUpdateAvailable()
-        self.statusUpdate()
+        # self.statusUpdate()
 
     # Display manager window
 
