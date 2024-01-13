@@ -354,6 +354,7 @@ class Manager(QMainWindow):
 
     # Called when spicetify is updated
     def update_finished(self):
+        windowsToast("Spicetify update process completed!", "")
         if not self.isNeverRestarting:
             self.iprocess = RestartSpotify()
             self.iprocess.start()
