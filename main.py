@@ -12,7 +12,7 @@ from components.popups import errorDialog, warnDialog, windowsToast, confirmatio
 from components.shellbridge import *
 from components.statusInfo import *
 from components.tools import *
-from components.dialog_windows import AfterInstall
+from components.dialog_windows import AfterInstall, UninstallWindow
 from werkzeug.wrappers import Request, Response
 from werkzeug.serving import run_simple
 from windows_toasts import ToastActivatedEventArgs, Toast, ToastButton, InteractableWindowsToaster
@@ -79,7 +79,7 @@ class Manager(QMainWindow):
             self.timer.start()
 
         self.bt_master.clicked.connect(self.masterButton)
-        self.bt_uninstall.clicked.connect(self.startRemoval)
+        self.bt_uninstall.clicked.connect(self.UninstallModal)
         self.bt_cmd.clicked.connect(self.Custom)
         self.check_noupdate.stateChanged.connect(self.DisableUpdate)
         self.check_watchwitch.stateChanged.connect(self.PatchWatchWitch)
@@ -217,6 +217,11 @@ class Manager(QMainWindow):
             self.iprocess.start()
         else:
             return False
+
+    def UninstallModal(self):
+        # Show uninstall.ui window
+        dialog = UninstallWindow(self)
+        dialog.exec()
 
     #
     # Background worker progress update listener

@@ -15,7 +15,7 @@ def managerUpdateCheck():
         if response.status_code == 200:
             latest_release = response.json()
             tag_name = latest_release["tag_name"]
-            if int(tag_name.replace(".", "")) > 132:
+            if int(tag_name.replace(".", "")) > 133:
                 return True
         return False
     except:
