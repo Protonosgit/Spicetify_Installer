@@ -702,7 +702,7 @@ QPushButton:hover
 }</string>
       </property>
       <property name="text">
-       <string>Never restart Spotify (excludes marketplace script)</string>
+       <string>Avoid some restarts of Spotify</string>
       </property>
       <property name="iconSize">
        <size>
