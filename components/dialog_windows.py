@@ -1,5 +1,6 @@
 import os
 from PyQt6.QtWidgets import QDialog
+from PyQt6.QtCore import pyqtSlot
 from PyQt6.uic import loadUi
 
 
@@ -31,3 +32,9 @@ class UninstallWindow(QDialog):
         pathmaster = os.path.join(
             parent_directory, "res", "uninstall.ui")
         loadUi(pathmaster, self)
+
+        self.accepted.connect(self.onAccept)
+
+    @pyqtSlot()
+    def onAccept(self):
+        print("Accept button clicked!")
