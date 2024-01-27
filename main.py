@@ -96,6 +96,10 @@ class Manager(QMainWindow):
     # Execute once window is loaded before listeners are enabled
 
     def InitWindow(self):
+        if checkAdminPrivileges():
+            #close app with error mesage
+            errorDialog("NEVER run sussy programms like this with admin privileges !!")
+            sys.exit(0)
         movie = QMovie(os.path.join(
             os.path.dirname(__file__), "res", "retroflicker.gif"))
         self.background_graphics.setMovie(movie)

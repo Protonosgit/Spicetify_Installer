@@ -179,3 +179,12 @@ def checkInternetConnection():
             return False
     except:
         return False
+
+def checkAdminPrivileges():
+    try:
+        if os.getuid() == 0:
+            return True
+        else:
+            return False
+    except:
+        return False

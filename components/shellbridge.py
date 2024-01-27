@@ -4,7 +4,7 @@ import subprocess
 import shutil
 import time
 from PyQt6.QtCore import QThread, pyqtSignal
-from components.statusInfo import checkSpotifyRunning
+from components.statusInfo import checkSpotifyRunning,checkAdminPrivileges
 
 # Installer task for both windows and linux/mac with progress and error handling
 
