@@ -79,7 +79,8 @@ class Manager(QMainWindow):
             self.timer.start()
 
         self.bt_master.clicked.connect(self.masterButton)
-        self.bt_uninstall.clicked.connect(self.UninstallModal)
+        #self.bt_uninstall.clicked.connect(self.UninstallModal)
+        self.bt_uninstall.clicked.connect(self.startRemoval)
         self.bt_cmd.clicked.connect(self.Custom)
         self.check_noupdate.stateChanged.connect(self.DisableUpdate)
         self.check_watchwitch.stateChanged.connect(self.PatchWatchWitch)
@@ -355,9 +356,6 @@ class Manager(QMainWindow):
     # Called when spicetify is installed or not
     def setup_finished(self):
         if not self.isInFaultMode:
-            if not self.isNeverRestarting:
-                self.iprocess = RestartSpotify()
-                self.iprocess.start()
             if self.isAutoClosing:
                 self.close()
 

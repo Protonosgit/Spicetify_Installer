@@ -9,7 +9,7 @@ from components.statusInfo import checkSpotifyRunning,checkAdminPrivileges
 # Installer task for both windows and linux/mac with progress and error handling
 
 
-class InstallSpicetify(QThread):
+class InstallSpicetifyold(QThread):
     progress_signal = pyqtSignal(str)
     finished_signal = pyqtSignal()
 
@@ -32,6 +32,24 @@ class InstallSpicetify(QThread):
                 self.progress_signal.emit("Installing Marketplace...")
                 subprocess.run(
                     'powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex"', check=True, shell=True)
+                self.progress_signal.emit("done")
+        except Exception as e:
+            print("Error detected!")
+            print(e)
+            self.progress_signal.emit("fail")
+
+        self.finished_signal.emit()
+
+class InstallSpicetify(QThread):
+    progress_signal = pyqtSignal(str)
+    finished_signal = pyqtSignal()
+
+    def run(self):
+        try:
+            if sys.platform == 'win32':
+                self.progress_signal.emit("Installing Spicetify...")
+                subprocess.run(
+                    'echo y | powershell.exe -Command "iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex"', check=True, shell=True)
                 self.progress_signal.emit("done")
         except Exception as e:
             print("Error detected!")
