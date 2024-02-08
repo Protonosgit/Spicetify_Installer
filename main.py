@@ -1,5 +1,8 @@
-# Project spicy green => Spicetify patcher
-# By Protonos ,
+# Project spicy green2022 ==> Spicetify patcher 2023
+# By Protonos
+# https://github.com/Protonosgit/Spicetify_Installer
+# https://github.com/Protonosgit/Spicetify_Installer/releases
+# Feel free to use any components of this project for your own!
 
 import os
 import sys
@@ -8,7 +11,7 @@ from PyQt6.QtWidgets import QMainWindow, QMessageBox, QApplication, QSystemTrayI
 from PyQt6.QtCore import Qt, QUrl, QThread, QTimer
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QDesktopServices, QMovie, QIcon
-from components.popups import errorDialog, warnDialog, windowsToast, confirmationModal, spicetifyStatusToast
+from components.popups import errorDialog, warnDialog, windowsToast, confirmationModal
 from components.shellbridge import *
 from components.statusInfo import *
 from components.tools import *
@@ -276,7 +279,7 @@ class Manager(QMainWindow):
         self.bt_master.setEnabled(True)
         self.l_status.setStyleSheet("color: red")
         self.l_status.setText("⚠️ An error occured ⚠️")
-        self.l_versioninfo.setText('Task not completed due to crash')
+        self.l_versioninfo.setText('Task not completed due to a crash')
         errorDialog(context)
 
     #

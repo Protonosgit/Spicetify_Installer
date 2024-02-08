@@ -1,9 +1,7 @@
 <img src="./res/icon.png" alt="spicetify manager icon" width="80"/> <br>
 # Spicetify Manager
-A project for installing and managing Spicetify from a Gui written in python.
-Additionally I included some useful tools to improve your experience with Spotify!
-
-Contributers welcome!
+A project for installing and managing Spicetify from a Gui written in python and running on PyQt6.
+The manager comes included with tools like block Spotify updates and a mode for running automatically on boot/Spotify startup.
 
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/Protonosgit/Spicetify_Installer)
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/Protonosgit/Spicetify_Manager)
@@ -12,7 +10,7 @@ Contributers welcome!
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Protonosgit/Spicetify_Manager)
 ![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Protonosgit/Spicetify_Manager)
 
-![Screenshot](/.ghres/screenshot.jpg)
+![Screenshot](/.ghres/window_preview.png)
 ## Key Features
 
 - [x] Simple installation,update,removal of Spicetify
@@ -28,7 +26,7 @@ Contributers welcome!
 #### Made with Love by Protonos
 
  ## Installation and Running
-If you do not trust the generated binary you can run the application directly with your local python installation using the provide instructions.
+If you do not trust the generated binary you may run the application directly with your local python installation using the provide instructions below.
 
 ```bash
   # Download the project
@@ -57,6 +55,9 @@ The other files are dynamically used as components and windows.
 
   # Build using pyinstaller and predefined config
   pyinstaller main.spec
+
+  # Alternatively build an optimized version using upx (slower)
+  pyinstaller main.spec --upx-dir "./upx"
 ```
 
 ## Usage Guide
