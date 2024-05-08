@@ -170,8 +170,7 @@ def blockSpotifyUpdate(active):
         try:
             # Check for existance before deleting update path and making it
             if os.path.exists(os.path.join(os.environ['LOCALAPPDATA'], "Spotify", "Update")):
-                shutil.rmtree(os.path.join(
-                    os.environ['LOCALAPPDATA'], "Spotify", "Update"))
+                return
             os.makedirs(os.path.join(
                 os.environ['LOCALAPPDATA'], "Spotify", "Update"))
 
