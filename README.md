@@ -11,7 +11,7 @@ The manager comes included with tools like block Spotify updates and a mode for 
 ![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Protonosgit/Spicetify_Manager)
 
 ## Attention:
-This repo is looking for a new maintainer!
+This repo is looking for a **new maintainer!**
 I personally don't have the time anymore to support this project in the future, so feel free to reach out if you're interested ❤️
 
 ![Screenshot](/.ghres/window_preview.png)
